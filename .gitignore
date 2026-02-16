@@ -1,0 +1,82 @@
+# ===============================
+# Android Studio / IntelliJ
+# ===============================
+
+*.iml
+.idea/
+.idea/caches/
+.idea/libraries/
+.idea/modules.xml
+.idea/workspace.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
+
+# ===============================
+# Gradle
+# ===============================
+
+.gradle/
+build/
+*/build/
+
+# ===============================
+# Local configuration
+# ===============================
+
+local.properties
+
+# ===============================
+# Logs
+# ===============================
+
+*.log
+
+# ===============================
+# Android specific
+# ===============================
+
+captures/
+.externalNativeBuild/
+.cxx/
+.externalNativeBuild
+.cxx
+
+# Generated APK/AAB
+*.apk
+*.aab
+
+# Generated files
+*.dex
+
+# ===============================
+# Keystore (QUAN TRỌNG)
+# ===============================
+
+*.jks
+*.keystore
+
+# ===============================
+# Kotlin / Java
+# ===============================
+
+*.class
+*.jar
+*.war
+*.aar
+out/
+
+# ===============================
+# OS files
+# ===============================
+
+.DS_Store
+Thumbs.db
+
+# ===============================
+# Temporary files
+# ===============================
+
+*.swp
+*.tmp
+*.bak
+
