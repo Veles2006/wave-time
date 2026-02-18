@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("kotlin-parcelize")
+//    id("kotlin-kapt")
 }
 
 android {
@@ -43,6 +45,31 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.4")
+
+//    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+//
+//    implementation("com.github.bumptech.glide:glide:4.16.0")
+//    kapt("com.github.bumptech.glide:compiler:4.16.0")
+
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
+
+    // Lifecycle (RẤT QUAN TRỌNG)
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.4")
+
+    // Networking
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:okhttp:4.9.3")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
+
+    // Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+
+//    implementation(platform("com.google.firebase:firebase-bom:32.7.2"))
+//    implementation("com.google.firebase:firebase-messaging")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
