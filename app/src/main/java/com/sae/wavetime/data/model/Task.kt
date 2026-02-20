@@ -49,6 +49,6 @@ data class Task(
     val reward: Reward,
     val penalty: Penalty,
     val deadline: String?,
-    val date: String,
+    val date: String?,
     val difficulty: String,
 )
