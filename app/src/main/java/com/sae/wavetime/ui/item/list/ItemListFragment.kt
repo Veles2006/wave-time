@@ -1,4 +1,4 @@
-package com.sae.wavetime.ui.task.list
+package com.sae.wavetime.ui.item.list
 
 import android.os.Bundle
 import android.view.View
@@ -9,24 +9,21 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sae.wavetime.R
-import com.sae.wavetime.data.repository.TaskRepository
-import com.sae.wavetime.databinding.FragmentTaskListBinding
-import com.sae.wavetime.ui.task.list.TaskListState
-import com.sae.wavetime.ui.task.list.TaskListViewModel
-import com.sae.wavetime.ui.task.list.TaskListViewModelFactory
+import com.sae.wavetime.data.repository.ItemRepository
+import com.sae.wavetime.databinding.FragmentItemListBinding
 import kotlinx.coroutines.launch
 
-class TaskListFragment : Fragment(R.layout.fragment_task_list) {
+class ItemListFragment : Fragment(R.layout.fragment_item_list) {
 
-    private lateinit var adapter: TaskAdapter
-    private var _binding: FragmentTaskListBinding? = null
+    private lateinit var adapter: ItemAdapter
+    private var _binding: FragmentItemListBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: TaskListViewModel by viewModels {
-        TaskListViewModelFactory(TaskRepository())
+    private val viewModel: ItemListViewModel by viewModels {
+        ItemListViewModelFactory(ItemRepository())
     }
 
-    private fun render(state: TaskListState) {
+    private fun render(state: ItemListState) {
 
         if (state.isLoading) {
             // show loading
@@ -36,22 +33,18 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
             // show error
         }
 
-        adapter.submitList(state.tasks)
+        adapter.submitList(state.items)
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        _binding = FragmentItemListBinding.bind(view)
 
+        adapter = ItemAdapter()
 
-        _binding = FragmentTaskListBinding.bind(view)
-
-        adapter = TaskAdapter()
-
-        binding.rvTasks.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvTasks.adapter = adapter
-
+        binding.rvItems.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvItems.adapter = adapter
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -60,8 +53,8 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                 }
             }
         }
-        viewModel.loadTasks()
 
+        viewModel.loadItems()
     }
 
     override fun onDestroyView() {

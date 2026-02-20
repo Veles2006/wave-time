@@ -1,4 +1,4 @@
-package com.sae.wavetime.ui.state
+package com.sae.wavetime.ui.item.list
 
 import com.sae.wavetime.data.model.Item
 

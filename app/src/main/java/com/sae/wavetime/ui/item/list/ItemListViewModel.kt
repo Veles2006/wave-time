@@ -1,33 +1,33 @@
-package com.sae.wavetime.ui.task.list
+package com.sae.wavetime.ui.item.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sae.wavetime.data.model.Task
-import com.sae.wavetime.data.repository.TaskRepository
+import com.sae.wavetime.data.model.Item
+import com.sae.wavetime.data.repository.ItemRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class TaskListViewModel(
-    private val repository: TaskRepository
+class ItemListViewModel(
+    private val repository: ItemRepository
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(TaskListState())
-    val state: StateFlow<TaskListState> = _state
+    private val _state = MutableStateFlow(ItemListState())
+    val state: StateFlow<ItemListState> = _state
 
-    fun loadTasks() {
+    fun loadItems() {
         viewModelScope.launch {
 
             _state.update { it.copy(isLoading = true, error = null) }
 
             try {
-                val tasks: List<Task> = repository.getTasks()
+                val items: List<Item> = repository.getItems()
 
                 _state.update {
                     it.copy(
                         isLoading = false,
-                        tasks = tasks,
+                        items = items,
                     )
                 }
             } catch (e: Exception) {
@@ -40,5 +40,4 @@ class TaskListViewModel(
             }
         }
     }
-
 }

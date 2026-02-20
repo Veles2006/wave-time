@@ -9,13 +9,13 @@
         android:id="@+id/tvName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Task Name"
+        android:text="Item Name"
         android:textSize="18sp" />
 
     <TextView
         android:id="@+id/tvDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Task Description"
+        android:text="Item Description"
         android:textSize="16sp" />
 </LinearLayout>

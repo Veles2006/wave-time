@@ -9,4 +9,9 @@
         android:name="com.sae.wavetime.ui.task.list.TaskListFragment"
         android:label="Task List" />
 
+    <fragment
+        android:id="@+id/itemListFragment"
+        android:name="com.sae.wavetime.ui.item.list.ItemListFragment"
+        android:label="Item List" />
+
 </navigation>
