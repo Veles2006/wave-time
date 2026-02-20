@@ -1,4 +1,4 @@
-package com.sae.wavetime.ui.state
+package com.sae.wavetime.ui.block.list
 
 import com.sae.wavetime.ui.model.AppUiModel
 

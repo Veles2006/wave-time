@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/taskListFragment">
+    app:startDestination="@id/blockListFragment">
 
     <fragment
         android:id="@+id/taskListFragment"
@@ -13,5 +13,10 @@
         android:id="@+id/itemListFragment"
         android:name="com.sae.wavetime.ui.item.list.ItemListFragment"
         android:label="Item List" />
+
+    <fragment
+        android:id="@+id/blockListFragment"
+        android:name="com.sae.wavetime.ui.block.list.BlockListFragment"
+        android:label="Block List" />
 
 </navigation>
