@@ -1,4 +1,4 @@
-package com.sae.wavetime.data.model
+package com.sae.wavetime.data.model.api
 
 data class UserResponse(
     val id: String,

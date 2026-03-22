@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.sae.wavetime.R
 import com.sae.wavetime.data.repository.TaskRepository
 import com.sae.wavetime.databinding.FragmentTaskListBinding
+import com.sae.wavetime.local.DatabaseProvider
 import com.sae.wavetime.ui.task.list.TaskListState
 import com.sae.wavetime.ui.task.list.TaskListViewModel
 import com.sae.wavetime.ui.task.list.TaskListViewModelFactory
@@ -23,7 +24,11 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
     private val binding get() = _binding!!
 
     private val viewModel: TaskListViewModel by viewModels {
-        TaskListViewModelFactory(TaskRepository())
+        TaskListViewModelFactory(
+            TaskRepository(
+                DatabaseProvider.getDatabase(requireContext()).taskDao()
+            )
+        )
     }
 
     private fun render(state: TaskListState) {

@@ -1,8 +1,8 @@
 package com.sae.wavetime.data.repository
 
-import com.sae.wavetime.data.model.BlockOfItem
-import com.sae.wavetime.data.model.Item
-import com.sae.wavetime.data.model.KeyInfoPopulated
+import com.sae.wavetime.data.model.api.BlockOfItem
+import com.sae.wavetime.data.model.api.Item
+import com.sae.wavetime.data.model.api.KeyInfoPopulated
 
 class ItemRepository {
 

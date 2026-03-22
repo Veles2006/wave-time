@@ -1,15 +1,21 @@
 package com.sae.wavetime.data.repository
 
-import com.sae.wavetime.data.model.AuthResponse
-import com.sae.wavetime.data.model.UserResponse
+import com.sae.wavetime.data.model.api.AuthResponse
+import com.sae.wavetime.data.model.api.LoginRequest
+import com.sae.wavetime.data.model.api.UserResponse
+import com.sae.wavetime.network.RetrofitClient
 
 class AuthRepository {
 
     suspend fun login(emailOrUserName: String, password: String): AuthResponse {
         return AuthResponse(
-            "abc",
-            UserResponse("diwi", "veles", "anhphia@gmail.com"),
-            "iahiweifivn"
+            message = "123",
+            user = UserResponse(
+                id = "1",
+                username = "1",
+                email = "123"
+            ),
+            token = "123"
         )
     }
 }

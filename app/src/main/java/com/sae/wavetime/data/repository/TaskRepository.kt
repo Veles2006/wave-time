@@ -1,35 +1,22 @@
 package com.sae.wavetime.data.repository
 
 
-import com.sae.wavetime.data.model.Penalty
-import com.sae.wavetime.data.model.Reward
-import com.sae.wavetime.data.model.Task
+import com.sae.wavetime.data.dao.TaskDao
+import com.sae.wavetime.data.mapper.toDomainList
+import com.sae.wavetime.data.mapper.toEntity
+import com.sae.wavetime.data.model.api.Penalty
+import com.sae.wavetime.data.model.api.Reward
+import com.sae.wavetime.data.model.api.Task
 
-class TaskRepository {
-
+class TaskRepository(
+    private val taskDao: TaskDao
+) {
     suspend fun getTasks(): List<Task> {
-
-        return listOf(
-            Task(
-                id = "1",
-                name = "Study Kotlin",
-                description = "Complete MVVM setup",
-                reward = Reward(exp = 100),
-                penalty = Penalty(),
-                deadline = null,
-                date = "2026-02-19",
-                difficulty = "mortal"
-            ),
-            Task(
-                id = "2",
-                name = "Do Exercise",
-                description = "30 minutes workout",
-                reward = Reward(gold = 100),
-                penalty = Penalty(),
-                deadline = null,
-                date = "2026-02-19",
-                difficulty = "mortal"
-            ),
-        )
+        return taskDao
+            .getAll()
+            .toDomainList()
+    }
+    suspend fun insertTask(task: Task) {
+        taskDao.insert(task.toEntity())
     }
 }

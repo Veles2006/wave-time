@@ -1,4 +1,4 @@
-package com.sae.wavetime.data.model
+package com.sae.wavetime.data.model.api
 
 import com.google.gson.annotations.SerializedName
 

@@ -1,6 +1,5 @@
-package com.sae.wavetime.data.model
+package com.sae.wavetime.data.model.api
 
-import android.graphics.drawable.Drawable
 import com.google.gson.annotations.SerializedName
 
 data class Block(
