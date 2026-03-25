@@ -2,6 +2,7 @@ package com.sae.wavetime.data.room
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson
+import com.sae.wavetime.data.model.api.KeyInfoPopulated
 import com.sae.wavetime.data.model.api.Penalty
 import com.sae.wavetime.data.model.api.Reward
 
@@ -26,5 +27,15 @@ class Converters {
     @TypeConverter
     fun toPenalty(json: String): Penalty {
         return gson.fromJson(json, Penalty::class.java)
+    }
+
+    @TypeConverter
+    fun fromKeyInfo(keyInfo: KeyInfoPopulated?): String? {
+        return gson.toJson(keyInfo)
+    }
+
+    @TypeConverter
+    fun toKeyInfo(json: String?): KeyInfoPopulated? {
+        return json?.let { gson.fromJson(it, KeyInfoPopulated::class.java) }
     }
 }

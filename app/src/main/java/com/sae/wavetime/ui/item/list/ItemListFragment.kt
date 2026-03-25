@@ -9,8 +9,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sae.wavetime.R
+import com.sae.wavetime.data.repository.InventoryRepository
 import com.sae.wavetime.data.repository.ItemRepository
 import com.sae.wavetime.databinding.FragmentItemListBinding
+import com.sae.wavetime.local.DatabaseProvider
 import kotlinx.coroutines.launch
 
 class ItemListFragment : Fragment(R.layout.fragment_item_list) {
@@ -20,7 +22,9 @@ class ItemListFragment : Fragment(R.layout.fragment_item_list) {
     private val binding get() = _binding!!
 
     private val viewModel: ItemListViewModel by viewModels {
-        ItemListViewModelFactory(ItemRepository())
+        ItemListViewModelFactory(InventoryRepository(
+            DatabaseProvider.getDatabase(requireContext()).inventoryDao()
+        ))
     }
 
     private fun render(state: ItemListState) {

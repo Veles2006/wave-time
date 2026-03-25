@@ -7,12 +7,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.sae.wavetime.R
 import com.sae.wavetime.data.model.api.Item
+import com.sae.wavetime.ui.model.InventoryUiModel
 
 class ItemAdapter : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
 
-    private var items: List<Item> = emptyList()
+    private var items: List<InventoryUiModel> = emptyList()
 
-    fun submitList(newList : List<Item>) {
+    fun submitList(newList : List<InventoryUiModel>) {
         items = newList
         notifyDataSetChanged()
     }
@@ -32,7 +33,7 @@ class ItemAdapter : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
         val item = items[position]
 
         holder.tvName.text = item.name
-        holder.tvDescription.text = item.description
+        holder.tvDescription.text = item.tier
     }
 
     override fun getItemCount(): Int {

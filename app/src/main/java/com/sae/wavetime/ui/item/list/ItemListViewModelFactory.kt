@@ -2,11 +2,12 @@ package com.sae.wavetime.ui.item.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.sae.wavetime.data.repository.InventoryRepository
 import com.sae.wavetime.data.repository.ItemRepository
 import com.sae.wavetime.ui.item.list.ItemListViewModel
 
 class ItemListViewModelFactory(
-    private val repository: ItemRepository
+    private val repository: InventoryRepository
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")

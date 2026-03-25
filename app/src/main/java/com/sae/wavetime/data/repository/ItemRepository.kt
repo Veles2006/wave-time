@@ -1,11 +1,16 @@
 package com.sae.wavetime.data.repository
 
+import com.sae.wavetime.data.dao.InventoryDao
+import com.sae.wavetime.data.dao.ItemDao
+import com.sae.wavetime.data.mapper.toUi
 import com.sae.wavetime.data.model.api.BlockOfItem
 import com.sae.wavetime.data.model.api.Item
 import com.sae.wavetime.data.model.api.KeyInfoPopulated
+import com.sae.wavetime.ui.model.InventoryUiModel
 
-class ItemRepository {
-
+class ItemRepository(
+    private val itemDao: ItemDao
+) {
     suspend fun getItems(): List<Item> {
         return listOf(
             Item(

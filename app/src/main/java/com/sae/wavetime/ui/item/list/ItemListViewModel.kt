@@ -3,14 +3,16 @@ package com.sae.wavetime.ui.item.list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sae.wavetime.data.model.api.Item
+import com.sae.wavetime.data.repository.InventoryRepository
 import com.sae.wavetime.data.repository.ItemRepository
+import com.sae.wavetime.ui.model.InventoryUiModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ItemListViewModel(
-    private val repository: ItemRepository
+    private val repository: InventoryRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ItemListState())
@@ -22,7 +24,7 @@ class ItemListViewModel(
             _state.update { it.copy(isLoading = true, error = null) }
 
             try {
-                val items: List<Item> = repository.getItems()
+                val items: List<InventoryUiModel> = repository.getInventoryItems()
 
                 _state.update {
                     it.copy(
