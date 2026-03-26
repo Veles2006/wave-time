@@ -1,6 +1,7 @@
 package com.sae.wavetime.ui.task.list
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -47,8 +48,6 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
 
         _binding = FragmentTaskListBinding.bind(view)
 
