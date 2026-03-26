@@ -2,11 +2,10 @@ package com.sae.wavetime.ui.block.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.sae.wavetime.data.repository.AppRepository
-import com.sae.wavetime.ui.model.AppUiModel
+import com.sae.wavetime.data.repository.BlockRepository
 
 class BlockListViewModelFactory(
-    private val repository: AppRepository
+    private val repository: BlockRepository
 ): ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")

@@ -2,15 +2,15 @@ package com.sae.wavetime.ui.block.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sae.wavetime.data.repository.AppRepository
-import com.sae.wavetime.ui.model.AppUiModel
+import com.sae.wavetime.data.model.api.Block
+import com.sae.wavetime.data.repository.BlockRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class BlockListViewModel(
-    private val repository: AppRepository
+    private val repository: BlockRepository
 ): ViewModel() {
     private val _state = MutableStateFlow(BlockListState())
     val state: StateFlow<BlockListState> = _state
@@ -20,7 +20,7 @@ class BlockListViewModel(
             _state.update { it.copy(isLoading = true, error = null) }
 
             try {
-                val apps: List<AppUiModel> = repository.getApps()
+                val apps: List<Block> = repository.getBlocks()
 
                 _state.update {
                     it.copy(

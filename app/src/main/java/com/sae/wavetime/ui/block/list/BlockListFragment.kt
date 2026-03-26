@@ -9,8 +9,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sae.wavetime.R
-import com.sae.wavetime.data.repository.AppRepository
+import com.sae.wavetime.data.repository.BlockRepository
 import com.sae.wavetime.databinding.FragmentBlockListBinding
+import com.sae.wavetime.local.DatabaseProvider
 import kotlinx.coroutines.launch
 
 class BlockListFragment : Fragment(R.layout.fragment_block_list) {
@@ -21,7 +22,9 @@ class BlockListFragment : Fragment(R.layout.fragment_block_list) {
     private val binding get() = _binding!!
 
     private val viewModel: BlockListViewModel by viewModels {
-        BlockListViewModelFactory(AppRepository(requireContext().applicationContext))
+        BlockListViewModelFactory(BlockRepository(
+            DatabaseProvider.getDatabase(requireContext()).blockDao()
+        ))
     }
 
     private fun render(state: BlockListState) {

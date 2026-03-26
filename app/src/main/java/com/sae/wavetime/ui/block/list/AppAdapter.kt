@@ -6,13 +6,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.sae.wavetime.R
+import com.sae.wavetime.data.model.api.Block
 import com.sae.wavetime.ui.model.AppUiModel
 
 class AppAdapter: RecyclerView.Adapter<AppAdapter.AppViewHolder>() {
 
-    private var apps: List<AppUiModel> = emptyList()
+    private var apps: List<Block> = emptyList()
 
-    fun submitList(newList: List<AppUiModel>) {
+    fun submitList(newList: List<Block>) {
         apps = newList
         notifyDataSetChanged()
     }
