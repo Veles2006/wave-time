@@ -19,4 +19,9 @@
         android:name="com.sae.wavetime.ui.block.list.BlockListFragment"
         android:label="Block List" />
 
+    <fragment
+        android:id="@+id/taskCreateFragment"
+        android:name="com.sae.wavetime.ui.task.create.TaskCreateFragment"
+        android:label="Task Create" />
+
 </navigation>

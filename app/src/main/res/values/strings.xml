@@ -1,3 +1,31 @@
 <resources>
     <string name="app_name">Wave Time</string>
+    <string name="bar_button">Bar Button</string>
+    <string name="wave_time">Wave Time</string>
+    <string name="btn_task">Task</string>
+    <string name="btn_block">Block</string>
+    <string name="btn_item">Item</string>
+    <string name="avatar">Avatar</string>
+    <string name="user_name">Veles</string>
+    <string name="user_email">user@email.com</string>
+    <string name="title_login">Login</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="back_task_list">Back Task List</string>
+    <string name="create_task">Create Task</string>
+    <string name="btn_task_created_successfully">Task created Successfully</string>
+    <string name="btn_login">Login</string>
+    <string name="tittle_basic">Basic</string>
+    <string name="btn_basic_question">Basic Question</string>
+    <string name="til_task_name">Task name</string>
+    <string name="til_task_description">Description</string>
+    <string name="title_reward">Reward</string>
+    <string name="btn_reward_question">Reward Question</string>
+    <string name="title_reward_coins">Reward coins</string>
+    <string name="not_set">Not set</string>
+    <string name="title_experience_reward">Experience reward</string>
+    <string name="title_item_reward">Item reward</string>
+    <string name="title_order">Order</string>
+    <string name="btn_order_question">Order Question</string>
+    <string name="btn_penalty">Penalty</string>
 </resources>

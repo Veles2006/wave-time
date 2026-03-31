@@ -8,14 +8,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sae.wavetime.R
 import com.sae.wavetime.data.repository.TaskRepository
 import com.sae.wavetime.databinding.FragmentTaskListBinding
 import com.sae.wavetime.local.DatabaseProvider
-import com.sae.wavetime.ui.task.list.TaskListState
-import com.sae.wavetime.ui.task.list.TaskListViewModel
-import com.sae.wavetime.ui.task.list.TaskListViewModelFactory
 import kotlinx.coroutines.launch
 
 class TaskListFragment : Fragment(R.layout.fragment_task_list) {
@@ -66,6 +64,9 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
         }
         viewModel.loadTasks()
 
+        binding.btnCreateTask.setOnClickListener {
+            findNavController().navigate(R.id.taskCreateFragment)
+        }
     }
 
     override fun onDestroyView() {

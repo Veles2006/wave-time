@@ -4,16 +4,16 @@
     <item
         android:id="@+id/menu_history"
         android:title="History"
-        android:icon="@drawable/clock_rotate_left_solid_full"/>
+        android:icon="@drawable/ic_clock_rotate_left_solid_full"/>
 
     <item
         android:id="@+id/menu_pomodoro"
         android:title="Pomodoro"
-        android:icon="@drawable/alarm_clock_regular_full"/>
+        android:icon="@drawable/ic_alarm_clock_regular_full"/>
 
     <item
         android:id="@+id/menu_achievement"
         android:title="Achievement"
-        android:icon="@drawable/star_regular_full"/>
+        android:icon="@drawable/ic_star_regular_full"/>
 
 </menu>

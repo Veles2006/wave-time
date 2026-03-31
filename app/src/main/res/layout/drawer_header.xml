@@ -7,21 +7,22 @@
     android:padding="16dp"
     android:background="@color/primary_blue_light">
 
-    <ImageView
+    <ImageButton
         android:id="@+id/imgAvatar"
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_marginBottom="12dp"
         android:src="@drawable/waifu_1"
         android:scaleType="centerCrop"
+        android:clipToOutline="true"
         android:background="@drawable/bg_avatar_circle"
-        android:contentDescription="Avatar" />
+        android:contentDescription="@string/avatar" />
 
     <TextView
         android:id="@+id/tvUserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Veles"
+        android:text="@string/user_name"
         android:textColor="@color/white"
         android:textStyle="bold"
         android:textSize="18sp" />
@@ -30,7 +31,7 @@
         android:id="@+id/tvUserEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="user@email.com"
+        android:text="@string/user_email"
         android:textColor="@color/white"
         android:textSize="14sp" />
 </LinearLayout>

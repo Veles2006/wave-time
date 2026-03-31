@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/layout_header"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingTop="50dp"
+            android:background="@color/primary_blue_light"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <ImageButton
+                android:id="@+id/btnBack"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:padding="12dp"
+                android:scaleType="centerInside"
+                android:background="@android:color/transparent"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_arrow_left_solid_full"
+                app:tint="@color/white"
+                android:contentDescription="@string/back_task_list" />
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="@string/create_task"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:gravity="center_vertical"
+                android:paddingStart="12dp"
+                android:paddingEnd="0dp"/>
+
+            <ImageButton
+                android:id="@+id/btnSuccess"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_check_solid_full"
+                app:tint="@color/white"
+                android:background="@android:color/transparent"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:padding="12dp"
+                android:contentDescription="@string/btn_task_created_successfully" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/gray_bg"
+            android:orientation="vertical"
+            android:layout_marginBottom="40dp"
+            app:layout_constraintVertical_weight="1"
+            app:layout_constraintTop_toBottomOf="@id/layout_header"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_rounded_white"
+                android:padding="12dp"
+                android:layout_margin="8dp"
+                >
+                <TextView
+                    android:id="@+id/tvBasicTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tittle_basic"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+                <ImageButton
+                    android:id="@+id/btnBasicQuestion"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:padding="2dp"
+                    android:src="@drawable/ic_question_solid_full"
+                    android:scaleType="centerInside"
+                    app:tint="@color/white"
+                    android:background="@drawable/bg_light_blue_circle"
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/btn_basic_question"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:ignore="TouchTargetSizeCheck"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilTaskName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/til_task_name"
+
+                    app:boxBackgroundMode="outline"
+                    app:boxStrokeColor="@color/primary_blue_light"
+                    app:hintTextColor="@color/primary_blue_light"
+                    app:layout_constraintTop_toBottomOf="@id/tvBasicTitle"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtTaskName"
+                        android:layout_width="match_parent"
+                        android:layout_height="54dp"
+                        android:textColor="@color/black"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilTaskDesc"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/til_task_description"
+
+                    app:boxBackgroundMode="outline"
+                    app:boxStrokeColor="@color/primary_blue_light"
+                    app:hintTextColor="@color/primary_blue_light"
+                    app:layout_constraintTop_toBottomOf="@id/tilTaskName"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtTaskDesc"
+                        android:layout_width="match_parent"
+                        android:layout_height="54dp"
+                        android:textColor="@color/black"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_rounded_white"
+                android:padding="12dp"
+                android:layout_margin="8dp"
+                >
+                <TextView
+                    android:id="@+id/tvRewardTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_reward"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+                <ImageButton
+                    android:id="@+id/btnRewardQuestion"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:padding="2dp"
+                    android:src="@drawable/ic_question_solid_full"
+                    android:scaleType="centerInside"
+                    app:tint="@color/white"
+                    android:background="@drawable/bg_light_blue_circle"
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/btn_reward_question"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:ignore="TouchTargetSizeCheck"/>
+                <TextView
+                    android:id="@+id/tvCoin"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_reward_coins"
+                    android:textSize="14sp"
+                    app:layout_constraintTop_toBottomOf="@id/tvRewardTitle"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/tvExp"/>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnCoin"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:text="@string/not_set"
+                    android:textSize="12sp"
+                    app:icon="@drawable/ic_coins_solid_full"
+                    app:iconSize="20dp"
+                    app:iconPadding="4dp"
+                    app:layout_constraintTop_toBottomOf="@id/tvCoin"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvExp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_experience_reward"
+                    android:textSize="14sp"
+                    app:layout_constraintTop_toBottomOf="@id/tvRewardTitle"
+                    app:layout_constraintStart_toEndOf="@id/tvCoin"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnExp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:text="@string/not_set"
+                    android:textSize="12sp"
+                    app:icon="@drawable/ic_arrow_turn_up_solid_full"
+                    app:iconSize="20dp"
+                    app:iconPadding="2dp"
+                    app:layout_constraintTop_toBottomOf="@id/tvExp"
+                    app:layout_constraintStart_toEndOf="@id/tvCoin" />
+
+                <TextView
+                    android:id="@+id/tvItem"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_item_reward"
+                    android:textSize="14sp"
+                    app:layout_constraintTop_toBottomOf="@id/btnCoin"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnItem"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:text="@string/not_set"
+                    android:textSize="12sp"
+                    app:icon="@drawable/ic_gift_solid_full"
+                    app:iconSize="20dp"
+                    app:iconPadding="4dp"
+                    app:layout_constraintTop_toBottomOf="@id/tvItem"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvItems"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintTop_toBottomOf="@id/btnItem"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:visibility="gone"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_rounded_white"
+                android:padding="12dp"
+                android:layout_margin="8dp"
+                >
+                <TextView
+                    android:id="@+id/tvOrderTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_order"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+                <ImageButton
+                    android:id="@+id/btnOrderQuestion"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:padding="2dp"
+                    android:src="@drawable/ic_question_solid_full"
+                    android:scaleType="centerInside"
+                    app:tint="@color/white"
+                    android:background="@drawable/bg_light_blue_circle"
+                    android:contentDescription="@string/btn_order_question"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:ignore="TouchTargetSizeCheck"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnTaskPenalty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="52dp"
+                    android:minHeight="36dp"
+                    android:paddingVertical="8dp"
+                    android:paddingHorizontal="12dp"
+                    android:text="@string/btn_penalty"
+                    android:textSize="12sp"
+                    android:textColor="@color/black"
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
+                    android:backgroundTint="@android:color/transparent"
+                    app:strokeColor="@color/black"
+                    app:strokeWidth="1dp"
+                    app:layout_constraintTop_toBottomOf="@id/tvOrderTitle"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:ignore="TouchTargetSizeCheck"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilTaskRemind"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:hint="Reminder Time"
+
+                    app:boxBackgroundMode="outline"
+                    app:boxStrokeColor="@color/primary_blue_light"
+                    app:hintTextColor="@color/primary_blue_light"
+                    app:layout_constraintTop_toBottomOf="@id/btnTaskPenalty"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    >
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtTaskRemind"
+                        android:layout_width="match_parent"
+                        android:layout_height="54dp"
+                        android:textColor="@color/black"
+                        android:paddingStart="50dp"
+                        android:paddingEnd="10dp"/>
+                </com.google.android.material.textfield.TextInputLayout>
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:src="@drawable/ic_alarm_clock_regular_full"
+                    android:layout_marginStart="10dp"
+                    app:layout_constraintStart_toStartOf="@id/tilTaskRemind"
+                    app:layout_constraintTop_toTopOf="@id/tilTaskRemind"
+                    app:layout_constraintBottom_toBottomOf="@id/tilTaskRemind" />
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilTaskRepeatFrequency"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:hint="Reminder Time"
+
+                    app:boxBackgroundMode="outline"
+                    app:boxStrokeColor="@color/primary_blue_light"
+                    app:hintTextColor="@color/primary_blue_light"
+                    app:layout_constraintTop_toBottomOf="@id/tilTaskRemind"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    >
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtTaskRepeatFrequency"
+                        android:layout_width="match_parent"
+                        android:layout_height="54dp"
+                        android:textColor="@color/black"
+                        android:paddingStart="50dp"
+                        android:paddingEnd="10dp"/>
+                </com.google.android.material.textfield.TextInputLayout>
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:src="@drawable/ic_alarm_clock_regular_full"
+                    android:layout_marginStart="10dp"
+                    app:layout_constraintStart_toStartOf="@id/tilTaskRepeatFrequency"
+                    app:layout_constraintTop_toTopOf="@id/tilTaskRepeatFrequency"
+                    app:layout_constraintBottom_toBottomOf="@id/tilTaskRepeatFrequency" />
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilTaskDeadline"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:hint="Reminder Time"
+
+                    app:boxBackgroundMode="outline"
+                    app:boxStrokeColor="@color/primary_blue_light"
+                    app:hintTextColor="@color/primary_blue_light"
+                    app:layout_constraintTop_toBottomOf="@id/tilTaskRepeatFrequency"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    >
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtTaskDeadline"
+                        android:layout_width="match_parent"
+                        android:layout_height="54dp"
+                        android:textColor="@color/black"
+                        android:paddingStart="50dp"
+                        android:paddingEnd="10dp"/>
+                </com.google.android.material.textfield.TextInputLayout>
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:src="@drawable/ic_alarm_clock_regular_full"
+                    android:layout_marginStart="10dp"
+                    app:layout_constraintStart_toStartOf="@id/tilTaskDeadline"
+                    app:layout_constraintTop_toTopOf="@id/tilTaskDeadline"
+                    app:layout_constraintBottom_toBottomOf="@id/tilTaskDeadline" />
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilTaskType"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:hint="Reminder Time"
+
+                    app:boxBackgroundMode="outline"
+                    app:boxStrokeColor="@color/primary_blue_light"
+                    app:hintTextColor="@color/primary_blue_light"
+                    app:layout_constraintTop_toBottomOf="@id/tilTaskDeadline"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    >
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtTaskType"
+                        android:layout_width="match_parent"
+                        android:layout_height="54dp"
+                        android:textColor="@color/black"
+                        android:paddingStart="50dp"
+                        android:paddingEnd="10dp"/>
+                </com.google.android.material.textfield.TextInputLayout>
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:src="@drawable/ic_alarm_clock_regular_full"
+                    android:layout_marginStart="10dp"
+                    app:layout_constraintStart_toStartOf="@id/tilTaskType"
+                    app:layout_constraintTop_toTopOf="@id/tilTaskType"
+                    app:layout_constraintBottom_toBottomOf="@id/tilTaskType" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/cbNextTask"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hoàn thành nhiệm vụ"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tilTaskType"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>
