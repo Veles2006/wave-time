@@ -6,18 +6,20 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.sae.wavetime.R
+import com.sae.wavetime.ui.model.RewardSelectUiModel
 import com.sae.wavetime.ui.model.RewardUiModel
 
 class TaskRewardAdapter : RecyclerView.Adapter<TaskRewardAdapter.TaskRewardViewHolder>() {
-    private var rewards: List<RewardUiModel> = emptyList()
+    private var rewards: List<RewardSelectUiModel> = emptyList()
 
-    fun submitList(newList: List<RewardUiModel>) {
+    fun submitList(newList: List<RewardSelectUiModel>) {
         rewards = newList
         notifyDataSetChanged()
     }
 
     class TaskRewardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvName: TextView = itemView.findViewById(R.id.tvName)
+        val tvTier: TextView = itemView.findViewById(R.id.tvTier)
         val tvQuantity: TextView = itemView.findViewById(R.id.tvQuantity)
     }
 
@@ -31,6 +33,7 @@ class TaskRewardAdapter : RecyclerView.Adapter<TaskRewardAdapter.TaskRewardViewH
         val reward = rewards[position]
 
         holder.tvName.text = reward.name
+        holder.tvTier.text = "Rank: ${reward.tier}"
         holder.tvQuantity.text = "X${reward.quantity}"
     }
 

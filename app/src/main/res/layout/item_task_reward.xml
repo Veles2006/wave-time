@@ -5,10 +5,10 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:background="@drawable/bg_rounded_white"
-    android:padding="8dp"
+    android:padding="4dp"
     android:layout_marginStart="12dp"
     android:layout_marginEnd="12dp"
-    android:layout_marginBottom="12dp">
+    android:layout_marginBottom="4dp">
 
     <TextView
         android:id="@+id/tvName"
@@ -18,10 +18,18 @@
         android:textSize="14sp" />
 
     <TextView
+        android:id="@+id/tvTier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Tier"
+        android:textSize="14dp" />
+
+    <TextView
         android:id="@+id/tvQuantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="Item Quantity"
-        android:textSize="12sp" />
+        android:textSize="14sp" />
 </LinearLayout>

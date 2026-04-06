@@ -28,4 +28,5 @@
     <string name="title_order">Order</string>
     <string name="btn_order_question">Order Question</string>
     <string name="btn_penalty">Penalty</string>
+    <string name="search">Search item</string>
 </resources>
