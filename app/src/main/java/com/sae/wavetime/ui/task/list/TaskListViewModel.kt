@@ -41,4 +41,12 @@ class TaskListViewModel(
         }
     }
 
+    fun addTask(task: Task) {
+        viewModelScope.launch {
+            repository.insertTask(task)
+
+            // reload lại list sau khi thêm
+            loadTasks()
+        }
+    }
 }

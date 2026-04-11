@@ -68,8 +68,8 @@ class RewardSelectViewModel(
 
         val selected = newRewards.filter { it.quantity > 0 }
 
-        _state.value = _state.value.copy(
-            rewards = selected
-        )
+        _state.update {
+            it.copy(selectedRewards = selected)
+        }
     }
 }
