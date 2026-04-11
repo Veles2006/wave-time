@@ -1,19 +1,23 @@
 package com.sae.wavetime.ui.task.list
 
 import android.os.Bundle
+import android.text.TextUtils.replace
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.sae.wavetime.MainActivity
 import com.sae.wavetime.R
 import com.sae.wavetime.data.repository.TaskRepository
 import com.sae.wavetime.databinding.FragmentTaskListBinding
 import com.sae.wavetime.local.DatabaseProvider
+import com.sae.wavetime.ui.task.create.TaskCreateFragment
 import kotlinx.coroutines.launch
 
 class TaskListFragment : Fragment(R.layout.fragment_task_list) {
@@ -22,7 +26,7 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
     private var _binding: FragmentTaskListBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: TaskListViewModel by viewModels {
+    private val viewModel: TaskListViewModel by activityViewModels  {
         TaskListViewModelFactory(
             TaskRepository(
                 DatabaseProvider.getDatabase(requireContext()).taskDao()
@@ -65,7 +69,7 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
         viewModel.loadTasks()
 
         binding.btnCreateTask.setOnClickListener {
-            findNavController().navigate(R.id.taskCreateFragment)
+            (activity as? MainActivity)?.openTaskCreate()
         }
     }
 

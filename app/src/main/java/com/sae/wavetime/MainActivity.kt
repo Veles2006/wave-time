@@ -2,6 +2,7 @@ package com.sae.wavetime
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -10,9 +11,26 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.findNavController
 import com.sae.wavetime.databinding.ActivityMainBinding
+import com.sae.wavetime.ui.task.create.TaskCreateFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+
+    fun openTaskCreate() {
+        val container = findViewById<View>(R.id.fullscreenContainer)
+        container.visibility = View.VISIBLE
+
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(
+                R.anim.slide_in_right,
+                R.anim.slide_out_left,
+                R.anim.slide_in_left,
+                R.anim.slide_out_right
+            )
+            .replace(R.id.fullscreenContainer, TaskCreateFragment())
+            .addToBackStack(null)
+            .commit()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,6 +38,8 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.fullscreenContainer.visibility = View.GONE
 
         // 🔥 Điều khiển system bars
         val controller = WindowCompat.getInsetsController(window, window.decorView)
@@ -58,10 +78,25 @@ class MainActivity : AppCompatActivity() {
         binding.btnBar.setOnClickListener {
             binding.drawerLayout.openDrawer(GravityCompat.START)
         }
-    }
 
-    fun showMainUi(show: Boolean) {
-        binding.layoutHeader.visibility = if (show) View.VISIBLE else View.GONE
-        binding.bottomBar.visibility = if (show) View.VISIBLE else View.GONE
+        onBackPressedDispatcher.addCallback(
+            this,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (supportFragmentManager.backStackEntryCount > 0 &&
+                        binding.fullscreenContainer.visibility == View.VISIBLE
+                        ) {
+                        supportFragmentManager.popBackStack()
+
+                        binding.fullscreenContainer.postDelayed({
+                            binding.fullscreenContainer.visibility = View.GONE
+                        }, 300)
+                    } else {
+                        isEnabled = false
+                        onBackPressedDispatcher.onBackPressed()
+                    }
+                }
+            }
+        )
     }
 }

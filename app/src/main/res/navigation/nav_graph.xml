@@ -7,7 +7,8 @@
     <fragment
         android:id="@+id/taskListFragment"
         android:name="com.sae.wavetime.ui.task.list.TaskListFragment"
-        android:label="Task List" />
+        android:label="Task List">
+    </fragment>
 
     <fragment
         android:id="@+id/itemListFragment"

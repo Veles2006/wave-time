@@ -4,6 +4,7 @@ import android.R.attr.text
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -20,7 +21,6 @@ import com.sae.wavetime.data.repository.ItemRepository
 import com.sae.wavetime.data.repository.TaskRepository
 import com.sae.wavetime.databinding.FragmentTaskCreateBinding
 import com.sae.wavetime.local.DatabaseProvider
-import com.sae.wavetime.ui.task.create.SelectItemDialog
 import com.sae.wavetime.ui.task.list.TaskListViewModel
 import com.sae.wavetime.ui.task.list.TaskListViewModelFactory
 import kotlinx.coroutines.launch
@@ -43,7 +43,7 @@ class TaskCreateFragment : Fragment(R.layout.fragment_task_create) {
         )
     }
 
-    private val taskViewModel: TaskListViewModel by viewModels {
+    private val taskViewModel: TaskListViewModel by activityViewModels  {
         TaskListViewModelFactory(
             TaskRepository(
                 DatabaseProvider.getDatabase(requireContext()).taskDao()
@@ -89,7 +89,7 @@ class TaskCreateFragment : Fragment(R.layout.fragment_task_create) {
         }
 
         binding.btnBack.setOnClickListener {
-            findNavController().navigateUp()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
         binding.btnCoin.setOnClickListener {
@@ -153,18 +153,12 @@ class TaskCreateFragment : Fragment(R.layout.fragment_task_create) {
                 )
             )
 
-            findNavController().navigateUp()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        (activity as MainActivity).showMainUi(false)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        (activity as MainActivity).showMainUi(true)
         _binding = null
     }
 }
