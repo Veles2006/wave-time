@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_root"
+    app:startDestination="@id/mainContentFragment">
+    <fragment
+        android:id="@+id/mainContentFragment"
+        android:name="com.sae.wavetime.MainContentFragment"
+        android:label="Main Content" />
+
+    <fragment
+        android:id="@+id/taskCreateFragment"
+        android:name="com.sae.wavetime.ui.task.create.TaskCreateFragment"
+        android:label="Task Create" />
+
+    <action
+        android:id="@+id/action_to_taskCreate"
+        app:destination="@id/taskCreateFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"/>
+
+</navigation>

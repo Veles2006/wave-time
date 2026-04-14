@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainContent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+    <LinearLayout
+        android:id="@+id/layout_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/primary_blue_light"
+        android:paddingTop="40dp"
+        >
+        <ImageButton
+            android:id="@+id/btnBar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="10dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_bars_solid_full"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/bar_button"
+            app:tint="@color/white" />
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/wave_time"
+            android:textStyle="bold"
+            android:padding="16dp"
+            android:textSize="20sp"
+            android:textColor="@color/white"/>
+    </LinearLayout>
+
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/nav_host_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/gray_bg"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        app:navGraph="@navigation/nav_graph"
+        app:defaultNavHost="true"
+        tools:layout="@layout/fragment_task_list"/>
+
+    <LinearLayout
+        android:id="@+id/bottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="36dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnTask"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:backgroundTint="@android:color/transparent"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:text="@string/btn_task"
+            android:textColor="@color/primary_blue_light"
+            android:textSize="16sp"
+            app:icon="@drawable/ic_table_list_solid_full"
+            app:iconGravity="textTop"
+            app:iconPadding="2dp"
+            app:iconSize="20dp"
+            app:iconTint="@color/primary_blue_light" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnBlock"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:backgroundTint="@android:color/transparent"
+            android:textColor="@color/primary_blue_light"
+            app:iconTint="@color/primary_blue_light"
+            android:text="@string/btn_block"
+            android:textSize="16sp"
+            app:iconGravity="textTop"
+            app:icon="@drawable/ic_lock_solid_full"
+            app:iconSize="20dp"
+            app:iconPadding="2dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnItem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:backgroundTint="@android:color/transparent"
+            android:textColor="@color/primary_blue_light"
+            app:iconTint="@color/primary_blue_light"
+            android:text="@string/btn_item"
+            android:textSize="16sp"
+            app:iconGravity="textTop"
+            app:iconSize="20dp"
+            app:icon="@drawable/ic_key_solid_full"
+            app:iconPadding="2dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"/>
+    </LinearLayout>
+</LinearLayout>
