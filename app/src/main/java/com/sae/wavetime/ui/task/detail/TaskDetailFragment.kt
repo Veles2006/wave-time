@@ -1,8 +1,6 @@
-package com.sae.wavetime.ui.task.list
+package com.sae.wavetime.ui.task.detail
 
 import android.os.Bundle
-import android.text.TextUtils.replace
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -10,32 +8,27 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.sae.wavetime.MainActivity
 import com.sae.wavetime.R
 import com.sae.wavetime.data.repository.TaskRepository
-import com.sae.wavetime.databinding.FragmentTaskListBinding
+import com.sae.wavetime.databinding.FragmentTaskDetailBinding
 import com.sae.wavetime.local.DatabaseProvider
-import com.sae.wavetime.ui.task.create.TaskCreateFragment
+import com.sae.wavetime.utils.toDisplayString
 import kotlinx.coroutines.launch
 
-class TaskListFragment : Fragment(R.layout.fragment_task_list) {
-
-    private lateinit var adapter: TaskAdapter
-    private var _binding: FragmentTaskListBinding? = null
+class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
+    private lateinit var taskId: String
+    private var _binding: FragmentTaskDetailBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: TaskListViewModel by activityViewModels  {
-        TaskListViewModelFactory(
+    private val viewModel: TaskDetailViewModel by viewModels {
+        TaskDetailModelFactory(
             TaskRepository(
                 DatabaseProvider.getDatabase(requireContext()).taskDao()
             )
         )
     }
 
-    private fun render(state: TaskListState) {
-
+    private fun render(state: TaskDetailState) {
         if (state.isLoading) {
             // show loading
         }
@@ -44,22 +37,26 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
             // show error
         }
 
-        adapter.submitList(state.tasks)
+        state.task?.let { task ->
+            binding.tvTaskName.text = task.name
+            binding.tvDescription.text = "Description: ${task.description}"
+            binding.tvStatus.text = "Status: ${task.status}"
+            binding.tvDate.text = "Date: ${task.date}"
+            binding.tvDifficulty.text = "Difficulty: ${task.difficulty}"
+            binding.tvReward.text = "Reward: ${task.reward.toDisplayString()}"
+            binding.tvPenalty.text = "Penalty: ${task.penalty.toDisplayString()}"
+        }
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        _binding = FragmentTaskListBinding.bind(view)
+        _binding = FragmentTaskDetailBinding.bind(view)
 
-        adapter = TaskAdapter { taskId ->
-            (activity as? MainActivity)?.openTaskDetail(taskId)
-        }
+        taskId = requireArguments().getString("taskId")
+            ?: throw IllegalArgumentException("Missing taskId")
 
-        binding.rvTasks.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvTasks.adapter = adapter
-
+        viewModel.observeTask(taskId)
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -67,11 +64,6 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                     render(state)
                 }
             }
-        }
-        viewModel.loadTasks()
-
-        binding.btnCreateTask.setOnClickListener {
-            (activity as? MainActivity)?.openTaskCreate()
         }
     }
 

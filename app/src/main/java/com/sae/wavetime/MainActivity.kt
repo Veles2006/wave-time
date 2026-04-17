@@ -25,6 +25,15 @@ class MainActivity : AppCompatActivity(), DrawerController {
             .navigate(R.id.action_to_taskCreate)
     }
 
+    fun openTaskDetail(taskId: String) {
+        val bundle = Bundle().apply {
+            putString("taskId", taskId)
+        }
+
+        findNavController(R.id.nav_host_root)
+            .navigate(R.id.action_to_taskDetail, bundle)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

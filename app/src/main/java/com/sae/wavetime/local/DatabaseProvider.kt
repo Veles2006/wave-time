@@ -189,7 +189,8 @@ object DatabaseProvider {
             ),
             deadline = "2026-03-29T21:00:00",
             date = "2026-03-28",
-            difficulty = "easy"
+            difficulty = "easy",
+            status = "pending"
         )
 
         val task2 = TaskEntity(
@@ -206,7 +207,8 @@ object DatabaseProvider {
             ),
             deadline = "2026-03-29T18:00:00",
             date = "2026-03-28",
-            difficulty = "medium"
+            difficulty = "medium",
+            status = "pending"
         )
 
         val task3 = TaskEntity(
@@ -223,7 +225,8 @@ object DatabaseProvider {
             ),
             deadline = "2026-03-29T23:00:00",
             date = "2026-03-28",
-            difficulty = "hard"
+            difficulty = "hard",
+            status = "pending"
         )
 
         taskDao.insert(task1)

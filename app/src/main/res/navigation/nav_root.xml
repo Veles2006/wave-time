@@ -13,9 +13,22 @@
         android:name="com.sae.wavetime.ui.task.create.TaskCreateFragment"
         android:label="Task Create" />
 
+    <fragment
+        android:id="@+id/taskDetailFragment"
+        android:name="com.sae.wavetime.ui.task.detail.TaskDetailFragment"
+        android:label="Task Detail" />
+
     <action
         android:id="@+id/action_to_taskCreate"
         app:destination="@id/taskCreateFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"/>
+
+    <action
+        android:id="@+id/action_to_taskDetail"
+        app:destination="@id/taskDetailFragment"
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"

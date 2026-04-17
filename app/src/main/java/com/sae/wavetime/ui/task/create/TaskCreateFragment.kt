@@ -143,6 +143,7 @@ class TaskCreateFragment : Fragment(R.layout.fragment_task_create) {
                     id = UUID.randomUUID().toString(),
                     name = taskName,
                     description = taskDesc,
+                    status = "pending",
                     difficulty = taskDifficulty,
                     reward = Reward(
                         gold = coinValue,

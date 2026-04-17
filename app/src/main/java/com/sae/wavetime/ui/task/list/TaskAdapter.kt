@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sae.wavetime.R
 import com.sae.wavetime.data.model.api.Task
 
-class TaskAdapter : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
+class TaskAdapter(
+    private val openTaskDetail : (String) -> Unit
+) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
     private var tasks: List<Task> = emptyList()
 
     fun submitList(newList: List<Task>) {
@@ -31,6 +33,10 @@ class TaskAdapter : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
         holder.tvName.text = task.name
         holder.tvDescription.text = task.description ?: ""
+
+        holder.itemView.setOnClickListener {
+            openTaskDetail(task.id)
+        }
     }
 
     override fun getItemCount(): Int {

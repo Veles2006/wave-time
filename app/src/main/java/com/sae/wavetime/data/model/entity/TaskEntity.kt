@@ -11,6 +11,7 @@ data class TaskEntity (
     val id: String,
     val name: String,
     val description: String?,
+    val status: String,
     val reward: Reward,
     val penalty: Penalty,
     val deadline: String?,

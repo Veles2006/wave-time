@@ -13,6 +13,7 @@ fun Task.toEntity(): TaskEntity {
         deadline = deadline,
         date = date,
         difficulty = difficulty,
+        status = status
     )
 }
 
@@ -26,6 +27,7 @@ fun TaskEntity.toDomain(): Task {
         deadline = deadline,
         date = date,
         difficulty = difficulty,
+        status = status
     )
 }
 

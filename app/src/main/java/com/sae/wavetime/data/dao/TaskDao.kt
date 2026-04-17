@@ -13,6 +13,12 @@ interface TaskDao {
     @Query("SELECT * FROM tasks")
     suspend fun getAll(): List<TaskEntity>
 
+    @Query("SELECT * FROM tasks WHERE id = :id")
+    suspend fun getById(id: String): TaskEntity?
+
+    @Query("SELECT * FROM tasks WHERE id = :id")
+    fun getByIdFlow(id: String): kotlinx.coroutines.flow.Flow<TaskEntity?>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(task: TaskEntity)
 
