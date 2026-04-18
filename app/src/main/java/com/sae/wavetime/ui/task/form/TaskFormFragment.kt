@@ -1,6 +1,5 @@
-package com.sae.wavetime.ui.task.create
+package com.sae.wavetime.ui.task.form
 
-import android.R.attr.text
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -9,9 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.sae.wavetime.MainActivity
 import com.sae.wavetime.R
 import com.sae.wavetime.data.mapper.toRewardItemList
 import com.sae.wavetime.data.model.api.Penalty
@@ -19,7 +16,7 @@ import com.sae.wavetime.data.model.api.Reward
 import com.sae.wavetime.data.model.api.Task
 import com.sae.wavetime.data.repository.ItemRepository
 import com.sae.wavetime.data.repository.TaskRepository
-import com.sae.wavetime.databinding.FragmentTaskCreateBinding
+import com.sae.wavetime.databinding.FragmentTaskFormBinding
 import com.sae.wavetime.local.DatabaseProvider
 import com.sae.wavetime.ui.task.list.TaskListViewModel
 import com.sae.wavetime.ui.task.list.TaskListViewModelFactory
@@ -27,13 +24,15 @@ import kotlinx.coroutines.launch
 import java.util.UUID
 import kotlin.getValue
 
-class TaskCreateFragment : Fragment(R.layout.fragment_task_create) {
+class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
     private lateinit var adapter: TaskRewardAdapter
-    private var _binding: FragmentTaskCreateBinding? = null
+    private var _binding: FragmentTaskFormBinding? = null
     private val binding get() = _binding!!
 
     private var coinValue = 0
     private var expValue = 0
+
+    private var taskId: String? = null
 
     private val viewModel: RewardSelectViewModel by viewModels {
         RewardSelectViewModelFactory(
@@ -71,7 +70,9 @@ class TaskCreateFragment : Fragment(R.layout.fragment_task_create) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        _binding = FragmentTaskCreateBinding.bind(view)
+        _binding = FragmentTaskFormBinding.bind(view)
+
+        taskId = arguments?.getString("taskId")
 
         adapter = TaskRewardAdapter()
 
@@ -86,6 +87,15 @@ class TaskCreateFragment : Fragment(R.layout.fragment_task_create) {
                     render(state)
                 }
             }
+        }
+
+        if (taskId == null) {
+            binding.tvTitle.text = getString(R.string.create_task)
+            binding.btnCoin.text = getString(R.string.not_set)
+            binding.btnExp.text = getString(R.string.not_set)
+            binding.btnItem.text = getString(R.string.not_set)
+        } else {
+
         }
 
         binding.btnBack.setOnClickListener {

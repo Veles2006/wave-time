@@ -26,20 +26,21 @@
             android:src="@drawable/ic_arrow_left_solid_full"
             app:tint="@color/white"
             android:contentDescription="@string/back_task_list" />
+
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:maxLines="1"
             android:ellipsize="end"
-            android:text="@string/create_task"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:paddingStart="12dp"
+            android:paddingEnd="0dp"
+            android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="@color/white"
-            android:gravity="center_vertical"
-            android:paddingStart="12dp"
-            android:paddingEnd="0dp"/>
+            tools:text="@string/create_task" />
 
         <ImageButton
             android:id="@+id/btnSuccess"
@@ -238,19 +239,20 @@
                         app:layout_constraintTop_toBottomOf="@id/tvRewardTitle"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/tvExp"/>
+
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnCoin"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:paddingStart="8dp"
                         android:paddingEnd="8dp"
-                        android:text="@string/not_set"
                         android:textSize="12sp"
                         app:icon="@drawable/ic_coins_solid_full"
-                        app:iconSize="20dp"
                         app:iconPadding="4dp"
+                        app:iconSize="20dp"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tvCoin"
-                        app:layout_constraintStart_toStartOf="parent" />
+                        tools:text="@string/not_set" />
 
                     <TextView
                         android:id="@+id/tvExp"
@@ -268,13 +270,13 @@
                         android:layout_height="wrap_content"
                         android:paddingStart="8dp"
                         android:paddingEnd="8dp"
-                        android:text="@string/not_set"
                         android:textSize="12sp"
                         app:icon="@drawable/ic_arrow_turn_up_solid_full"
-                        app:iconSize="20dp"
                         app:iconPadding="2dp"
+                        app:iconSize="20dp"
+                        app:layout_constraintStart_toEndOf="@id/tvCoin"
                         app:layout_constraintTop_toBottomOf="@id/tvExp"
-                        app:layout_constraintStart_toEndOf="@id/tvCoin" />
+                        tools:text="@string/not_set" />
 
                     <TextView
                         android:id="@+id/tvItem"
@@ -291,13 +293,13 @@
                         android:layout_height="wrap_content"
                         android:paddingStart="8dp"
                         android:paddingEnd="8dp"
-                        android:text="@string/not_set"
                         android:textSize="12sp"
                         app:icon="@drawable/ic_gift_solid_full"
-                        app:iconSize="20dp"
                         app:iconPadding="4dp"
+                        app:iconSize="20dp"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tvItem"
-                        app:layout_constraintStart_toStartOf="parent"/>
+                        tools:text="@string/not_set" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rvItems"

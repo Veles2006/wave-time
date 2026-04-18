@@ -1,4 +1,4 @@
-package com.sae.wavetime.ui.task.create
+package com.sae.wavetime.ui.task.form
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +7,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.sae.wavetime.R
 import com.sae.wavetime.ui.model.RewardSelectUiModel
-import com.sae.wavetime.ui.model.RewardUiModel
 
 class TaskRewardAdapter : RecyclerView.Adapter<TaskRewardAdapter.TaskRewardViewHolder>() {
     private var rewards: List<RewardSelectUiModel> = emptyList()

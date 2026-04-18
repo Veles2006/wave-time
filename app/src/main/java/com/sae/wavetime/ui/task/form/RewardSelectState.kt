@@ -1,4 +1,4 @@
-package com.sae.wavetime.ui.task.create
+package com.sae.wavetime.ui.task.form
 
 import com.sae.wavetime.ui.model.RewardSelectUiModel
 

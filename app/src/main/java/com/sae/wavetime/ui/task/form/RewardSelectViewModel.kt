@@ -1,4 +1,4 @@
-package com.sae.wavetime.ui.task.create
+package com.sae.wavetime.ui.task.form
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

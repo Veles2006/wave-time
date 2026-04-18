@@ -1,18 +1,12 @@
 package com.sae.wavetime
 
 import android.os.Bundle
-import android.view.View
-import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.findNavController
 import com.sae.wavetime.databinding.ActivityMainBinding
 import com.sae.wavetime.ui.common.DrawerController
-import com.sae.wavetime.ui.task.create.TaskCreateFragment
 
 class MainActivity : AppCompatActivity(), DrawerController {
     private lateinit var binding: ActivityMainBinding
@@ -21,8 +15,12 @@ class MainActivity : AppCompatActivity(), DrawerController {
         binding.drawerLayout.openDrawer(GravityCompat.START)
     }
     fun openTaskCreate() {
+        val bundle = Bundle().apply {
+            putString("taskId", null)
+        }
+
         findNavController(R.id.nav_host_root)
-            .navigate(R.id.action_to_taskCreate)
+            .navigate(R.id.action_to_taskForm, bundle)
     }
 
     fun openTaskDetail(taskId: String) {

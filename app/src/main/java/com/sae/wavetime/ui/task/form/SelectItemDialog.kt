@@ -1,7 +1,6 @@
-package com.sae.wavetime.ui.task.create
+package com.sae.wavetime.ui.task.form
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
@@ -12,7 +11,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
-import com.google.gson.Gson
 import com.sae.wavetime.R
 import com.sae.wavetime.data.repository.ItemRepository
 import com.sae.wavetime.local.DatabaseProvider
