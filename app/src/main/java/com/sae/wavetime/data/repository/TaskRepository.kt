@@ -14,10 +14,10 @@ import kotlinx.coroutines.flow.map
 class TaskRepository(
     private val taskDao: TaskDao
 ) {
-    suspend fun getTasks(): List<Task> {
+    fun getTasks(): Flow<List<Task>> {
         return taskDao
             .getAll()
-            .toDomainList()
+            .map { it.toDomainList() }
     }
 
     suspend fun insertTask(task: Task) {

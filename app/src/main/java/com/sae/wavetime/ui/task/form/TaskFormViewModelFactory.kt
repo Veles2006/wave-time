@@ -3,15 +3,17 @@ package com.sae.wavetime.ui.task.form
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.sae.wavetime.data.repository.ItemRepository
+import com.sae.wavetime.data.repository.TaskRepository
 
-class RewardSelectViewModelFactory(
-    private val repository: ItemRepository
+class TaskFormViewModelFactory(
+    private val taskRepo: TaskRepository,
+    private val itemRepo: ItemRepository
 ): ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
 
-        if (modelClass.isAssignableFrom(RewardSelectViewModel::class.java)) {
-            return RewardSelectViewModel(repository) as T
+        if (modelClass.isAssignableFrom(TaskFormViewModel::class.java)) {
+            return TaskFormViewModel(taskRepo, itemRepo) as T
         }
 
         throw IllegalArgumentException(

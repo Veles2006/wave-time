@@ -25,7 +25,7 @@ import java.util.UUID
 import kotlin.getValue
 
 class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
-    private lateinit var adapter: TaskRewardAdapter
+    private lateinit var adapter: TaskFormRewardAdapter
     private var _binding: FragmentTaskFormBinding? = null
     private val binding get() = _binding!!
 
@@ -34,23 +34,17 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
 
     private var taskId: String? = null
 
-    private val viewModel: RewardSelectViewModel by viewModels {
-        RewardSelectViewModelFactory(
+    private val viewModel: TaskFormViewModel by viewModels {
+        TaskFormViewModelFactory(
+            TaskRepository(
+                DatabaseProvider.getDatabase(requireContext()).taskDao()
+            ),
             ItemRepository(
                 DatabaseProvider.getDatabase(requireContext()).itemDao()
             )
         )
     }
-
-    private val taskViewModel: TaskListViewModel by activityViewModels  {
-        TaskListViewModelFactory(
-            TaskRepository(
-                DatabaseProvider.getDatabase(requireContext()).taskDao()
-            )
-        )
-    }
-
-    private fun render(state: RewardSelectState) {
+    private fun render(state: TaskFormState) {
 
         if (state.isLoading) {
             // show loading
@@ -65,6 +59,16 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
             if (filteredList.isEmpty()) View.GONE else View.VISIBLE
 
         adapter.submitList(filteredList)
+
+
+        if (taskId == null) {
+            binding.tvTitle.text = getString(R.string.create_task)
+            binding.btnCoin.text = getString(R.string.not_set)
+            binding.btnExp.text = getString(R.string.not_set)
+            binding.btnItem.text = getString(R.string.not_set)
+        } else {
+            // Edit in here
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -74,7 +78,7 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
 
         taskId = arguments?.getString("taskId")
 
-        adapter = TaskRewardAdapter()
+        adapter = TaskFormRewardAdapter()
 
         binding.rvItems.layoutManager = LinearLayoutManager(requireContext())
         binding.rvItems.adapter = adapter
@@ -87,15 +91,6 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
                     render(state)
                 }
             }
-        }
-
-        if (taskId == null) {
-            binding.tvTitle.text = getString(R.string.create_task)
-            binding.btnCoin.text = getString(R.string.not_set)
-            binding.btnExp.text = getString(R.string.not_set)
-            binding.btnItem.text = getString(R.string.not_set)
-        } else {
-
         }
 
         binding.btnBack.setOnClickListener {
@@ -148,7 +143,7 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
                 return@setOnClickListener
             }
 
-            taskViewModel.addTask(
+            viewModel.addTask(
                 Task(
                     id = UUID.randomUUID().toString(),
                     name = taskName,

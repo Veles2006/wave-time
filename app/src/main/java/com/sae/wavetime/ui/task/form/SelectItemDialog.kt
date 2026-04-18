@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.sae.wavetime.R
 import com.sae.wavetime.data.repository.ItemRepository
+import com.sae.wavetime.data.repository.TaskRepository
 import com.sae.wavetime.local.DatabaseProvider
 import com.sae.wavetime.ui.model.RewardSelectUiModel
 import kotlinx.coroutines.launch
@@ -23,15 +24,18 @@ class SelectItemDialog(
 
     private lateinit var adapter: RewardSelectAdapter
 
-    private val viewModel: RewardSelectViewModel by viewModels {
-        RewardSelectViewModelFactory(
+    private val viewModel: TaskFormViewModel by viewModels {
+        TaskFormViewModelFactory(
+            TaskRepository(
+                DatabaseProvider.getDatabase(requireContext()).taskDao()
+            ),
             ItemRepository(
                 DatabaseProvider.getDatabase(requireContext()).itemDao()
             )
         )
     }
 
-    private fun render(state: RewardSelectState) {
+    private fun render(state: TaskFormState) {
 
         if (state.isLoading) {
             // show loading
@@ -41,7 +45,7 @@ class SelectItemDialog(
             // show error
         }
 
-        adapter.submitList(state.rewards)
+        adapter.submitList(state.availableRewards)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -81,7 +85,7 @@ class SelectItemDialog(
         )
 
         btnConfirm.setOnClickListener {
-            val selected = viewModel.state.value.rewards
+            val selected = viewModel.state.value.availableRewards
                 .filter { it.quantity > 0 }
 
             onConfirm(selected)

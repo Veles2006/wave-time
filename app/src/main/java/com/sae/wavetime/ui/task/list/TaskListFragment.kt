@@ -63,7 +63,6 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                 }
             }
         }
-        viewModel.loadTasks()
 
         binding.btnCreateTask.setOnClickListener {
             (activity as? MainActivity)?.openTaskCreate()

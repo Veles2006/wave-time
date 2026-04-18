@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sae.wavetime.R
 import com.sae.wavetime.ui.model.RewardSelectUiModel
 
-class TaskRewardAdapter : RecyclerView.Adapter<TaskRewardAdapter.TaskRewardViewHolder>() {
+class TaskFormRewardAdapter : RecyclerView.Adapter<TaskFormRewardAdapter.TaskFormRewardViewHolder>() {
     private var rewards: List<RewardSelectUiModel> = emptyList()
 
     fun submitList(newList: List<RewardSelectUiModel>) {
@@ -16,19 +16,19 @@ class TaskRewardAdapter : RecyclerView.Adapter<TaskRewardAdapter.TaskRewardViewH
         notifyDataSetChanged()
     }
 
-    class TaskRewardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class TaskFormRewardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvName: TextView = itemView.findViewById(R.id.tvName)
         val tvTier: TextView = itemView.findViewById(R.id.tvTier)
         val tvQuantity: TextView = itemView.findViewById(R.id.tvQuantity)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskRewardViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskFormRewardViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_task_reward, parent, false)
-        return TaskRewardViewHolder(view)
+            .inflate(R.layout.item_task_form_reward, parent, false)
+        return TaskFormRewardViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: TaskRewardViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: TaskFormRewardViewHolder, position: Int) {
         val reward = rewards[position]
 
         holder.tvName.text = reward.name
