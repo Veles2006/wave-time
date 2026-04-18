@@ -52,4 +52,5 @@ data class Task(
     val deadline: String? = null,
     val date: String? = null,
     val difficulty: String,
+    val isDeleted: Boolean = false
 )

@@ -17,4 +17,5 @@ data class TaskEntity (
     val deadline: String?,
     val date: String?,
     val difficulty: String,
+    val isDeleted: Boolean = false
 )

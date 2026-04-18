@@ -15,7 +15,6 @@ class TaskDetailViewModel(
 ) : ViewModel() {
     private val _state = MutableStateFlow(TaskDetailState())
     val state: StateFlow<TaskDetailState> = _state
-
     fun observeTask(id: String) {
         viewModelScope.launch {
             repository.getTaskByIdFlow(id)
@@ -36,7 +35,30 @@ class TaskDetailViewModel(
                         )
                     }
                 }
+        }
+    }
+    fun softDeleteTask(id: String) {
+        viewModelScope.launch {
+            _state.update { it.copy(isLoading = true, error = null) }
 
+            try {
+                repository.softDeleteTask(id)
+
+                val tasks = repository.getTasks()
+
+                _state.update {
+                    it.copy(
+                        isLoading = false,
+                    )
+                }
+            } catch (e: Exception) {
+                _state.update {
+                    it.copy(
+                        isLoading = false,
+                        error = e.message ?: "Unknown error",
+                    )
+                }
+            }
         }
     }
 }

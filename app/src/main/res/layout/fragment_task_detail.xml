@@ -44,6 +44,7 @@
             android:paddingEnd="0dp"/>
 
         <ImageButton
+            android:id="@+id/btnEdit"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:paddingStart="8dp"
@@ -58,6 +59,7 @@
             android:contentDescription="@string/edit_task" />
 
         <ImageButton
+            android:id="@+id/btnDelete"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:paddingStart="8dp"
@@ -69,7 +71,7 @@
             android:foreground="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_trash_solid_full"
             app:tint="@color/white"
-            android:contentDescription="@string/edit_task" />
+            android:contentDescription="@string/delete_task" />
         
         <ImageButton
             android:id="@+id/btnSuccess"

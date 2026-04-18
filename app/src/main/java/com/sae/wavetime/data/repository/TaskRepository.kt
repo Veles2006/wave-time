@@ -24,6 +24,10 @@ class TaskRepository(
         taskDao.insert(task.toEntity())
     }
 
+    suspend fun softDeleteTask(id: String) {
+        taskDao.softDelete(id)
+    }
+
     fun getTaskByIdFlow(id: String): Flow<Task?> {
         return taskDao.getByIdFlow(id)
             .map { it?.toDomain() }
