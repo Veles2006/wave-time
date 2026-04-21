@@ -8,6 +8,7 @@ import com.sae.wavetime.data.mapper.toEntity
 import com.sae.wavetime.data.model.api.Penalty
 import com.sae.wavetime.data.model.api.Reward
 import com.sae.wavetime.data.model.api.Task
+import com.sae.wavetime.data.model.entity.TaskEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -22,6 +23,20 @@ class TaskRepository(
 
     suspend fun insertTask(task: Task) {
         taskDao.insert(task.toEntity())
+    }
+
+    suspend fun updateFullTask(task: Task) {
+        taskDao.updateFull(
+            taskId = task.id,
+            name = task.name,
+            description = task.description,
+            status = task.status,
+            reward = task.reward,
+            penalty = task.penalty,
+            deadline = task.deadline,
+            date = task.date,
+            difficulty = task.difficulty
+        )
     }
 
     suspend fun softDeleteTask(id: String) {

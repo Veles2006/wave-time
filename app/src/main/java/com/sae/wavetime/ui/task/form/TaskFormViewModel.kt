@@ -2,6 +2,7 @@ package com.sae.wavetime.ui.task.form
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sae.wavetime.data.mapper.toRewardSelectUiModelList
 import com.sae.wavetime.data.model.api.Task
 import com.sae.wavetime.data.repository.ItemRepository
 import com.sae.wavetime.data.repository.TaskRepository
@@ -60,6 +61,7 @@ class TaskFormViewModel(
                         it.copy(
                             isLoading = false,
                             task = task,
+                            selectedRewards = task?.reward?.items?.toRewardSelectUiModelList() ?: emptyList(),
                             error = if (task == null) "Task not found" else null
                         )
                     }
@@ -94,6 +96,12 @@ class TaskFormViewModel(
     fun addTask(task: Task) {
         viewModelScope.launch {
             taskRepo.insertTask(task)
+        }
+    }
+
+    fun updateFullTask(task: Task) {
+        viewModelScope.launch {
+            taskRepo.updateFullTask(task)
         }
     }
 

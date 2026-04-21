@@ -3,12 +3,11 @@ package com.sae.wavetime.ui.task.detail
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
+import com.sae.wavetime.MainActivity
 import com.sae.wavetime.R
 import com.sae.wavetime.data.repository.TaskRepository
 import com.sae.wavetime.databinding.FragmentTaskDetailBinding
@@ -47,6 +46,9 @@ class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
             binding.tvDifficulty.text = "Difficulty: ${task.difficulty}"
             binding.tvReward.text = "Reward: ${task.reward.toDisplayString()}"
             binding.tvPenalty.text = "Penalty: ${task.penalty.toDisplayString()}"
+            binding.btnEdit.setOnClickListener {
+                (activity as? MainActivity)?.openTaskForm(task.id)
+            }
             binding.btnDelete.setOnClickListener {
                 val dialog = SoftDeleteDialog.newInstance("Do you want to detele this task?")
 

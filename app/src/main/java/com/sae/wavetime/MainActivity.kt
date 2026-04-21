@@ -14,9 +14,9 @@ class MainActivity : AppCompatActivity(), DrawerController {
     override fun openDrawer() {
         binding.drawerLayout.openDrawer(GravityCompat.START)
     }
-    fun openTaskCreate() {
+    fun openTaskForm(taskId: String? = null) {
         val bundle = Bundle().apply {
-            putString("taskId", null)
+            putString("taskId", taskId)
         }
 
         findNavController(R.id.nav_host_root)

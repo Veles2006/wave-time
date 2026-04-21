@@ -65,7 +65,7 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
         }
 
         binding.btnCreateTask.setOnClickListener {
-            (activity as? MainActivity)?.openTaskCreate()
+            (activity as? MainActivity)?.openTaskForm()
         }
     }
 

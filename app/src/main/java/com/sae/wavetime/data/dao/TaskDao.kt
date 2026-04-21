@@ -4,6 +4,8 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.sae.wavetime.data.model.api.Penalty
+import com.sae.wavetime.data.model.api.Reward
 import com.sae.wavetime.data.model.entity.TaskEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -22,6 +24,31 @@ interface TaskDao {
     // Create method
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(task: TaskEntity)
+
+    // Update method
+    @Query("""
+        UPDATE tasks
+        SET name = :name,
+            description = :description,
+            status = :status,
+            reward = :reward,
+            penalty = :penalty,
+            deadline = :deadline,
+            date = :date,
+            difficulty = :difficulty
+        WHERE id = :taskId AND isDeleted = 0
+    """)
+    suspend fun updateFull(
+        taskId: String,
+        name: String,
+        description: String?,
+        status: String,
+        reward: Reward,
+        penalty: Penalty,
+        deadline: String?,
+        date: String?,
+        difficulty: String
+    )
 
     // Delete method
     @Query("DELETE FROM tasks")

@@ -246,13 +246,13 @@
                         android:layout_height="wrap_content"
                         android:paddingStart="8dp"
                         android:paddingEnd="8dp"
+                        android:text="@string/not_set"
                         android:textSize="12sp"
                         app:icon="@drawable/ic_coins_solid_full"
                         app:iconPadding="4dp"
                         app:iconSize="20dp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tvCoin"
-                        tools:text="@string/not_set" />
+                        app:layout_constraintTop_toBottomOf="@id/tvCoin" />
 
                     <TextView
                         android:id="@+id/tvExp"
@@ -270,13 +270,13 @@
                         android:layout_height="wrap_content"
                         android:paddingStart="8dp"
                         android:paddingEnd="8dp"
+                        android:text="@string/not_set"
                         android:textSize="12sp"
                         app:icon="@drawable/ic_arrow_turn_up_solid_full"
                         app:iconPadding="2dp"
                         app:iconSize="20dp"
                         app:layout_constraintStart_toEndOf="@id/tvCoin"
-                        app:layout_constraintTop_toBottomOf="@id/tvExp"
-                        tools:text="@string/not_set" />
+                        app:layout_constraintTop_toBottomOf="@id/tvExp" />
 
                     <TextView
                         android:id="@+id/tvItem"
@@ -293,13 +293,13 @@
                         android:layout_height="wrap_content"
                         android:paddingStart="8dp"
                         android:paddingEnd="8dp"
+                        android:text="@string/not_set"
                         android:textSize="12sp"
                         app:icon="@drawable/ic_gift_solid_full"
                         app:iconPadding="4dp"
                         app:iconSize="20dp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tvItem"
-                        tools:text="@string/not_set" />
+                        app:layout_constraintTop_toBottomOf="@id/tvItem" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rvItems"

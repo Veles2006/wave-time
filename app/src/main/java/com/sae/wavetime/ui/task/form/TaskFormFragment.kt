@@ -1,6 +1,7 @@
 package com.sae.wavetime.ui.task.form
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -11,6 +12,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sae.wavetime.R
 import com.sae.wavetime.data.mapper.toRewardItemList
+import com.sae.wavetime.data.mapper.toRewardSelectUiModelList
 import com.sae.wavetime.data.model.api.Penalty
 import com.sae.wavetime.data.model.api.Reward
 import com.sae.wavetime.data.model.api.Task
@@ -28,6 +30,7 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
     private lateinit var adapter: TaskFormRewardAdapter
     private var _binding: FragmentTaskFormBinding? = null
     private val binding get() = _binding!!
+    private var task: Task? = null
 
     private var coinValue = 0
     private var expValue = 0
@@ -53,21 +56,38 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
         if (state.error != null) {
             // show error
         }
-        val filteredList = state.selectedRewards
+        var filteredList = state.selectedRewards
 
         binding.rvItems.visibility =
             if (filteredList.isEmpty()) View.GONE else View.VISIBLE
+
+        binding.btnItem.setText(
+            if (filteredList.isEmpty())
+                getString(R.string.not_set)
+            else
+                getString(R.string.change_item))
 
         adapter.submitList(filteredList)
 
 
         if (taskId == null) {
             binding.tvTitle.text = getString(R.string.create_task)
-            binding.btnCoin.text = getString(R.string.not_set)
-            binding.btnExp.text = getString(R.string.not_set)
-            binding.btnItem.text = getString(R.string.not_set)
         } else {
-            // Edit in here
+            Log.d("TEST", "$taskId")
+            binding.tvTitle.text = getString(R.string.edit_task)
+            if (taskId != null && binding.edtTaskName.text.isNullOrEmpty()) {
+                state.task?.let { task ->
+                    Log.d("TEST", "$task")
+                    binding.edtTaskName.setText(task.name)
+                    binding.edtTaskDesc.setText(task.description)
+                    binding.btnCoin.text = task.reward.gold.toString()
+                    binding.btnExp.text = task.reward.exp.toString()
+                    binding.btnItem.text = getString(R.string.change_item)
+                    coinValue = task.reward.gold
+                    expValue = task.reward.exp
+                }
+            }
+            task = state.task
         }
     }
 
@@ -77,6 +97,7 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
         _binding = FragmentTaskFormBinding.bind(view)
 
         taskId = arguments?.getString("taskId")
+
 
         adapter = TaskFormRewardAdapter()
 
@@ -91,6 +112,12 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
                     render(state)
                 }
             }
+        }
+
+        if (taskId == null) {
+            binding.tvTitle.text = getString(R.string.create_task)
+        } else {
+            viewModel.observeTask(taskId!!)
         }
 
         binding.btnBack.setOnClickListener {
@@ -143,8 +170,8 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
                 return@setOnClickListener
             }
 
-            viewModel.addTask(
-                Task(
+            if (taskId == null) {
+                val taskData = Task(
                     id = UUID.randomUUID().toString(),
                     name = taskName,
                     description = taskDesc,
@@ -157,7 +184,22 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
                     ),
                     penalty = Penalty(),
                 )
-            )
+                viewModel.addTask(taskData)
+            } else {
+                val taskData = task?.copy(
+                    name = taskName,
+                    description = taskDesc,
+                    status = "pending",
+                    difficulty = taskDifficulty,
+                    reward = Reward(
+                        gold = coinValue,
+                        exp = expValue,
+                        items = taskItemReward.toRewardItemList()
+                    ),
+                    penalty = Penalty(),
+                )
+                viewModel.updateFullTask(taskData!!)
+            }
 
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
