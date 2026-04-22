@@ -1,15 +1,10 @@
 package com.sae.wavetime.data.mapper
 
-import android.R.attr.category
-import android.R.attr.description
-import android.R.attr.name
-import com.sae.wavetime.data.model.api.Item
-import com.sae.wavetime.data.model.api.Reward
-import com.sae.wavetime.data.model.api.RewardItem
-import com.sae.wavetime.data.model.api.RewardItemId
+import com.sae.wavetime.data.model.domain.Item
+import com.sae.wavetime.data.model.domain.RewardItem
+import com.sae.wavetime.data.model.domain.RewardItemId
 import com.sae.wavetime.data.model.entity.ItemEntity
 import com.sae.wavetime.ui.model.RewardSelectUiModel
-import kotlin.String
 
 fun Item.toEntity(): ItemEntity {
     return ItemEntity(

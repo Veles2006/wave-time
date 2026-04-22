@@ -1,13 +1,7 @@
 package com.sae.wavetime.data.mapper
 
-import android.R.attr.description
-import android.R.attr.name
-import android.graphics.drawable.Drawable
-import com.sae.wavetime.data.model.api.Block
-import com.sae.wavetime.data.model.api.Task
+import com.sae.wavetime.data.model.domain.Block
 import com.sae.wavetime.data.model.entity.BlockEntity
-import com.sae.wavetime.data.model.entity.TaskEntity
-import com.sae.wavetime.ui.model.AppUiModel
 
 fun Block.toEntity(): BlockEntity {
     return BlockEntity(

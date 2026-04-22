@@ -2,8 +2,8 @@ package com.sae.wavetime.data.model.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.sae.wavetime.data.model.api.Penalty
-import com.sae.wavetime.data.model.api.Reward
+import com.sae.wavetime.data.model.domain.Penalty
+import com.sae.wavetime.data.model.domain.Reward
 
 @Entity(tableName = "tasks")
 data class TaskEntity (

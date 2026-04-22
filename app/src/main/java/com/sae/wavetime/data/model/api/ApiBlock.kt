@@ -2,7 +2,7 @@ package com.sae.wavetime.data.model.api
 
 import com.google.gson.annotations.SerializedName
 
-data class Block(
+data class ApiBlock(
     @SerializedName("_id")
     val id: String,
     val appName: String,
@@ -17,3 +17,4 @@ data class BlockRequest(
     val packageName: String,
     val blockType: String,
 )
+

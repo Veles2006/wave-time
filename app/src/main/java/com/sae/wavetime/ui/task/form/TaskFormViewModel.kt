@@ -3,7 +3,7 @@ package com.sae.wavetime.ui.task.form
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sae.wavetime.data.mapper.toRewardSelectUiModelList
-import com.sae.wavetime.data.model.api.Task
+import com.sae.wavetime.data.model.domain.Task
 import com.sae.wavetime.data.repository.ItemRepository
 import com.sae.wavetime.data.repository.TaskRepository
 import com.sae.wavetime.ui.model.RewardSelectUiModel

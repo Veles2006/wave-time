@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.sae.wavetime.R
-import com.sae.wavetime.data.model.api.Task
+import com.sae.wavetime.data.model.domain.Task
 
 class TaskAdapter(
     private val openTaskDetail : (String) -> Unit

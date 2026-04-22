@@ -1,6 +1,6 @@
 package com.sae.wavetime.ui.task.detail
 
-import com.sae.wavetime.data.model.api.Task
+import com.sae.wavetime.data.model.domain.Task
 
 data class TaskDetailState(
     val isLoading: Boolean = false,

@@ -1,11 +1,8 @@
 package com.sae.wavetime.data.model.api
 
-import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import kotlinx.parcelize.Parcelize
 
-@Parcelize
-data class RewardItemId(
+data class ApiRewardItemId(
     @SerializedName("_id")
     val id: String,
 
@@ -15,40 +12,38 @@ data class RewardItemId(
     val category: String,
     val description: String,
     val icon: String,
-) : Parcelable
+)
 
-@Parcelize
-data class RewardItem(
-    val itemId: RewardItemId,
+
+data class ApiRewardItem(
+    val itemId: ApiRewardItemId,
     val quantity: Int,
-) : Parcelable
+)
 
-@Parcelize
-data class Reward(
+data class ApiReward(
     val exp: Int = 0,
     val gold: Int = 0,
     val diamond: Int = 0,
     val gem: Int = 0,
-    val items: List<RewardItem> = emptyList(),
-) : Parcelable
+    val items: List<ApiRewardItem> = emptyList(),
+)
 
-@Parcelize
-data class Penalty(
+data class ApiPenalty(
     val exp: Int = 0,
     val gold: Int = 0,
     val diamond: Int = 0,
     val gem: Int = 0,
-) : Parcelable
+)
 
-data class Task(
+data class ApiTask(
     @SerializedName("_id")
     val id: String,
 
     val name: String,
     val description: String?,
     val status: String,
-    val reward: Reward,
-    val penalty: Penalty,
+    val reward: ApiReward,
+    val penalty: ApiPenalty,
     val deadline: String? = null,
     val date: String? = null,
     val difficulty: String,

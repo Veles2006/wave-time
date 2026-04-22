@@ -4,8 +4,8 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.sae.wavetime.data.model.api.Penalty
-import com.sae.wavetime.data.model.api.Reward
+import com.sae.wavetime.data.model.domain.Penalty
+import com.sae.wavetime.data.model.domain.Reward
 import com.sae.wavetime.data.model.entity.TaskEntity
 import kotlinx.coroutines.flow.Flow
 

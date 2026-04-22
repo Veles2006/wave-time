@@ -2,9 +2,9 @@ package com.sae.wavetime.data.room
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson
-import com.sae.wavetime.data.model.api.KeyInfoPopulated
-import com.sae.wavetime.data.model.api.Penalty
-import com.sae.wavetime.data.model.api.Reward
+import com.sae.wavetime.data.model.domain.KeyInfoPopulated
+import com.sae.wavetime.data.model.domain.Penalty
+import com.sae.wavetime.data.model.domain.Reward
 
 class Converters {
     private val gson = Gson()

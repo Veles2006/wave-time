@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -12,16 +11,13 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sae.wavetime.R
 import com.sae.wavetime.data.mapper.toRewardItemList
-import com.sae.wavetime.data.mapper.toRewardSelectUiModelList
-import com.sae.wavetime.data.model.api.Penalty
-import com.sae.wavetime.data.model.api.Reward
-import com.sae.wavetime.data.model.api.Task
+import com.sae.wavetime.data.model.domain.Penalty
+import com.sae.wavetime.data.model.domain.Reward
+import com.sae.wavetime.data.model.domain.Task
 import com.sae.wavetime.data.repository.ItemRepository
 import com.sae.wavetime.data.repository.TaskRepository
 import com.sae.wavetime.databinding.FragmentTaskFormBinding
 import com.sae.wavetime.local.DatabaseProvider
-import com.sae.wavetime.ui.task.list.TaskListViewModel
-import com.sae.wavetime.ui.task.list.TaskListViewModelFactory
 import kotlinx.coroutines.launch
 import java.util.UUID
 import kotlin.getValue

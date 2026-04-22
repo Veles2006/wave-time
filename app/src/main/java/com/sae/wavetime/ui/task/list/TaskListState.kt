@@ -1,6 +1,6 @@
 package com.sae.wavetime.ui.task.list
 
-import com.sae.wavetime.data.model.api.Task
+import com.sae.wavetime.data.model.domain.Task
 
 // List<Task> ở đây Task model sẽ được refactor sau
 data class TaskListState(

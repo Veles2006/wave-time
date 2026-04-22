@@ -5,10 +5,7 @@ import com.sae.wavetime.data.dao.TaskDao
 import com.sae.wavetime.data.mapper.toDomain
 import com.sae.wavetime.data.mapper.toDomainList
 import com.sae.wavetime.data.mapper.toEntity
-import com.sae.wavetime.data.model.api.Penalty
-import com.sae.wavetime.data.model.api.Reward
-import com.sae.wavetime.data.model.api.Task
-import com.sae.wavetime.data.model.entity.TaskEntity
+import com.sae.wavetime.data.model.domain.Task
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.sae.wavetime.R
-import com.sae.wavetime.data.model.api.Item
 import com.sae.wavetime.ui.model.InventoryUiModel
 
 class ItemAdapter : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {

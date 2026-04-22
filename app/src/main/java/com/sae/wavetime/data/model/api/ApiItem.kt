@@ -2,26 +2,26 @@ package com.sae.wavetime.data.model.api
 
 import com.google.gson.annotations.SerializedName
 
-data class BlockOfItem(
+data class ApiBlockOfItem(
     @SerializedName("_id")
     val id: String,
     val appName: String,
     val packageName: String,
     val blockType: String,
 )
-data class KeyInfoPopulated(
-    val blockId: BlockOfItem?,
+data class ApiKeyInfoPopulated(
+    val blockId: ApiBlockOfItem?,
     val isMaster: Boolean,
 )
 
-data class Item(
+data class ApiItem(
     @SerializedName("_id")
     val id: String,
     val name: String,
     val tier: String,
     val rank: Int,
     val category: String,
-    val keyInfo: KeyInfoPopulated,
+    val keyInfo: ApiKeyInfoPopulated,
     val description: String,
     val icon: String,
 )
@@ -35,23 +35,4 @@ data class ItemIdResponse(
     val quantity: Int,
 )
 
-data class Inventory(
-    @SerializedName("_id")
-    val id: String,
-    val itemId: Item,
-    val quantity: Int,
-)
 
-data class InventoryItemRequest(
-    val itemId: String,
-    val amount: Int,
-)
-
-data class InventoryBulkRequest(
-    val items: List<InventoryItemRequest>,
-)
-
-data class MessageResponse(
-    val message: String,
-    val count: Int,
-)

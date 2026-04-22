@@ -2,9 +2,7 @@ package com.sae.wavetime.ui.item.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sae.wavetime.data.model.api.Item
 import com.sae.wavetime.data.repository.InventoryRepository
-import com.sae.wavetime.data.repository.ItemRepository
 import com.sae.wavetime.ui.model.InventoryUiModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

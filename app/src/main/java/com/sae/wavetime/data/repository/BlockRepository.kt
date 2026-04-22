@@ -1,12 +1,8 @@
 package com.sae.wavetime.data.repository
 
-import android.content.Context
-import androidx.core.content.ContextCompat
-import com.sae.wavetime.R
 import com.sae.wavetime.data.dao.BlockDao
 import com.sae.wavetime.data.mapper.toDomainList
-import com.sae.wavetime.data.model.api.Block
-import com.sae.wavetime.ui.model.AppUiModel
+import com.sae.wavetime.data.model.domain.Block
 
 class BlockRepository(
     private val blockDao: BlockDao
