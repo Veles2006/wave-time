@@ -5,7 +5,7 @@ import com.sae.wavetime.data.dao.TaskDao
 import com.sae.wavetime.data.mapper.toDomain
 import com.sae.wavetime.data.mapper.toDomainList
 import com.sae.wavetime.data.mapper.toEntity
-import com.sae.wavetime.data.model.domain.Task
+import com.sae.wavetime.domain.model.Task
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -33,6 +33,13 @@ class TaskRepository(
             deadline = task.deadline,
             date = task.date,
             difficulty = task.difficulty
+        )
+    }
+
+    suspend fun changeStatus(taskId: String, status: String) {
+        taskDao.changeStatus(
+            taskId = taskId,
+            status = status
         )
     }
 

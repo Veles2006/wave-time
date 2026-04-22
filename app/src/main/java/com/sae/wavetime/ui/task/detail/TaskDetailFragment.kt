@@ -9,8 +9,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.sae.wavetime.MainActivity
 import com.sae.wavetime.R
+import com.sae.wavetime.data.repository.InventoryRepository
 import com.sae.wavetime.data.repository.TaskRepository
 import com.sae.wavetime.databinding.FragmentTaskDetailBinding
+import com.sae.wavetime.domain.usecase.CompleteTaskUseCase
 import com.sae.wavetime.local.DatabaseProvider
 import com.sae.wavetime.ui.dialog.SoftDeleteDialog
 import com.sae.wavetime.utils.toDisplayString
@@ -22,9 +24,17 @@ class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
     private val binding get() = _binding!!
 
     private val viewModel: TaskDetailViewModel by viewModels {
+        val db = DatabaseProvider.getDatabase(requireContext())
+
+        val taskRepo = TaskRepository(db.taskDao())
+        val inventoryRepo = InventoryRepository(db.inventoryDao())
+
         TaskDetailModelFactory(
-            TaskRepository(
-                DatabaseProvider.getDatabase(requireContext()).taskDao()
+            taskRepo,
+            CompleteTaskUseCase(
+                taskRepo,           // ✔ dùng lại
+                inventoryRepo,
+                db
             )
         )
     }
@@ -59,6 +69,12 @@ class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
 
                 dialog.show(parentFragmentManager, "SoftDeleteDialog")
             }
+            binding.btnSuccess.setOnClickListener {
+                viewModel.completeTask(task.id, task.reward.items)
+
+                requireActivity().onBackPressedDispatcher.onBackPressed()
+            }
+
         }
     }
 

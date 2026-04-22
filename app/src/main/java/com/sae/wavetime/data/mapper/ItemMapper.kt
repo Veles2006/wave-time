@@ -1,8 +1,8 @@
 package com.sae.wavetime.data.mapper
 
-import com.sae.wavetime.data.model.domain.Item
-import com.sae.wavetime.data.model.domain.RewardItem
-import com.sae.wavetime.data.model.domain.RewardItemId
+import com.sae.wavetime.domain.model.Item
+import com.sae.wavetime.domain.model.RewardItem
+import com.sae.wavetime.domain.model.RewardItemId
 import com.sae.wavetime.data.model.entity.ItemEntity
 import com.sae.wavetime.ui.model.RewardSelectUiModel
 

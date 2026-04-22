@@ -1,6 +1,6 @@
 package com.sae.wavetime.ui.block.list
 
-import com.sae.wavetime.data.model.domain.Block
+import com.sae.wavetime.domain.model.Block
 
 data class BlockListState(
     val isLoading: Boolean = false,

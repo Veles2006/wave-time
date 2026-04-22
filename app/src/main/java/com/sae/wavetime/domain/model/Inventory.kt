@@ -1,4 +1,4 @@
-package com.sae.wavetime.data.model.domain
+package com.sae.wavetime.domain.model
 
 data class Inventory(
     val id: String,

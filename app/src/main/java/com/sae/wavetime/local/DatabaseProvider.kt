@@ -5,10 +5,10 @@ import android.util.Log
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.sae.wavetime.data.model.domain.BlockOfItem
-import com.sae.wavetime.data.model.domain.KeyInfoPopulated
-import com.sae.wavetime.data.model.domain.Penalty
-import com.sae.wavetime.data.model.domain.Reward
+import com.sae.wavetime.domain.model.BlockOfItem
+import com.sae.wavetime.domain.model.KeyInfoPopulated
+import com.sae.wavetime.domain.model.Penalty
+import com.sae.wavetime.domain.model.Reward
 import com.sae.wavetime.data.model.entity.BlockEntity
 import com.sae.wavetime.data.model.entity.InventoryEntity
 import com.sae.wavetime.data.model.entity.ItemEntity

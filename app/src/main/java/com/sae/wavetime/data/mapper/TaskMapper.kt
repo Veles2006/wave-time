@@ -1,6 +1,6 @@
 package com.sae.wavetime.data.mapper
 
-import com.sae.wavetime.data.model.domain.Task
+import com.sae.wavetime.domain.model.Task
 import com.sae.wavetime.data.model.entity.TaskEntity
 
 fun Task.toEntity(): TaskEntity {

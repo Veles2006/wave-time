@@ -11,9 +11,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sae.wavetime.R
 import com.sae.wavetime.data.mapper.toRewardItemList
-import com.sae.wavetime.data.model.domain.Penalty
-import com.sae.wavetime.data.model.domain.Reward
-import com.sae.wavetime.data.model.domain.Task
+import com.sae.wavetime.domain.model.Penalty
+import com.sae.wavetime.domain.model.Reward
+import com.sae.wavetime.domain.model.Task
 import com.sae.wavetime.data.repository.ItemRepository
 import com.sae.wavetime.data.repository.TaskRepository
 import com.sae.wavetime.databinding.FragmentTaskFormBinding

@@ -2,7 +2,7 @@ package com.sae.wavetime.data.repository
 
 import com.sae.wavetime.data.dao.BlockDao
 import com.sae.wavetime.data.mapper.toDomainList
-import com.sae.wavetime.data.model.domain.Block
+import com.sae.wavetime.domain.model.Block
 
 class BlockRepository(
     private val blockDao: BlockDao

@@ -1,7 +1,7 @@
 package com.sae.wavetime.utils
 
-import com.sae.wavetime.data.model.domain.Reward
-import com.sae.wavetime.data.model.domain.Penalty
+import com.sae.wavetime.domain.model.Reward
+import com.sae.wavetime.domain.model.Penalty
 
 fun Reward.toDisplayString(): String {
     val parts = mutableListOf<String>()

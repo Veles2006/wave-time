@@ -3,7 +3,7 @@ package com.sae.wavetime.data.repository
 import com.sae.wavetime.data.dao.ItemDao
 import com.sae.wavetime.data.mapper.toDomainList
 import com.sae.wavetime.data.mapper.toRewardSelectList
-import com.sae.wavetime.data.model.domain.Item
+import com.sae.wavetime.domain.model.Item
 import com.sae.wavetime.ui.model.RewardSelectUiModel
 
 class ItemRepository(

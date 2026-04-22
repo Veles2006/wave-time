@@ -1,6 +1,6 @@
 package com.sae.wavetime.data.mapper
 
-import com.sae.wavetime.data.model.domain.Block
+import com.sae.wavetime.domain.model.Block
 import com.sae.wavetime.data.model.entity.BlockEntity
 
 fun Block.toEntity(): BlockEntity {
