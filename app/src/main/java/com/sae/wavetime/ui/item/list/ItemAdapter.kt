@@ -5,10 +5,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.button.MaterialButton
 import com.sae.wavetime.R
 import com.sae.wavetime.ui.model.InventoryUiModel
 
-class ItemAdapter : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
+class ItemAdapter(
+    private val useItem: (itemId: String, amount: Int) -> Unit
+) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
 
     private var items: List<InventoryUiModel> = emptyList()
 
@@ -19,7 +22,10 @@ class ItemAdapter : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
 
     class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvName: TextView = itemView.findViewById(R.id.tvName)
-        val tvDescription: TextView = itemView.findViewById(R.id.tvDescription)
+        val tvTier: TextView = itemView.findViewById(R.id.tvTier)
+        val tvQuantity: TextView = itemView.findViewById(R.id.tvQuantity)
+
+        val btnUseItem: MaterialButton = itemView.findViewById(R.id.btnUseItem)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -32,7 +38,11 @@ class ItemAdapter : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
         val item = items[position]
 
         holder.tvName.text = item.name
-        holder.tvDescription.text = item.tier
+        holder.tvTier.text = item.tier
+        holder.tvQuantity.text = "X${item.quantity}"
+        holder.btnUseItem.setOnClickListener {
+            useItem(item.id, 1)
+        }
     }
 
     override fun getItemCount(): Int {

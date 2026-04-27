@@ -14,7 +14,7 @@ class TaskListViewModel(
 ) : ViewModel() {
 
     val state: StateFlow<TaskListState> =
-        repository.getTasks() // Flow<List<Task>>
+        repository.getPendingTasks() // Flow<List<Task>>
             .map { tasks ->
                 TaskListState(
                     isLoading = false,

@@ -145,9 +145,29 @@ object DatabaseProvider {
             icon = "icon_key_green"
         )
 
+        val item4 = ItemEntity(
+            id = "item_4",
+            name = "TikTok Blue Key",
+            tier = "blue",
+            rank = 3,
+            category = "key",
+            keyInfo = KeyInfoPopulated(
+                blockId = BlockOfItem(
+                    id = "block_3",
+                    appName = "TikTok",
+                    packageName = "com.zhiliaoapp.musically",
+                    blockType = "time"
+                ),
+                isMaster = false
+            ),
+            description = "Unlock TikTok temporarily",
+            icon = "icon_key_green"
+        )
+
         itemDao.insert(item1)
         itemDao.insert(item2)
         itemDao.insert(item3)
+        itemDao.insert(item4)
 
         // ===== 3. Fake Inventory =====
         val inventory1 = InventoryEntity(

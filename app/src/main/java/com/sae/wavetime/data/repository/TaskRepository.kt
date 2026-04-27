@@ -7,15 +7,20 @@ import com.sae.wavetime.data.mapper.toDomainList
 import com.sae.wavetime.data.mapper.toEntity
 import com.sae.wavetime.domain.model.Task
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 
 class TaskRepository(
     private val taskDao: TaskDao
 ) {
-    fun getTasks(): Flow<List<Task>> {
+    fun getPendingTasks(): Flow<List<Task>> {
         return taskDao
             .getAll()
-            .map { it.toDomainList() }
+            .map { list ->
+                list
+                    .filter { it.status == "pending" }
+                    .map { it.toDomain() }
+            }
     }
 
     suspend fun insertTask(task: Task) {

@@ -46,7 +46,7 @@ class TaskDetailViewModel(
             try {
                 taskRepo.softDeleteTask(id)
 
-                val tasks = taskRepo.getTasks()
+                val tasks = taskRepo.getPendingTasks()
 
                 _state.update {
                     it.copy(

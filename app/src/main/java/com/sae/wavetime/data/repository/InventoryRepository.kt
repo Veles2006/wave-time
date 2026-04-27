@@ -15,7 +15,9 @@ class InventoryRepository(
     suspend fun getInventoryItems() : List<InventoryUiModel> {
         val data = inventoryDao.getInventoryWithItem()
 
-        return data.map { it.toUi() }
+        return data
+            .filter { it.inventory.quantity > 0 }
+            .map { it.toUi() }
     }
 
     suspend fun getByItemId(itemId: String): InventoryEntity? {
@@ -41,13 +43,11 @@ class InventoryRepository(
         }
     }
 
-    suspend fun subtractQuantity(rewards: List<RewardItem>){
-        rewards.forEach { item ->
-            inventoryDao.subtractQuantity(
-                itemId = item.itemId.id,
-                amount = item.quantity
-            )
-        }
+    suspend fun subtractQuantity(itemId: String, amount: Int){
+        inventoryDao.subtractQuantity(
+            itemId = itemId,
+            amount = amount
+        )
     }
 
     suspend fun insertInventory(inventory: Inventory) {
