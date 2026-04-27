@@ -8,12 +8,13 @@ import androidx.room.Query
 import androidx.room.Transaction
 import com.sae.wavetime.data.model.entity.InventoryEntity
 import com.sae.wavetime.data.model.relation.InventoryWithItem
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface InventoryDao {
     @Transaction
     @Query("SELECT * FROM inventory")
-    suspend fun getInventoryWithItem(): List<InventoryWithItem>
+    fun getInventoryWithItem(): Flow<List<InventoryWithItem>>
 
     @Query("SELECT * FROM inventory WHERE itemId = :itemId LIMIT 1")
     suspend fun getByItemId(itemId: String): InventoryEntity?

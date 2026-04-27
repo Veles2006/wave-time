@@ -73,8 +73,6 @@ class ItemListFragment : Fragment(R.layout.fragment_item_list) {
                 }
             }
         }
-
-        viewModel.loadItems()
     }
 
     override fun onDestroyView() {

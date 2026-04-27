@@ -7,17 +7,23 @@ import com.sae.wavetime.data.model.entity.InventoryEntity
 import com.sae.wavetime.domain.model.Inventory
 import com.sae.wavetime.domain.model.RewardItem
 import com.sae.wavetime.ui.model.InventoryUiModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
 import java.util.UUID
 
 class InventoryRepository(
     private val inventoryDao: InventoryDao
 ) {
-    suspend fun getInventoryItems() : List<InventoryUiModel> {
+    fun getInventoryItems() : Flow<List<InventoryUiModel>> {
         val data = inventoryDao.getInventoryWithItem()
 
         return data
-            .filter { it.inventory.quantity > 0 }
-            .map { it.toUi() }
+            .map { list ->
+                list
+                    .filter { it.inventory.quantity > 0 }
+                    .map { it.toUi() }
+            }
     }
 
     suspend fun getByItemId(itemId: String): InventoryEntity? {
