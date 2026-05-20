@@ -9,7 +9,6 @@ fun InventoryWithItem.toUi(): InventoryUiModel {
     return InventoryUiModel(
         id = item.id,
         name = item.name,
-        icon = item.icon,
         tier = item.tier,
         quantity = inventory.quantity
     )

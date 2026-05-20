@@ -12,7 +12,7 @@ data class ItemEntity(
     val tier: String,
     val rank: Int,
     val category: String,
+    val blockId: String? = null,
     val keyInfo: KeyInfoPopulated,
     val description: String,
-    val icon: String,
 )

@@ -1,4 +1,4 @@
-package com.sae.wavetime.ui.task.detail
+package com.sae.wavetime.ui.block.detail
 
 import android.os.Bundle
 import android.view.View
@@ -9,37 +9,37 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.sae.wavetime.MainActivity
 import com.sae.wavetime.R
-import com.sae.wavetime.data.repository.InventoryRepository
-import com.sae.wavetime.data.repository.TaskRepository
+import com.sae.wavetime.data.repository.BlockRepository
+import com.sae.wavetime.data.resolver.AppIconResolver
+import com.sae.wavetime.data.resolver.InstalledAppResolver
+import com.sae.wavetime.databinding.FragmentBlockDetailBinding
 import com.sae.wavetime.databinding.FragmentTaskDetailBinding
-import com.sae.wavetime.domain.usecase.CompleteTaskUseCase
 import com.sae.wavetime.local.DatabaseProvider
 import com.sae.wavetime.ui.dialog.SoftDeleteDialog
+import com.sae.wavetime.ui.task.detail.TaskDetailState
 import com.sae.wavetime.utils.toDisplayString
 import kotlinx.coroutines.launch
 
-class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
-    private lateinit var taskId: String
-    private var _binding: FragmentTaskDetailBinding? = null
+class BlockDetailFragment : Fragment(R.layout.fragment_block_detail){
+    private lateinit var blockId: String
+    private var _binding: FragmentBlockDetailBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: TaskDetailViewModel by viewModels {
+    private val viewModel: BlockDetailViewModel by viewModels {
         val db = DatabaseProvider.getDatabase(requireContext())
 
-        val taskRepo = TaskRepository(db.taskDao())
-        val inventoryRepo = InventoryRepository(db.inventoryDao())
+        val blockRepo = BlockRepository(
+            db.blockDao(),
+            AppIconResolver(requireContext().applicationContext),
+            InstalledAppResolver(requireContext().applicationContext)
+        )
 
-        TaskDetailModelFactory(
-            taskRepo,
-            CompleteTaskUseCase(
-                taskRepo,           // ✔ dùng lại
-                inventoryRepo,
-                db
-            )
+        BlockDetailViewModelFactory(
+            blockRepo
         )
     }
 
-    private fun render(state: TaskDetailState) {
+    private fun render(state: BlockDetailState) {
         if (state.isLoading) {
             // show loading
         }
@@ -48,49 +48,40 @@ class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
             // show error
         }
 
-        state.task?.let { task ->
-            binding.tvTaskName.text = task.name
-            binding.tvDescription.text = "Description: ${task.description}"
-            binding.tvStatus.text = "Status: ${task.status}"
-            binding.tvDate.text = "Date: ${task.date}"
-            binding.tvDifficulty.text = "Difficulty: ${task.difficulty}"
-            binding.tvReward.text = "Reward: ${task.reward.toDisplayString()}"
-            binding.tvPenalty.text = "Penalty: ${task.penalty.toDisplayString()}"
+        state.block?.let { block ->
             binding.btnEdit.setOnClickListener {
-                (activity as? MainActivity)?.openTaskForm(task.id)
+                (activity as? MainActivity)?.openBlockForm(block.id)
             }
             binding.btnDelete.setOnClickListener {
-                val dialog = SoftDeleteDialog.newInstance("Do you want to detele this task?")
+                val dialog = SoftDeleteDialog.newInstance("Do you want to detele this blck?")
 
                 dialog.setOnConfirmListener {
-                    viewModel.softDeleteTask(task.id)
+                    viewModel.softDelete(block.id)
                     requireActivity().onBackPressedDispatcher.onBackPressed()
                 }
 
                 dialog.show(parentFragmentManager, "SoftDeleteDialog")
             }
             binding.btnSuccess.setOnClickListener {
-                viewModel.completeTask(task.id, task.reward.items)
 
                 requireActivity().onBackPressedDispatcher.onBackPressed()
             }
             binding.btnBack.setOnClickListener {
                 requireActivity().onBackPressedDispatcher.onBackPressed()
             }
-
-
         }
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        _binding = FragmentTaskDetailBinding.bind(view)
+        _binding = FragmentBlockDetailBinding.bind(view)
 
-        taskId = requireArguments().getString("taskId")
-            ?: throw IllegalArgumentException("Missing taskId")
+        blockId = requireArguments().getString("blockId")
+            ?: throw IllegalArgumentException("Missing blockId")
 
-        viewModel.observeTask(taskId)
+        viewModel.observeBlock(blockId)
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {

@@ -12,6 +12,8 @@ import com.sae.wavetime.R
 import com.sae.wavetime.data.repository.BlockRepository
 import com.sae.wavetime.data.repository.InventoryRepository
 import com.sae.wavetime.data.repository.ItemRepository
+import com.sae.wavetime.data.resolver.AppIconResolver
+import com.sae.wavetime.data.resolver.InstalledAppResolver
 import com.sae.wavetime.databinding.FragmentItemListBinding
 import com.sae.wavetime.domain.usecase.UseItemUseCase
 import com.sae.wavetime.local.DatabaseProvider
@@ -27,7 +29,11 @@ class ItemListFragment : Fragment(R.layout.fragment_item_list) {
         val db = DatabaseProvider.getDatabase(requireContext())
         val itemRepo = ItemRepository(db.itemDao())
         val inventoryRepo = InventoryRepository(db.inventoryDao())
-        val blockRepo = BlockRepository(db.blockDao())
+        val blockRepo = BlockRepository(
+            db.blockDao(),
+            AppIconResolver(requireContext().applicationContext),
+            InstalledAppResolver(requireContext().applicationContext)
+        )
 
         ItemListViewModelFactory(
             inventoryRepo,

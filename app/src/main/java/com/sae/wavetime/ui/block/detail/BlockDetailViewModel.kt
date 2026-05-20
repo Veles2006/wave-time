@@ -1,24 +1,24 @@
-package com.sae.wavetime.ui.block.list
+package com.sae.wavetime.ui.block.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sae.wavetime.data.repository.BlockRepository
+import com.sae.wavetime.ui.block.form.BlockFormState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class BlockListViewModel(
+class BlockDetailViewModel(
     private val blockRepo: BlockRepository
-): ViewModel() {
+) : ViewModel() {
+    private val _state = MutableStateFlow(BlockDetailState())
+    val state: StateFlow<BlockDetailState> = _state
 
-    private val _state = MutableStateFlow(BlockListState())
-    val state: StateFlow<BlockListState> = _state
-
-    fun loadBlocks() {
+    fun observeBlock(id: String) {
         viewModelScope.launch {
-            blockRepo.getBlocksFlow()
+            blockRepo.getBlockByIdFlow(id)
                 .catch { e ->
                     _state.update {
                         it.copy(
@@ -27,24 +27,18 @@ class BlockListViewModel(
                         )
                     }
                 }
-                .collect { blocks ->
+                .collect { block ->
                     _state.update {
                         it.copy(
                             isLoading = false,
-                            blocks = blocks
+                            block = block,
+                            error = if (block == null) "Block not found" else null
                         )
                     }
                 }
         }
     }
 
-    fun setActive(id: String, isChecked: Boolean) {
-        viewModelScope.launch {
-            blockRepo.setActive(id, isChecked)
-        }
-    }
-
-    // Delete method
     fun softDelete(id: String) {
         viewModelScope.launch {
             blockRepo.softDelete(id)

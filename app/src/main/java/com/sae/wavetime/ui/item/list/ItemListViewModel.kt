@@ -50,7 +50,7 @@ class ItemListViewModel(
             try {
                 useItemUseCase.execute(itemId, amount)
             } catch (e: Exception) {
-
+                android.util.Log.e("ItemListViewModel", "Use item failed", e)
             }
         }
     }

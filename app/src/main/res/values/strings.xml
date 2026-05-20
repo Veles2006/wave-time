@@ -33,4 +33,11 @@
     <string name="edit_task">Edit Task</string>
     <string name="delete_task">Delete Task</string>
     <string name="change_item">Change item</string>
+    <string name="accessibility_service_description">Chặn các ứng dụng gây mất tập trung</string>
+    <string name="type">Type</string>
+    <string name="create_block">Create Block</string>
+    <string name="edit_block">Edit Block</string>
+    <string name="back_block_list">Back Block List</string>
+    <string name="delete_block">Delete Block</string>
+    <string name="block_created_successfully">Block created successfully</string>
 </resources>

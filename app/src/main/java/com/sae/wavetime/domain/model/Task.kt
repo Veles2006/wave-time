@@ -7,7 +7,6 @@ data class RewardItemId(
     val rank: Int,
     val category: String,
     val description: String,
-    val icon: String,
 )
 
 data class RewardItem(

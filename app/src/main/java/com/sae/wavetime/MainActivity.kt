@@ -2,6 +2,7 @@ package com.sae.wavetime
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.navigation.findNavController
@@ -30,6 +31,24 @@ class MainActivity : AppCompatActivity(), DrawerController {
 
         findNavController(R.id.nav_host_root)
             .navigate(R.id.action_to_taskDetail, bundle)
+    }
+
+    fun openBlockForm(blockId: String? = null) {
+        val bundle = Bundle().apply {
+            putString("blockId", blockId)
+        }
+
+        findNavController(R.id.nav_host_root)
+            .navigate(R.id.action_to_blockForm, bundle)
+    }
+
+    fun openBlockDetail(blockId: String) {
+        val bundle = Bundle().apply {
+            putString("blockId", blockId)
+        }
+
+        findNavController(R.id.nav_host_root)
+            .navigate(R.id.action_to_blockDetail, bundle)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

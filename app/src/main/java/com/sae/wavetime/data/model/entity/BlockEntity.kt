@@ -1,5 +1,6 @@
 package com.sae.wavetime.data.model.entity
 
+import android.graphics.drawable.Icon
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -9,7 +10,9 @@ data class BlockEntity(
     val id: String,
     val appName: String,
     val packageName: String,
-    val blockType: String,
-    val penaltyMinutes: Int,
-    val isActive: Boolean,
+    val blockType: String = "permanent",
+    val penaltyMinutes: Int = 0,
+    val isActive: Boolean = true,
+    val unlockUntil: Long = 0L,
+    val isDeleted: Boolean = false
 )

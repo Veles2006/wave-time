@@ -7,6 +7,5 @@ data class RewardSelectUiModel(
     val rank: Int,
     val category: String,
     val description: String,
-    val icon: String,
     val quantity: Int = 0
 )

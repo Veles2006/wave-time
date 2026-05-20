@@ -9,8 +9,20 @@ import com.sae.wavetime.data.model.entity.ItemEntity
 
 @Dao
 interface ItemDao {
-    @Query("SELECT * FROM items")
-    suspend fun getAll(): List<ItemEntity>
+    // Get method
+    @Query("""
+        SELECT items.*
+        FROM items
+        LEFT JOIN blocks ON items.blockId = blocks.id
+        WHERE items.category != 'key'
+           OR blocks.isDeleted = 0
+    """)
+    suspend fun getVisibleItems(): List<ItemEntity>
+
+    @Query("SELECT * FROM items WHERE id = :id LIMIT 1")
+    suspend fun getItemById(id: String): ItemEntity?
+
+    // Create method
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(item: ItemEntity)

@@ -52,7 +52,7 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
         if (state.error != null) {
             // show error
         }
-        var filteredList = state.selectedRewards
+        val filteredList = state.selectedRewards
 
         binding.rvItems.visibility =
             if (filteredList.isEmpty()) View.GONE else View.VISIBLE
@@ -69,11 +69,9 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
         if (taskId == null) {
             binding.tvTitle.text = getString(R.string.create_task)
         } else {
-            Log.d("TEST", "$taskId")
             binding.tvTitle.text = getString(R.string.edit_task)
             if (taskId != null && binding.edtTaskName.text.isNullOrEmpty()) {
                 state.task?.let { task ->
-                    Log.d("TEST", "$task")
                     binding.edtTaskName.setText(task.name)
                     binding.edtTaskDesc.setText(task.description)
                     binding.btnCoin.text = task.reward.gold.toString()

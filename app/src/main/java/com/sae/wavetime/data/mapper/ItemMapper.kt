@@ -15,7 +15,6 @@ fun Item.toEntity(): ItemEntity {
         category = category,
         keyInfo = keyInfo,
         description = description,
-        icon = icon
     )
 }
 
@@ -28,7 +27,6 @@ fun ItemEntity.toDomain(): Item {
         category = category,
         keyInfo = keyInfo,
         description = description,
-        icon = icon
     )
 }
 
@@ -40,7 +38,6 @@ fun ItemEntity.toRewardSelect(): RewardSelectUiModel {
         rank = rank,
         category =category,
         description = description,
-        icon = icon
     )
 }
 
@@ -53,7 +50,6 @@ fun RewardSelectUiModel.toRewardItem() : RewardItem {
             rank,
             category,
             description,
-            icon
         ),
         quantity = quantity
     )
@@ -67,7 +63,6 @@ fun RewardItem.toRewardSelectUiModel() : RewardSelectUiModel {
         rank = itemId.rank,
         category = itemId.category,
         description = itemId.description,
-        icon = itemId.icon,
         quantity = quantity
     )
 }

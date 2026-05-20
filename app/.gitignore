@@ -1,1 +1,5 @@
 /build
+
+.gradle-user-home/
+
+/src/main/res/drawable/waifu_2.jpg

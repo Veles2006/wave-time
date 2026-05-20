@@ -10,6 +10,7 @@ data class BlockOfItem(
 data class KeyInfoPopulated(
     val blockId: BlockOfItem?,
     val isMaster: Boolean,
+    val durationMinutes: Int = 0,
 )
 
 data class Item(
@@ -20,6 +21,5 @@ data class Item(
     val category: String,
     val keyInfo: KeyInfoPopulated,
     val description: String,
-    val icon: String,
 )
 
