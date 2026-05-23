@@ -2,7 +2,19 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_root"
-    app:startDestination="@id/mainContentFragment">
+    app:startDestination="@id/splashFragment">
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.sae.wavetime.SplashFragment"
+        android:label="Splash">
+
+        <action
+            android:id="@+id/action_splashFragment_to_mainContentFragment"
+            app:destination="@id/mainContentFragment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
     <fragment
         android:id="@+id/mainContentFragment"
         android:name="com.sae.wavetime.MainContentFragment"
@@ -67,6 +79,14 @@
 
     <action
         android:id="@+id/action_to_blockDetail"
+        app:destination="@id/blockDetailFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+
+    <action
+        android:id="@+id/action_splashFragment_to_mainContentFragment"
         app:destination="@id/blockDetailFragment"
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"

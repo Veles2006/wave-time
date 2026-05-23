@@ -6,6 +6,9 @@ data class AppUiModel(
     val id: String,
     val appName: String,
     val packageName: String,
+    val blockType: String = "permanent",
     val icon: Drawable? = null,
-    val isActivity: Boolean = false
+    val unlockUntil: Long = 0L,
+    val penaltyMinutes: Int = 0,
+    val isActive: Boolean = true
 )

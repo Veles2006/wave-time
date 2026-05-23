@@ -47,7 +47,7 @@ class AppAdapter(
             holder.imgApp.setImageResource(R.drawable.waifu_2)
         }
         holder.switchActive.visibility = View.VISIBLE
-        holder.switchActive.isChecked = app.isActivity
+        holder.switchActive.isChecked = app.isActive
         holder.switchActive.setOnCheckedChangeListener { _, isChecked ->
             onToggleActivity(app.id, isChecked)
         }

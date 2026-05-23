@@ -3,40 +3,37 @@ package com.sae.wavetime.data.resolver
 import android.content.Context
 import android.content.pm.PackageManager
 import com.sae.wavetime.ui.model.AppUiModel
-import java.util.UUID
 
 class InstalledAppResolver(
     private val context: Context,
 ) {
-    fun getInstalledApps(
-        blocks: List<AppUiModel>
-    ): List<AppUiModel> {
+    fun getInstalledApps(blocks: List<AppUiModel>): List<AppUiModel> {
         val pm = context.packageManager
         val currentPackageName = context.packageName
+        val blockedPackages = blocks.map { it.packageName }.toSet()
 
-        return pm.getInstalledApplications(PackageManager.GET_META_DATA)
+        val result = runCatching {
+            pm.getInstalledApplications(PackageManager.GET_META_DATA)
+        }
+            .getOrDefault(emptyList())
             .mapNotNull { appInfo ->
                 val packageName = appInfo.packageName
 
-                val isCurrentApp = packageName == currentPackageName
-                val isNotLaunchable = pm.getLaunchIntentForPackage(packageName) == null
-                val isAlreadyBlocked = blocks.any { block ->
-                    block.packageName == packageName
-                }
-
-                if (isCurrentApp || isNotLaunchable || isAlreadyBlocked) {
-                    return@mapNotNull null
-                }
+                if (packageName == currentPackageName) return@mapNotNull null
+                if (packageName in blockedPackages) return@mapNotNull null
+                if (pm.getLaunchIntentForPackage(packageName) == null) return@mapNotNull null
 
                 AppUiModel(
-                    id = UUID.randomUUID().toString(),
+                    id = packageName,
                     appName = pm.getApplicationLabel(appInfo).toString(),
                     packageName = packageName,
-                    icon = pm.getApplicationIcon(appInfo)
+                    icon = runCatching {
+                        pm.getApplicationIcon(appInfo)
+                    }.getOrNull()
                 )
             }
-            .sortedBy {
-                it.appName.lowercase()
-            }
+            .sortedBy { it.appName.lowercase() }
+
+        return result
     }
 }

@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import com.sae.wavetime.R
 import com.sae.wavetime.ui.model.AppUiModel
@@ -17,11 +18,6 @@ class AppSelectAdapter(
 
     fun submitList(newList: List<AppUiModel>) {
         apps = newList
-        notifyDataSetChanged()
-    }
-
-    fun setSelectedApp(packageName: String) {
-        selectedPackageName = packageName
         notifyDataSetChanged()
     }
 
@@ -40,9 +36,15 @@ class AppSelectAdapter(
     override fun onBindViewHolder(holder: AppSelectViewHolder, position: Int) {
         val app = apps[position]
 
+
         holder.tvName.text = app.appName
         holder.tvPackageName.text = app.packageName
-        holder.imgApp.setImageDrawable(app.icon)
+        holder.imgApp.setImageDrawable(
+            app.icon ?: AppCompatResources.getDrawable(
+                holder.itemView.context,
+                R.drawable.waifu_2
+            )
+        )
 
         val isSelected = app.packageName == selectedPackageName
 

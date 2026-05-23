@@ -15,56 +15,40 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.sae.wavetime.R
-import com.sae.wavetime.data.repository.BlockRepository
-import com.sae.wavetime.data.repository.ItemRepository
+import com.sae.wavetime.data.repository.InstalledAppRepository
 import com.sae.wavetime.data.resolver.AppIconResolver
 import com.sae.wavetime.data.resolver.InstalledAppResolver
-import com.sae.wavetime.domain.usecase.CreateBlockWithKeyUseCase
 import com.sae.wavetime.local.DatabaseProvider
-import com.sae.wavetime.ui.block.list.BlockListViewModel
-import com.sae.wavetime.ui.block.list.BlockListViewModelFactory
 import com.sae.wavetime.ui.model.AppUiModel
 import kotlinx.coroutines.launch
 
 class SelectAppDialog(
-    private val onConfirm: (name: String, packageName: String) -> Unit
+    private val onConfirm: (app: AppUiModel) -> Unit
 ) : DialogFragment(R.layout.dialog_select_app) {
     private lateinit var adapter: AppSelectAdapter
+    private var selectedApp: AppUiModel? = null
 
-    private val viewModel: BlockFormViewModel by viewModels {
+    private val installedAppViewModel: InstalledAppViewModel by viewModels {
         val db = DatabaseProvider.getDatabase(requireContext())
 
-        val blockRepo = BlockRepository(
-            db.blockDao(),
-            AppIconResolver(requireContext().applicationContext),
-            InstalledAppResolver(requireContext().applicationContext)
-        )
-        val itemRepo = ItemRepository(db.itemDao())
-
-        BlockFormViewModelFactory(
-            blockRepo,
-            CreateBlockWithKeyUseCase(
-                blockRepo,
-                itemRepo
+        InstalledAppViewModelFactory(
+            InstalledAppRepository(
+                db.installedAppDao(),
+                InstalledAppResolver(requireContext().applicationContext),
+                AppIconResolver(requireContext().applicationContext)
             )
         )
     }
 
 
-    private fun render(state: BlockFormState, progressBarLayout: LinearLayout, appListLayout: ConstraintLayout) {
-        if (state.isLoading) {
-            progressBarLayout.visibility = View.VISIBLE
-            appListLayout.visibility = View.GONE
-        } else {
-            progressBarLayout.visibility = View.GONE
-            appListLayout.visibility = View.VISIBLE
-        }
-
-        if (state.error != null) {
-            // show error
-        }
-
-        adapter.submitList(state.apps)
+    private fun renderApps(
+        apps: List<AppUiModel>,
+        progressBarLayout: LinearLayout,
+        appListLayout: ConstraintLayout
+    ) {
+        progressBarLayout.visibility = View.GONE
+        appListLayout.visibility = View.VISIBLE
+        adapter.submitList(apps)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -76,25 +60,24 @@ class SelectAppDialog(
         val btnConfirm = view.findViewById<MaterialButton>(R.id.btnConfirm)
 
         adapter = AppSelectAdapter{ app ->
-            viewModel.setSelectedApp(app)
+            selectedApp = app
         }
 
         rvApps.layoutManager = LinearLayoutManager(requireContext())
         rvApps.adapter = adapter
 
-        viewModel.loadApps()
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.state.collect { state ->
-                    render(state, progressBarLayout, appListLayout)
+                installedAppViewModel.apps.collect { apps ->
+                    renderApps(apps, progressBarLayout, appListLayout)
                 }
             }
         }
 
         btnConfirm.setOnClickListener {
-            val selectedApp = viewModel.state.value.selectedApp
-            if (selectedApp != null) {
-                onConfirm(selectedApp.appName, selectedApp.packageName)
+            val app = selectedApp
+            if (app != null) {
+                onConfirm(app)
                 dismiss()
             } else {
                 Log.d("cc", "Haven't selected app")

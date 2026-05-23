@@ -2,4 +2,5 @@
 
 .gradle-user-home/
 
-/src/main/res/drawable/waifu_2.jpg
+/src/main/res/drawable/waifu_*.jpg
+/src/main/res/drawable/waifu_*.png

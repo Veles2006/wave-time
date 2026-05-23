@@ -42,7 +42,9 @@ fun AppUiModel.toEntity(): BlockEntity {
     return BlockEntity(
         id = id,
         appName = appName,
-        packageName = packageName
+        packageName = packageName,
+        blockType = blockType,
+        penaltyMinutes = penaltyMinutes
     )
 }
 
@@ -50,7 +52,9 @@ fun AppUiModel.toDomain(): Block {
     return Block(
         id = id,
         appName = appName,
-        packageName = packageName
+        packageName = packageName,
+        blockType = blockType,
+        penaltyMinutes = penaltyMinutes
     )
 }
 

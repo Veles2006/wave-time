@@ -69,5 +69,5 @@ interface BlockDao {
 
     // Delete method
     @Query("UPDATE blocks SET isDeleted = 1 WHERE id = :id")
-    suspend fun softDelete(id: String)
+    suspend fun softDelete(id: String): Int
 }

@@ -11,7 +11,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.sae.wavetime.R
 import com.sae.wavetime.data.mapper.toDomain
-import com.sae.wavetime.data.mapper.toEntity
 import com.sae.wavetime.data.repository.BlockRepository
 import com.sae.wavetime.data.repository.ItemRepository
 import com.sae.wavetime.data.resolver.AppIconResolver
@@ -20,7 +19,6 @@ import com.sae.wavetime.databinding.FragmentBlockFormBinding
 import com.sae.wavetime.domain.model.Block
 import com.sae.wavetime.domain.usecase.CreateBlockWithKeyUseCase
 import com.sae.wavetime.local.DatabaseProvider
-import com.sae.wavetime.ui.block.list.BlockListViewModelFactory
 import kotlinx.coroutines.launch
 import java.util.UUID
 import kotlin.getValue
@@ -31,7 +29,6 @@ class BlockFormFragment : Fragment(R.layout.fragment_block_form){
     private var blockId: String? = null
 
     private var block: Block? = null
-
     private val viewModel: BlockFormViewModel by viewModels {
         val db = DatabaseProvider.getDatabase(requireContext())
 
@@ -49,6 +46,25 @@ class BlockFormFragment : Fragment(R.layout.fragment_block_form){
                 itemRepo
             )
         )
+    }
+
+    private fun showSelectAppDialog() {
+        val dialog = SelectAppDialog { app ->
+            viewModel.setSelectedApp(app)
+
+            val icon = AppIconResolver(requireContext()).getIcon(app.packageName)
+
+            binding.edtAppName.setText(app.appName)
+            binding.edtPackageName.setText(app.packageName)
+
+            if (icon != null) {
+                binding.ivAppIcon.setImageDrawable(icon)
+            } else {
+                binding.ivAppIcon.setImageResource(R.drawable.waifu_2)
+            }
+        }
+
+        dialog.show(childFragmentManager, "SelectApp")
     }
 
     private fun render(state: BlockFormState) {
@@ -103,19 +119,7 @@ class BlockFormFragment : Fragment(R.layout.fragment_block_form){
             if (isClicking) return@setOnClickListener
 
             isClicking = true
-
-            val dialog = SelectAppDialog { name, packageName ->
-                val icon = AppIconResolver(requireContext()).getIcon(packageName)
-                binding.edtAppName.setText(name)
-                binding.edtPackageName.setText(packageName)
-                if (icon != null) {
-                    binding.ivAppIcon.setImageDrawable(icon)
-                } else {
-                    binding.ivAppIcon.setImageResource(R.drawable.waifu_2)
-                }
-            }
-
-            dialog.show(childFragmentManager, "SelectApp")
+            showSelectAppDialog()
 
             Handler(Looper.getMainLooper()).postDelayed({
                 isClicking = false
@@ -126,13 +130,7 @@ class BlockFormFragment : Fragment(R.layout.fragment_block_form){
             if (isClicking) return@setOnClickListener
 
             isClicking = true
-
-            val dialog = SelectAppDialog { name, packageName ->
-                binding.edtAppName.setText(name)
-                binding.edtPackageName.setText(packageName)
-            }
-
-            dialog.show(childFragmentManager, "SelectApp")
+            showSelectAppDialog()
 
             Handler(Looper.getMainLooper()).postDelayed({
                 isClicking = false
@@ -156,7 +154,9 @@ class BlockFormFragment : Fragment(R.layout.fragment_block_form){
                 )
                 viewModel.saveBlock(blockData)
             } else {
+                val currentBlockId = blockId
                 val blockData = block?.copy(
+                    id = currentBlockId!!,
                     appName = appName,
                     packageName = packageName,
                 )

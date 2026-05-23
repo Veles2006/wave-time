@@ -27,7 +27,7 @@ class BlockRepository(
                         appName = block.appName,
                         packageName = block.packageName,
                         icon = appIconResolver.getIcon(block.packageName),
-                        isActivity = block.isActive
+                        isActive = block.isActive
                     )
                 }
             }
@@ -42,7 +42,9 @@ class BlockRepository(
                         appName = it.appName,
                         packageName = it.packageName,
                         icon = appIconResolver.getIcon(it.packageName),
-                        isActivity = it.isActive
+                        penaltyMinutes = it.penaltyMinutes,
+                        unlockUntil = it.unlockUntil,
+                        isActive = it.isActive
                     )
                 }
             }
@@ -60,20 +62,16 @@ class BlockRepository(
         return blockDao.getByPackageName(packageName)?.toDomain()
     }
 
-    fun getInstalledApps(blocks: List<AppUiModel>): List<AppUiModel> {
-        return installedAppResolver.getInstalledApps(blocks)
-    }
-
     suspend fun setActive(id: String, isChecked: Boolean) {
         blockDao.toggleActive(id, isChecked)
     }
 
     suspend fun saveBlock(block: Block): Block {
+
         val existedBlock = blockDao.getByPackageName(block.packageName)
 
-        return if (existedBlock == null) {
-            blockDao.softDelete(block.id)
 
+        return if (existedBlock == null) {
             val newBlock = block.copy(
                 id = UUID.randomUUID().toString(),
                 isDeleted = false
@@ -94,7 +92,6 @@ class BlockRepository(
             block
         }
         else {
-            blockDao.softDelete(block.id)
 
             val restoredBlock = existedBlock.toDomain().copy(
                 appName = block.appName,
@@ -117,11 +114,10 @@ class BlockRepository(
         }
     }
 
-    suspend fun unlockTemporarily(
+    suspend fun setUnlockUntil(
         blockId: String,
-        durationMinutes: Int
+        unlockUntil: Long
     ) {
-        val unlockUntil = System.currentTimeMillis() + durationMinutes * 60_000L
 
         blockDao.setUnlockUntil(
             id = blockId,

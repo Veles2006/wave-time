@@ -9,7 +9,6 @@ import com.sae.wavetime.ui.model.AppUiModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -19,33 +18,6 @@ class BlockFormViewModel(
 ) : ViewModel() {
     private val _state = MutableStateFlow(BlockFormState())
     val state: StateFlow<BlockFormState> = _state
-    fun loadApps() {
-        viewModelScope.launch {
-            _state.update {
-                it.copy(
-                    isLoading = true,
-                    error = null
-                )
-            }
-            try {
-                val blocks = repository.getBlocksFlow().first()
-                val apps = repository.getInstalledApps(blocks)
-                _state.update {
-                    it.copy(
-                        isLoading = false,
-                        apps = apps
-                    )
-                }
-            } catch (e: Exception) {
-                _state.update {
-                    it.copy(
-                        isLoading = false,
-                        error = "Error loading apps: ${e.message}"
-                    )
-                }
-            }
-        }
-    }
 
     fun observeBlock(id: String) {
         viewModelScope.launch {

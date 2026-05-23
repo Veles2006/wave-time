@@ -30,14 +30,25 @@ class UseItemUseCase(
                 error("Key duration invalid")
             }
 
-            val blockId = keyInfo.blockId?.id
+            val block = keyInfo.blockId
                 ?: error("Key chưa gắn với block nào")
+
+            val blockId = block.id
+            val packageName = block.packageName
 
             inventoryRepo.subtractQuantity(itemId, amount)
 
-            blockRepo.unlockTemporarily(
+            val blockByPackageName = blockRepo.getByPackageName(packageName)
+
+
+            val now = System.currentTimeMillis()
+            val baseTime = maxOf(now, blockByPackageName?.unlockUntil ?: 0L)
+
+            val newUnlockUntil = baseTime + keyInfo.durationMinutes * 60 * 1000L
+
+            blockRepo.setUnlockUntil(
                 blockId = blockId,
-                durationMinutes = keyInfo.durationMinutes
+                unlockUntil = newUnlockUntil
             )
         }
     }

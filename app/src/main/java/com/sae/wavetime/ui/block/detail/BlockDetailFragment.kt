@@ -13,11 +13,8 @@ import com.sae.wavetime.data.repository.BlockRepository
 import com.sae.wavetime.data.resolver.AppIconResolver
 import com.sae.wavetime.data.resolver.InstalledAppResolver
 import com.sae.wavetime.databinding.FragmentBlockDetailBinding
-import com.sae.wavetime.databinding.FragmentTaskDetailBinding
 import com.sae.wavetime.local.DatabaseProvider
 import com.sae.wavetime.ui.dialog.SoftDeleteDialog
-import com.sae.wavetime.ui.task.detail.TaskDetailState
-import com.sae.wavetime.utils.toDisplayString
 import kotlinx.coroutines.launch
 
 class BlockDetailFragment : Fragment(R.layout.fragment_block_detail){
@@ -49,6 +46,19 @@ class BlockDetailFragment : Fragment(R.layout.fragment_block_detail){
         }
 
         state.block?.let { block ->
+            val icon = AppIconResolver(requireContext()).getIcon(block.packageName)
+            binding.tvAppName.text = block.appName
+            binding.tvPackageName.text = block.packageName
+            binding.tvBlockType.text = block.blockType
+            binding.tvPenaltyMinutes.text = "${block.penaltyMinutes}"
+            binding.tvTimer.text = state.remainingTime
+
+            if (icon != null) {
+                binding.ivAppIcon.setImageDrawable(icon)
+            } else {
+                binding.ivAppIcon.setImageResource(R.drawable.waifu_2)
+            }
+
             binding.btnEdit.setOnClickListener {
                 (activity as? MainActivity)?.openBlockForm(block.id)
             }

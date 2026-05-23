@@ -5,7 +5,6 @@ import com.sae.wavetime.ui.model.AppUiModel
 data class BlockFormState(
     val isLoading: Boolean = false,
     val app: AppUiModel? = null,
-    val apps: List<AppUiModel> = emptyList(),
     val error: String? = null,
     val selectedApp: AppUiModel? = null
 )
