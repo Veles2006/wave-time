@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 class TaskListViewModel(
     private val repository: TaskRepository
@@ -34,5 +35,11 @@ class TaskListViewModel(
                 SharingStarted.WhileSubscribed(5000),
                 TaskListState(isLoading = true)
             )
+
+    init {
+        viewModelScope.launch {
+            repository.generateTodayDailyTasks()
+        }
+    }
 
 }

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sae.wavetime.domain.model.RewardItem
 import com.sae.wavetime.data.repository.TaskRepository
+import com.sae.wavetime.domain.model.Task
 import com.sae.wavetime.domain.usecase.CompleteTaskUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -63,12 +64,42 @@ class TaskDetailViewModel(
             }
         }
     }
-    fun completeTask(taskId: String, rewards: List<RewardItem> = emptyList()) {
+    fun completeTask(task: Task, completeMode: String, rewards: List<RewardItem> = emptyList()) {
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true, error = null) }
 
             try {
-                completeTaskUseCase.execute(taskId, rewards)
+                if (completeMode == "tap") {
+                    completeTaskUseCase.execute(task.id)
+                } else if (completeMode == "timer") {
+                    val durationMinutes = task.requiredDurationMinutes
+
+                    if (durationMinutes == null || durationMinutes <= 0) {
+                        error("Timer duration invalid")
+                    }
+
+                    val startedAt = System.currentTimeMillis()
+                    val finishAt = startedAt + durationMinutes * 60_000L
+
+                    taskRepo.updateFullTask(
+                        task.copy(
+                            startedAt = startedAt,
+                            finishAt = finishAt,
+                            status = "in_progress"
+                        )
+                    )
+
+                    _state.update {
+                        it.copy(
+                            timerStartEvent = TimerStartEvent(
+                                taskId = task.id,
+                                finishAt = finishAt
+                            )
+                        )
+                    }
+                } else {
+                    completeTaskUseCase.execute(task.id)
+                }
 
                 _state.update {
                     it.copy(
@@ -83,6 +114,12 @@ class TaskDetailViewModel(
                     )
                 }
             }
+        }
+    }
+
+    fun clearTimerStartEvent() {
+        _state.update {
+            it.copy(timerStartEvent = null)
         }
     }
 }

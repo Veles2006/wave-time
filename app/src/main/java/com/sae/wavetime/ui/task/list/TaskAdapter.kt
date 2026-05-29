@@ -4,7 +4,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.card.MaterialCardView
 import com.sae.wavetime.R
 import com.sae.wavetime.domain.model.Task
 
@@ -18,6 +20,7 @@ class TaskAdapter(
         notifyDataSetChanged()
     }
     class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val cardTask: MaterialCardView = itemView.findViewById(R.id.cardTask)
         val tvName: TextView = itemView.findViewById(R.id.tvName)
         val tvDescription: TextView = itemView.findViewById(R.id.tvDescription)
     }
@@ -36,6 +39,34 @@ class TaskAdapter(
 
         holder.itemView.setOnClickListener {
             openTaskDetail(task.id)
+        }
+
+        val context = holder.itemView.context
+
+        if (!task.isDeleted && task.status == "in_progress" && task.completeMode == "timer") {
+            holder.cardTask.setCardBackgroundColor(
+                ContextCompat.getColor(context, R.color.selected_app_bg)
+            )
+
+            holder.tvName.setTextColor(
+                ContextCompat.getColor(context, R.color.white)
+            )
+
+            holder.tvDescription.setTextColor(
+                ContextCompat.getColor(context, R.color.white)
+            )
+        } else {
+            holder.cardTask.setCardBackgroundColor(
+                ContextCompat.getColor(context, R.color.white)
+            )
+
+            holder.tvName.setTextColor(
+                ContextCompat.getColor(context, R.color.black)
+            )
+
+            holder.tvDescription.setTextColor(
+                ContextCompat.getColor(context, R.color.black)
+            )
         }
     }
 

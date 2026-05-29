@@ -42,6 +42,7 @@ data class ApiTask(
     val name: String,
     val description: String?,
     val status: String,
+    val type: String = "default",
     val reward: ApiReward,
     val penalty: ApiPenalty,
     val deadline: String? = null,

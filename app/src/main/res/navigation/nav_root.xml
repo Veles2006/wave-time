@@ -37,6 +37,12 @@
         android:label="Task Detail" />
 
     <fragment
+        android:id="@+id/taskHistoryFragment"
+        android:name="com.sae.wavetime.ui.task.history.TaskHistoryFragment"
+        android:label="Task History">
+    </fragment>
+
+    <fragment
         android:id="@+id/blockFormFragment"
         android:name="com.sae.wavetime.ui.block.form.BlockFormFragment"
         android:label="Block Form">
@@ -64,6 +70,14 @@
     <action
         android:id="@+id/action_to_taskDetail"
         app:destination="@id/taskDetailFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"/>
+
+    <action
+        android:id="@+id/action_to_taskHistory"
+        app:destination="@id/taskHistoryFragment"
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"

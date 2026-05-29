@@ -186,7 +186,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:valueFrom="1"
-                        android:valueTo="4"
+                        android:valueTo="8"
                         android:stepSize="1"
                         android:value="1"
 
@@ -198,6 +198,88 @@
                         app:thumbColor="@color/primary_blue_light"
                         app:layout_constraintTop_toBottomOf="@id/tvDifficultyTitle"
                         app:layout_constraintStart_toStartOf="parent"/>
+
+                    <RadioGroup
+                        android:id="@+id/rgTaskType"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintTop_toBottomOf="@id/sliderDifficulty"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent">
+
+                        <RadioButton
+                            android:id="@+id/rbDefaultType"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/default_text"
+                            android:checked="true" />
+
+                        <RadioButton
+                            android:id="@+id/rbDailyType"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/daily"
+                            android:layout_marginStart="12dp" />
+
+                    </RadioGroup>
+
+                    <RadioGroup
+                        android:id="@+id/rgCompleteMode"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintTop_toBottomOf="@id/rgTaskType"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent">
+
+                        <RadioButton
+                            android:id="@+id/rbTapMode"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/tap"
+                            android:checked="true" />
+
+                        <RadioButton
+                            android:id="@+id/rbTimerMode"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/timer"
+                            android:layout_marginStart="12dp" />
+
+                    </RadioGroup>
+
+                    <LinearLayout
+                        android:id="@+id/layoutTimer"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        app:layout_constraintTop_toBottomOf="@id/rgCompleteMode"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:visibility="gone">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilTimer"
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+                            android:hint="Minutes"
+                            app:boxBackgroundMode="outline"
+                            app:boxStrokeColor="@color/primary_blue_light"
+                            app:hintTextColor="@color/primary_blue_light">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/edtTimer"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number"
+                                android:maxLength="3"
+                                android:singleLine="true"
+                                android:textColor="@color/black" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

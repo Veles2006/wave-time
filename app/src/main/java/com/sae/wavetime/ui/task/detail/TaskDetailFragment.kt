@@ -13,9 +13,12 @@ import com.sae.wavetime.data.repository.InventoryRepository
 import com.sae.wavetime.data.repository.TaskRepository
 import com.sae.wavetime.databinding.FragmentTaskDetailBinding
 import com.sae.wavetime.domain.usecase.CompleteTaskUseCase
+import com.sae.wavetime.engine.notification.TaskTimerNotification
+import com.sae.wavetime.engine.service.TaskTimerService
 import com.sae.wavetime.local.DatabaseProvider
 import com.sae.wavetime.ui.dialog.SoftDeleteDialog
 import com.sae.wavetime.utils.toDisplayString
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
@@ -26,7 +29,10 @@ class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
     private val viewModel: TaskDetailViewModel by viewModels {
         val db = DatabaseProvider.getDatabase(requireContext())
 
-        val taskRepo = TaskRepository(db.taskDao())
+        val taskRepo = TaskRepository(
+            db.taskDao(),
+            db.taskTemplateDao()
+        )
         val inventoryRepo = InventoryRepository(db.inventoryDao())
 
         TaskDetailModelFactory(
@@ -37,6 +43,29 @@ class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
                 db
             )
         )
+    }
+
+    private fun formatRemainingTime(millis: Long): String {
+        val totalSeconds = millis / 1000
+        val minutes = totalSeconds / 60
+        val seconds = totalSeconds % 60
+
+        return "%02d:%02d".format(minutes, seconds)
+    }
+
+    private fun renderTimer(state: TaskDetailState) {
+        val finishAt = state.task?.finishAt
+
+        binding.tvTimer.text = if (finishAt == null) {
+            "00:00"
+        } else {
+            val remainingMillis = finishAt - System.currentTimeMillis()
+            if (remainingMillis <= 0L) {
+                "00:00"
+            } else {
+                formatRemainingTime(remainingMillis)
+            }
+        }
     }
 
     private fun render(state: TaskDetailState) {
@@ -52,10 +81,14 @@ class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
             binding.tvTaskName.text = task.name
             binding.tvDescription.text = "Description: ${task.description}"
             binding.tvStatus.text = "Status: ${task.status}"
+            binding.tvTypeTask.text = "Type: ${task.type}"
+            binding.tvCompleteMode.text = "Complete Mode: ${task.completeMode}"
             binding.tvDate.text = "Date: ${task.date}"
             binding.tvDifficulty.text = "Difficulty: ${task.difficulty}"
             binding.tvReward.text = "Reward: ${task.reward.toDisplayString()}"
             binding.tvPenalty.text = "Penalty: ${task.penalty.toDisplayString()}"
+            binding.tvRequiredDurationMinutes.text = "Required Duration Minutes: ${task.requiredDurationMinutes}"
+
             binding.btnEdit.setOnClickListener {
                 (activity as? MainActivity)?.openTaskForm(task.id)
             }
@@ -70,9 +103,11 @@ class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
                 dialog.show(parentFragmentManager, "SoftDeleteDialog")
             }
             binding.btnSuccess.setOnClickListener {
-                viewModel.completeTask(task.id, task.reward.items)
+                viewModel.completeTask(task, task.completeMode,task.reward.items)
 
-                requireActivity().onBackPressedDispatcher.onBackPressed()
+                if (task.completeMode == "tap") {
+                    requireActivity().onBackPressedDispatcher.onBackPressed()
+                }
             }
             binding.btnBack.setOnClickListener {
                 requireActivity().onBackPressedDispatcher.onBackPressed()
@@ -96,6 +131,25 @@ class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.state.collect { state ->
                     render(state)
+
+                    state.timerStartEvent?.let { event ->
+                        TaskTimerService.start(
+                            context = requireContext(),
+                            taskId = event.taskId,
+                            finishAt = event.finishAt
+                        )
+
+                        viewModel.clearTimerStartEvent()
+                    }
+                }
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                while (true) {
+                    renderTimer(viewModel.state.value)
+                    delay(1000L)
                 }
             }
         }

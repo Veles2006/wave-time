@@ -27,7 +27,8 @@ class SelectItemDialog(
     private val viewModel: TaskFormViewModel by viewModels {
         TaskFormViewModelFactory(
             TaskRepository(
-                DatabaseProvider.getDatabase(requireContext()).taskDao()
+                DatabaseProvider.getDatabase(requireContext()).taskDao(),
+                DatabaseProvider.getDatabase(requireContext()).taskTemplateDao()
             ),
             ItemRepository(
                 DatabaseProvider.getDatabase(requireContext()).itemDao()

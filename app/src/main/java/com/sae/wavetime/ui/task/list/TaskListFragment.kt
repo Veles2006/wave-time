@@ -22,9 +22,11 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
     private val binding get() = _binding!!
 
     private val viewModel: TaskListViewModel by activityViewModels  {
+        val db = DatabaseProvider.getDatabase(requireContext())
         TaskListViewModelFactory(
             TaskRepository(
-                DatabaseProvider.getDatabase(requireContext()).taskDao()
+                db.taskDao(),
+                db.taskTemplateDao()
             )
         )
     }

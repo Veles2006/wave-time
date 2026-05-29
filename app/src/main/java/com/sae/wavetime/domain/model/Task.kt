@@ -34,10 +34,17 @@ data class Task(
     val name: String,
     val description: String?,
     val status: String,
+    val type: String = "default",
+    val completeMode: String = "tap",
     val reward: Reward,
     val penalty: Penalty,
+    val requiredDurationMinutes: Int? = null,
+    val startedAt: Long? = null,
+    val finishAt: Long? = null,
     val deadline: String? = null,
     val date: String? = null,
     val difficulty: String,
-    val isDeleted: Boolean = false
+    val isDeleted: Boolean = false,
+    val createdAt: Long = System.currentTimeMillis(),
+    val lastCompletedAt: Long? = null
 )

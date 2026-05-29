@@ -6,6 +6,7 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     >
 
     <androidx.fragment.app.FragmentContainerView
@@ -16,14 +17,6 @@
         app:navGraph="@navigation/nav_root"
         app:defaultNavHost="true"
         tools:layout="@layout/fragment_main_content"/>
-
-
-<!--    &lt;!&ndash; Layer 2 &ndash;&gt;-->
-<!--    <androidx.fragment.app.FragmentContainerView-->
-<!--        android:id="@+id/fullscreenContainer"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        tools:layout="@layout/fragment_task_list" />-->
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigationView"

@@ -161,6 +161,79 @@
             app:layout_constraintTop_toBottomOf="@id/tvDescription" />
 
         <ImageView
+            android:id="@+id/ivTypeTaskIcon"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="18dp"
+            android:padding="4dp"
+            android:src="@drawable/ic_circle_solid_full"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvStatus" />
+
+        <TextView
+            android:id="@+id/tvTypeTask"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="18dp"
+            android:gravity="center"
+            android:text="@string/type_test"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@id/ivTypeTaskIcon"
+            app:layout_constraintTop_toBottomOf="@id/tvStatus" />
+
+
+        <ImageView
+            android:id="@+id/ivCompleteModeIcon"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="18dp"
+            android:padding="4dp"
+            android:src="@drawable/ic_circle_solid_full"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvTypeTask" />
+
+        <TextView
+            android:id="@+id/tvCompleteMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="18dp"
+            android:gravity="center"
+            android:text="@string/complete_mode"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@id/ivCompleteModeIcon"
+            app:layout_constraintTop_toBottomOf="@id/tvTypeTask" />
+
+        <ImageView
+            android:id="@+id/ivRequiredDurationMinutesIcon"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="18dp"
+            android:padding="4dp"
+            android:src="@drawable/ic_circle_solid_full"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvCompleteMode" />
+
+        <TextView
+            android:id="@+id/tvRequiredDurationMinutes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="18dp"
+            android:gravity="center"
+            android:text="@string/required_duration_minutes"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@id/ivRequiredDurationMinutesIcon"
+            app:layout_constraintTop_toBottomOf="@id/tvCompleteMode" />
+
+        <ImageView
             android:id="@+id/ivDateIcon"
             android:layout_width="18dp"
             android:layout_height="18dp"
@@ -168,7 +241,7 @@
             android:layout_marginTop="18dp"
             android:src="@drawable/ic_calendar_solid_full"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvStatus" />
+            app:layout_constraintTop_toBottomOf="@id/tvRequiredDurationMinutes" />
 
         <TextView
             android:id="@+id/tvDate"
@@ -181,7 +254,7 @@
             android:textColor="@color/black"
             android:textSize="14sp"
             app:layout_constraintStart_toEndOf="@id/ivDateIcon"
-            app:layout_constraintTop_toBottomOf="@id/tvStatus" />
+            app:layout_constraintTop_toBottomOf="@id/tvRequiredDurationMinutes" />
 
         <ImageView
             android:id="@+id/ivDifficultyIcon"
@@ -252,6 +325,17 @@
             android:textSize="14sp"
             app:layout_constraintStart_toEndOf="@id/ivPenaltyIcon"
             app:layout_constraintTop_toBottomOf="@id/tvReward" />
+
+        <TextView
+            android:id="@+id/tvTimer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="80dp"
+            android:text="00:00"
+            android:textSize="40sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

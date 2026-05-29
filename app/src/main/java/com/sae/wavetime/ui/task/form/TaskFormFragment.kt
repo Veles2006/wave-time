@@ -19,6 +19,7 @@ import com.sae.wavetime.data.repository.TaskRepository
 import com.sae.wavetime.databinding.FragmentTaskFormBinding
 import com.sae.wavetime.local.DatabaseProvider
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import java.util.UUID
 import kotlin.getValue
 
@@ -32,14 +33,18 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
     private var expValue = 0
 
     private var taskId: String? = null
+    private var taskType: String = "default"
+    private var completeMode: String = "tap"
 
     private val viewModel: TaskFormViewModel by viewModels {
+        val db = DatabaseProvider.getDatabase(requireContext())
         TaskFormViewModelFactory(
             TaskRepository(
-                DatabaseProvider.getDatabase(requireContext()).taskDao()
+                db.taskDao(),
+                db.taskTemplateDao()
             ),
             ItemRepository(
-                DatabaseProvider.getDatabase(requireContext()).itemDao()
+                db.itemDao()
             )
         )
     }
@@ -77,8 +82,29 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
                     binding.btnCoin.text = task.reward.gold.toString()
                     binding.btnExp.text = task.reward.exp.toString()
                     binding.btnItem.text = getString(R.string.change_item)
+
                     coinValue = task.reward.gold
                     expValue = task.reward.exp
+
+                    taskType = task.type
+
+                    task.requiredDurationMinutes?.let {
+                        binding.edtTimer.setText(it.toString())
+                    }
+
+                    binding.rgTaskType.check(
+                        when (task.type) {
+                            "daily" -> R.id.rbDailyType
+                            else -> R.id.rbDefaultType
+                        }
+                    )
+
+                    binding.rgCompleteMode.check(
+                        when (task.completeMode) {
+                            "timer" -> R.id.rbTimerMode
+                            else -> R.id.rbTapMode
+                        }
+                    )
                 }
             }
             task = state.task
@@ -145,22 +171,56 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
             dialog.show(parentFragmentManager, "SelectItem")
         }
 
+        binding.rgTaskType.setOnCheckedChangeListener { _, checkedId ->
+            taskType = when (checkedId) {
+                R.id.rbDefaultType -> "default"
+                R.id.rbDailyType -> "daily"
+                else -> "default"
+            }
+        }
+
+        binding.rgCompleteMode.setOnCheckedChangeListener { _, checkedId ->
+            completeMode = when (checkedId) {
+                R.id.rbTapMode -> "tap"
+                R.id.rbTimerMode -> "timer"
+                else -> "tap"
+            }
+
+            binding.layoutTimer.visibility =
+                if (completeMode == "timer") View.VISIBLE else View.GONE
+        }
+
         binding.btnSuccess.setOnClickListener {
 
-            val taskName = binding.edtTaskName.text.toString()
+            val taskName = binding.edtTaskName.text.toString().trim()
             val taskDesc = binding.edtTaskDesc.text?.toString()?.trim()
             val taskItemReward = viewModel.state.value.selectedRewards
+            val requiredDurationMinutes = binding.edtTimer.text.toString().trim().toIntOrNull()
 
             val taskDifficulty = when (binding.sliderDifficulty.value.toInt()) {
                 1 -> "Mortal"
                 2 -> "Yao"
                 3 -> "Gui"
                 4 -> "Mara"
+                5 -> "Sage"
+                6 -> "Xian"
+                7 -> "Deity"
+                8 -> "Creation"
                 else -> "Unknown"
             }
 
             if (taskName.isBlank()) {
                 binding.edtTaskName.error = "This field cannot be empty"
+                return@setOnClickListener
+            }
+
+
+            if (
+                completeMode == "timer" &&
+                (requiredDurationMinutes == null || requiredDurationMinutes <= 0)
+                ) {
+                Log.d("dd", "${requiredDurationMinutes}")
+                binding.edtTimer.error = "Please enter a valid timer"
                 return@setOnClickListener
             }
 
@@ -170,6 +230,9 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
                     name = taskName,
                     description = taskDesc,
                     status = "pending",
+                    type = taskType,
+                    completeMode = completeMode,
+                    requiredDurationMinutes = requiredDurationMinutes,
                     difficulty = taskDifficulty,
                     reward = Reward(
                         gold = coinValue,
@@ -177,6 +240,7 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
                         items = taskItemReward.toRewardItemList()
                     ),
                     penalty = Penalty(),
+                    date = LocalDate.now().toString()
                 )
                 viewModel.addTask(taskData)
             } else {
@@ -184,6 +248,7 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
                     name = taskName,
                     description = taskDesc,
                     status = "pending",
+                    type = taskType,
                     difficulty = taskDifficulty,
                     reward = Reward(
                         gold = coinValue,

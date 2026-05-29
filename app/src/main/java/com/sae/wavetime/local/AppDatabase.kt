@@ -8,11 +8,13 @@ import com.sae.wavetime.data.dao.InstalledAppDao
 import com.sae.wavetime.data.dao.InventoryDao
 import com.sae.wavetime.data.dao.ItemDao
 import com.sae.wavetime.data.dao.TaskDao
+import com.sae.wavetime.data.dao.TaskTemplateDao
 import com.sae.wavetime.data.model.entity.BlockEntity
 import com.sae.wavetime.data.model.entity.InstalledAppEntity
 import com.sae.wavetime.data.model.entity.InventoryEntity
 import com.sae.wavetime.data.model.entity.ItemEntity
 import com.sae.wavetime.data.model.entity.TaskEntity
+import com.sae.wavetime.data.model.entity.TaskTemplateEntity
 import com.sae.wavetime.data.room.Converters
 
 @Database(
@@ -21,7 +23,8 @@ import com.sae.wavetime.data.room.Converters
         ItemEntity::class,
         InventoryEntity::class,
         BlockEntity::class,
-        InstalledAppEntity::class
+        InstalledAppEntity::class,
+        TaskTemplateEntity::class
     ],
     version = 1
 )
@@ -33,4 +36,5 @@ abstract class AppDatabase: RoomDatabase() {
     abstract fun inventoryDao(): InventoryDao
     abstract fun blockDao(): BlockDao
     abstract fun installedAppDao(): InstalledAppDao
+    abstract fun taskTemplateDao(): TaskTemplateDao
 }

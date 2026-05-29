@@ -3,7 +3,7 @@
 
     <item
         android:id="@+id/menu_history"
-        android:title="History"
+        android:title="@string/history"
         android:icon="@drawable/ic_clock_rotate_left_solid_full"/>
 
     <item

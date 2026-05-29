@@ -15,11 +15,22 @@ interface TaskDao {
     @Query("SELECT * FROM tasks WHERE isDeleted = 0")
     fun getAll(): Flow<List<TaskEntity>>
 
-    @Query("SELECT * FROM tasks WHERE id = :id AND isDeleted = 0")
+    @Query("SELECT * FROM tasks WHERE id = :id AND isDeleted = 0 LIMIT 1")
     suspend fun getById(id: String): TaskEntity?
 
     @Query("SELECT * FROM tasks WHERE id = :id AND isDeleted = 0")
     fun getByIdFlow(id: String): Flow<TaskEntity?>
+
+    @Query("""
+        SELECT * FROM tasks
+        WHERE templateId = :templateId
+        AND date = :date
+        LIMIT 1
+    """)
+    suspend fun getTaskByTemplateAndDate(
+        templateId: String,
+        date: String
+    ): TaskEntity?
 
     // Create method
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -31,8 +42,13 @@ interface TaskDao {
         SET name = :name,
             description = :description,
             status = :status,
+            type = :type,
+            completeMode = :completeMode,
+            startedAt = :startedAt,
+            finishAt = :finishAt,
             reward = :reward,
             penalty = :penalty,
+            requiredDurationMinutes = :requiredDurationMinutes,
             deadline = :deadline,
             date = :date,
             difficulty = :difficulty
@@ -43,8 +59,13 @@ interface TaskDao {
         name: String,
         description: String?,
         status: String,
+        type: String,
+        completeMode: String,
+        startedAt: Long?,
+        finishAt: Long?,
         reward: Reward,
         penalty: Penalty,
+        requiredDurationMinutes: Int?,
         deadline: String?,
         date: String?,
         difficulty: String
@@ -52,12 +73,15 @@ interface TaskDao {
 
     @Query("""
         UPDATE tasks
-        SET status = :status
+        SET status = :status,
+            lastCompletedAt = :lastCompletedAt,
+            finishAt = null
         WHERE id = :taskId AND isDeleted = 0
     """)
     suspend fun changeStatus(
         taskId: String,
-        status: String
+        status: String,
+        lastCompletedAt: Long?
     )
 
     // Delete method
@@ -66,6 +90,6 @@ interface TaskDao {
     @Query("DELETE FROM tasks WHERE id = :taskId")
     suspend fun hardDeleteById(taskId: String)
 
-    @Query("UPDATE tasks SET isDeleted = 1 WHERE id = :taskId")
+    @Query("UPDATE tasks SET isDeleted = 1, finishAt = null WHERE id = :taskId")
     suspend fun softDelete(taskId: String)
 }

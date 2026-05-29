@@ -40,4 +40,14 @@
     <string name="back_block_list">Back Block List</string>
     <string name="delete_block">Delete Block</string>
     <string name="block_created_successfully">Block created successfully</string>
+    <string name="history">History</string>
+    <string name="task_filter">Task Filter</string>
+    <string name="task_history">Task History</string>
+    <string name="default_text">Default</string>
+    <string name="daily">Daily</string>
+    <string name="type_test">Type</string>
+    <string name="tap">Tap</string>
+    <string name="timer">Timer</string>
+    <string name="complete_mode">Complete Mode</string>
+    <string name="required_duration_minutes">Required Duration Minutes</string>
 </resources>

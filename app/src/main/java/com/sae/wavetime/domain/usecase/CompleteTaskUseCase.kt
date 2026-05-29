@@ -15,10 +15,16 @@ class CompleteTaskUseCase(
 ) {
     suspend fun execute(
         taskId: String,
-        rewards: List<RewardItem>
     ) {
         database.withTransaction {
-            taskRepo.changeStatus(taskId, "completed")
+            val task = taskRepo.getTaskById(taskId)
+                ?: return@withTransaction
+
+            if (task.status == "completed") {
+                return@withTransaction
+            }
+            val rewards = task.reward.items
+            taskRepo.changeStatus(taskId, "completed", System.currentTimeMillis())
             inventoryRepo.addQuantity(rewards)
         }
     }

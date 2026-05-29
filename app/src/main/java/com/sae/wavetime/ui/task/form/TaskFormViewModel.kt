@@ -96,6 +96,7 @@ class TaskFormViewModel(
     fun addTask(task: Task) {
         viewModelScope.launch {
             taskRepo.insertTask(task)
+            taskRepo.insertTaskTemplate(task)
         }
     }
 
