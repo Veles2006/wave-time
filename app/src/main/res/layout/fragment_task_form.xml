@@ -143,7 +143,12 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/edtTaskDesc"
                             android:layout_width="match_parent"
-                            android:layout_height="54dp"
+                            android:layout_height="wrap_content"
+                            android:minLines="1"
+                            android:gravity="top|start"
+                            android:inputType="textMultiLine"
+                            android:singleLine="false"
+                            android:imeOptions="actionNone"
                             android:textColor="@color/black"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
