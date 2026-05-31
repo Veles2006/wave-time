@@ -12,6 +12,8 @@ import com.sae.wavetime.data.repository.InventoryRepository
 import com.sae.wavetime.data.repository.TaskRepository
 import com.sae.wavetime.domain.usecase.CompleteTaskUseCase
 import com.sae.wavetime.engine.alarm.TaskTimerAlarmScheduler
+import com.sae.wavetime.engine.event.TaskEvent
+import com.sae.wavetime.engine.event.TaskEventBus
 import com.sae.wavetime.engine.notification.TaskTimerNotification
 import com.sae.wavetime.local.DatabaseProvider
 import kotlinx.coroutines.CoroutineScope
@@ -119,7 +121,21 @@ class TaskTimerService : Service() {
                     database = db
                 )
 
+                val task = taskRepo.getTaskById(taskId)
+
+                if (task == null) {
+                    Log.d(TAG, "Task not found, skip event taskId=$taskId")
+                    return@launch
+                }
+
                 completeTaskUseCase.execute(taskId)
+
+                TaskEventBus.send(
+                    TaskEvent.TaskCompletedByTimer(
+                        taskId = task.id,
+                        taskName = task.name
+                    )
+                )
 
                 Log.d(TAG, "completeTaskFromService success taskId=$taskId")
             } catch (e: Exception) {

@@ -1,5 +1,6 @@
 package com.sae.wavetime.ui.task.list
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -15,11 +16,15 @@ import com.sae.wavetime.R
 import com.sae.wavetime.data.repository.InventoryRepository
 import com.sae.wavetime.data.repository.TaskRepository
 import com.sae.wavetime.databinding.FragmentTaskListBinding
+import com.sae.wavetime.domain.model.Task
 import com.sae.wavetime.domain.usecase.CompleteTaskUseCase
 import com.sae.wavetime.domain.usecase.StartTimerTaskUseCase
 import com.sae.wavetime.engine.service.TaskTimerService
 import com.sae.wavetime.local.DatabaseProvider
+import com.sae.wavetime.ui.model.AppUiModel
 import com.sae.wavetime.ui.task.detail.TaskDetailModelFactory
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class TaskListFragment : Fragment(R.layout.fragment_task_list) {
@@ -27,6 +32,8 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
     private lateinit var adapter: TaskAdapter
     private var _binding: FragmentTaskListBinding? = null
     private val binding get() = _binding!!
+
+    private var notificationJob: Job? = null
 
     private val viewModel: TaskListViewModel by activityViewModels  {
         val db = DatabaseProvider.getDatabase(requireContext())
@@ -49,6 +56,25 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                 db
             )
         )
+    }
+
+    private fun showTaskOptionsDialog(task: Task) {
+        val options = arrayOf("Chỉnh sửa", "Xoá")
+
+        AlertDialog.Builder(requireContext())
+            .setTitle(task.name)
+            .setItems(options) { _, which ->
+                when (which) {
+                    0 -> {
+                        (activity as? MainActivity)?.openTaskForm(task.id)
+                    }
+
+                    1 -> {
+                        viewModel.softDeleteTask(task.id)
+                    }
+                }
+            }
+            .show()
     }
 
     private fun setupSwipeCompleteTask() {
@@ -85,6 +111,39 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
             .attachToRecyclerView(binding.rvTasks)
     }
 
+    private fun showNotificationMessage(message: String) {
+        notificationJob?.cancel()
+
+        binding.notificationCard.visibility = View.VISIBLE
+        binding.tvNotificationMessage.text = message
+
+        binding.notificationCard.apply {
+            visibility = View.VISIBLE
+            alpha = 0f
+            translationY = 80f
+
+            animate()
+                .alpha(1f)
+                .translationY(0f)
+                .setDuration(250)
+                .start()
+        }
+
+        notificationJob = viewLifecycleOwner.lifecycleScope.launch {
+            delay(5000)
+
+            binding.notificationCard.animate()
+                .alpha(0f)
+                .translationY(80f)
+                .setDuration(250)
+                .withEndAction {
+                    binding.notificationCard.visibility = View.GONE
+                    viewModel.clearNotificationMessage()
+                }
+                .start()
+        }
+    }
+
     private fun render(state: TaskListState) {
 
         if (state.isLoading) {
@@ -104,9 +163,14 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
 
         _binding = FragmentTaskListBinding.bind(view)
 
-        adapter = TaskAdapter { taskId ->
-            (activity as? MainActivity)?.openTaskDetail(taskId)
-        }
+        adapter = TaskAdapter(
+            onLongClick = { task ->
+                showTaskOptionsDialog(task)
+            },
+            openTaskDetail = { taskId ->
+                (activity as? MainActivity)?.openTaskDetail(taskId)
+            }
+        )
 
         binding.rvTasks.layoutManager = LinearLayoutManager(requireContext())
         binding.rvTasks.adapter = adapter
@@ -125,6 +189,12 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                         )
 
                         viewModel.clearTimerStartEvent()
+                    }
+
+                    val message = state.notificationMessage
+
+                    if (message != null) {
+                        showNotificationMessage(message)
                     }
                 }
             }

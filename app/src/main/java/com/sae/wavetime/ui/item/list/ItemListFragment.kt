@@ -17,6 +17,8 @@ import com.sae.wavetime.data.resolver.InstalledAppResolver
 import com.sae.wavetime.databinding.FragmentItemListBinding
 import com.sae.wavetime.domain.usecase.UseItemUseCase
 import com.sae.wavetime.local.DatabaseProvider
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class ItemListFragment : Fragment(R.layout.fragment_item_list) {
@@ -24,6 +26,7 @@ class ItemListFragment : Fragment(R.layout.fragment_item_list) {
     private lateinit var adapter: ItemAdapter
     private var _binding: FragmentItemListBinding? = null
     private val binding get() = _binding!!
+    private var notificationJob: Job? = null
 
     private val viewModel: ItemListViewModel by viewModels {
         val db = DatabaseProvider.getDatabase(requireContext())
@@ -37,6 +40,7 @@ class ItemListFragment : Fragment(R.layout.fragment_item_list) {
 
         ItemListViewModelFactory(
             inventoryRepo,
+            itemRepo,
             UseItemUseCase(
                 itemRepo,
                 inventoryRepo,
@@ -44,6 +48,39 @@ class ItemListFragment : Fragment(R.layout.fragment_item_list) {
                 db
             )
         )
+    }
+
+    private fun showNotificationMessage(message: String) {
+        notificationJob?.cancel()
+
+        binding.notificationCard.visibility = View.VISIBLE
+        binding.tvNotificationMessage.text = message
+
+        binding.notificationCard.apply {
+            visibility = View.VISIBLE
+            alpha = 0f
+            translationY = 80f
+
+            animate()
+                .alpha(1f)
+                .translationY(0f)
+                .setDuration(250)
+                .start()
+        }
+
+        notificationJob = viewLifecycleOwner.lifecycleScope.launch {
+            delay(5000)
+
+            binding.notificationCard.animate()
+                .alpha(0f)
+                .translationY(80f)
+                .setDuration(250)
+                .withEndAction {
+                    binding.notificationCard.visibility = View.GONE
+                    viewModel.clearNotificationMessage()
+                }
+                .start()
+        }
     }
 
     private fun render(state: ItemListState) {
@@ -76,6 +113,12 @@ class ItemListFragment : Fragment(R.layout.fragment_item_list) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.state.collect { state ->
                     render(state)
+
+                    val message = state.notificationMessage
+
+                    if (message != null) {
+                        showNotificationMessage(message)
+                    }
                 }
             }
         }

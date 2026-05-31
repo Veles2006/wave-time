@@ -6,4 +6,5 @@ data class ItemListState(
     val isLoading: Boolean = false,
     val items: List<InventoryUiModel> = emptyList(),
     val error: String? = null,
+    val notificationMessage: String? = null
 )

@@ -9,6 +9,7 @@ import com.sae.wavetime.ui.item.list.ItemListViewModel
 
 class ItemListViewModelFactory(
     private val inventoryRepo: InventoryRepository,
+    private val itemRepo: ItemRepository,
     private val useItemUseCase: UseItemUseCase
 ) : ViewModelProvider.Factory {
 
@@ -16,7 +17,7 @@ class ItemListViewModelFactory(
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
 
         if (modelClass.isAssignableFrom(ItemListViewModel::class.java)) {
-            return ItemListViewModel(inventoryRepo, useItemUseCase) as T
+            return ItemListViewModel(inventoryRepo, itemRepo, useItemUseCase) as T
         }
         throw IllegalArgumentException(
             "Unknown ViewModel class: ${modelClass.name}"

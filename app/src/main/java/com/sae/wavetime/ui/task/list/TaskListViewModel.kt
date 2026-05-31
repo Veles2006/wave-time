@@ -6,6 +6,8 @@ import com.sae.wavetime.data.repository.TaskRepository
 import com.sae.wavetime.domain.model.Task
 import com.sae.wavetime.domain.usecase.CompleteTaskUseCase
 import com.sae.wavetime.domain.usecase.StartTimerTaskUseCase
+import com.sae.wavetime.engine.event.TaskEvent
+import com.sae.wavetime.engine.event.TaskEventBus
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -53,6 +55,49 @@ class TaskListViewModel(
         viewModelScope.launch {
             repository.generateTodayDailyTasks()
         }
+
+        viewModelScope.launch {
+            TaskEventBus.event.collect { event ->
+                when (event) {
+                    is TaskEvent.TaskCompletedByTimer -> {
+                        _uiState.update {
+                            it.copy(
+                                notificationMessage = "Bạn đã hoàn thành nhiệm vụ [ ${event.taskName} ]"
+                            )
+                        }
+
+                        TaskEventBus.clearIfSame(event)
+                    }
+
+                    null -> Unit
+                }
+            }
+        }
+    }
+
+    fun softDeleteTask(id: String) {
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true, error = null) }
+
+            try {
+                repository.softDeleteTask(id)
+
+                val tasks = repository.getPendingTasks()
+
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                    )
+                }
+            } catch (e: Exception) {
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        error = e.message ?: "Unknown error",
+                    )
+                }
+            }
+        }
     }
 
     fun completeTask(task: Task) {
@@ -89,7 +134,14 @@ class TaskListViewModel(
                 }
             }.onSuccess {
                 _uiState.update {
-                    it.copy(isLoading = false)
+                    it.copy(
+                        isLoading = false,
+                        notificationMessage = if (task.completeMode == "tap") {
+                            "Bạn đã hoàn thành nhiệm vụ [ ${task.name} ]"
+                        } else {
+                            null
+                        }
+                    )
                 }
             }.onFailure { e ->
                 _uiState.update {
@@ -105,6 +157,12 @@ class TaskListViewModel(
     fun clearTimerStartEvent() {
         _uiState.update {
             it.copy(timerStartEvent = null)
+        }
+    }
+
+    fun clearNotificationMessage() {
+        _uiState.update {
+            it.copy(notificationMessage = null)
         }
     }
 }

@@ -11,6 +11,7 @@ import com.sae.wavetime.R
 import com.sae.wavetime.domain.model.Task
 
 class TaskAdapter(
+    private val onLongClick: (Task) -> Unit,
     private val openTaskDetail : (String) -> Unit
 ) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
     private var tasks: List<Task> = emptyList()
@@ -40,6 +41,11 @@ class TaskAdapter(
 
         holder.tvName.text = task.name
         holder.tvDescription.text = task.description ?: ""
+
+        holder.itemView.setOnLongClickListener {
+            onLongClick(task)
+            true
+        }
 
         holder.itemView.setOnClickListener {
             openTaskDetail(task.id)
