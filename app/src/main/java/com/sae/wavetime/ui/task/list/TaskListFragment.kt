@@ -7,12 +7,19 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.sae.wavetime.MainActivity
 import com.sae.wavetime.R
+import com.sae.wavetime.data.repository.InventoryRepository
 import com.sae.wavetime.data.repository.TaskRepository
 import com.sae.wavetime.databinding.FragmentTaskListBinding
+import com.sae.wavetime.domain.usecase.CompleteTaskUseCase
+import com.sae.wavetime.domain.usecase.StartTimerTaskUseCase
+import com.sae.wavetime.engine.service.TaskTimerService
 import com.sae.wavetime.local.DatabaseProvider
+import com.sae.wavetime.ui.task.detail.TaskDetailModelFactory
 import kotlinx.coroutines.launch
 
 class TaskListFragment : Fragment(R.layout.fragment_task_list) {
@@ -23,12 +30,59 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
 
     private val viewModel: TaskListViewModel by activityViewModels  {
         val db = DatabaseProvider.getDatabase(requireContext())
+
+        val taskRepo = TaskRepository(
+            db.taskDao(),
+            db.taskTemplateDao()
+        )
+        val inventoryRepo = InventoryRepository(db.inventoryDao())
+
         TaskListViewModelFactory(
-            TaskRepository(
-                db.taskDao(),
-                db.taskTemplateDao()
+            taskRepo,
+            CompleteTaskUseCase(
+                taskRepo,           // ✔ dùng lại
+                inventoryRepo,
+                db
+            ),
+            StartTimerTaskUseCase(
+                taskRepo,
+                db
             )
         )
+    }
+
+    private fun setupSwipeCompleteTask() {
+        val swipeCallback = object : ItemTouchHelper.SimpleCallback(
+            0,
+            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+        ) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(
+                viewHolder: RecyclerView.ViewHolder,
+                direction: Int
+            ) {
+                val position = viewHolder.bindingAdapterPosition
+
+                if (position == RecyclerView.NO_POSITION) return
+
+                val task = adapter.getTaskAt(position)
+
+                viewModel.completeTask(task)
+
+                // Cho item quay lại vị trí cũ ngay
+                adapter.notifyItemChanged(position)
+            }
+        }
+
+        ItemTouchHelper(swipeCallback)
+            .attachToRecyclerView(binding.rvTasks)
     }
 
     private fun render(state: TaskListState) {
@@ -62,6 +116,16 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.state.collect { state ->
                     render(state)
+
+                    state.timerStartEvent?.let { event ->
+                        TaskTimerService.start(
+                            context = requireContext(),
+                            taskId = event.taskId,
+                            finishAt = event.finishAt
+                        )
+
+                        viewModel.clearTimerStartEvent()
+                    }
                 }
             }
         }
@@ -69,6 +133,8 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
         binding.btnCreateTask.setOnClickListener {
             (activity as? MainActivity)?.openTaskForm()
         }
+
+        setupSwipeCompleteTask()
     }
 
     override fun onDestroyView() {

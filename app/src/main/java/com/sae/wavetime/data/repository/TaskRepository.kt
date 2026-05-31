@@ -46,6 +46,16 @@ class TaskRepository(
         return taskDao.getById(id)?.toDomain()
     }
 
+    suspend fun getRunningTimerTask(): Task? {
+        val now = System.currentTimeMillis()
+        return taskDao.getRunningTimerTask(now)?.toDomain()
+    }
+
+    suspend fun hasRunningTimerTask(): Boolean {
+        val now = System.currentTimeMillis()
+        return taskDao.hasRunningTimerTask(now)
+    }
+
     suspend fun generateTodayDailyTasks() {
         val today = LocalDate.now().toString()
 
@@ -91,6 +101,18 @@ class TaskRepository(
         taskDao.insert(task.toEntity())
     }
 
+    suspend fun startTimerTask(
+        taskId: String,
+        startedAt: Long,
+        finishAt: Long
+    ) {
+        taskDao.startTimerTask(
+            taskId = taskId,
+            startedAt = startedAt,
+            finishAt = finishAt
+        )
+    }
+
     suspend fun updateFullTask(task: Task) {
         taskDao.updateFull(
             taskId = task.id,
@@ -120,5 +142,10 @@ class TaskRepository(
 
     suspend fun softDeleteTask(id: String) {
         taskDao.softDelete(id)
+    }
+
+
+    suspend fun clearTaskTimer(taskId: String) {
+        taskDao.clearTaskTimer(taskId)
     }
 }

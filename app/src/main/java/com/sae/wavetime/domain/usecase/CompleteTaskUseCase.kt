@@ -13,18 +13,33 @@ class CompleteTaskUseCase(
     private val inventoryRepo: InventoryRepository,
     private val database: AppDatabase
 ) {
-    suspend fun execute(
-        taskId: String,
-    ) {
+    suspend fun execute(taskId: String) {
         database.withTransaction {
+            val now = System.currentTimeMillis()
+
             val task = taskRepo.getTaskById(taskId)
-                ?: return@withTransaction
+                ?: error("Task not found")
 
             if (task.status == "completed") {
                 return@withTransaction
             }
+
+            val runningTask = taskRepo.getRunningTimerTask()
+
+            if (runningTask != null && runningTask.id != task.id) {
+                error("Đang có task timer khác chạy")
+            }
+
             val rewards = task.reward.items
-            taskRepo.changeStatus(taskId, "completed", System.currentTimeMillis())
+
+            taskRepo.changeStatus(
+                taskId = taskId,
+                status = "completed",
+                lastCompletedAt = now
+            )
+
+            taskRepo.clearTaskTimer(taskId)
+
             inventoryRepo.addQuantity(rewards)
         }
     }

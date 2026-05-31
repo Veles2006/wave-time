@@ -13,7 +13,7 @@ import com.sae.wavetime.data.repository.InventoryRepository
 import com.sae.wavetime.data.repository.TaskRepository
 import com.sae.wavetime.databinding.FragmentTaskDetailBinding
 import com.sae.wavetime.domain.usecase.CompleteTaskUseCase
-import com.sae.wavetime.engine.notification.TaskTimerNotification
+import com.sae.wavetime.domain.usecase.StartTimerTaskUseCase
 import com.sae.wavetime.engine.service.TaskTimerService
 import com.sae.wavetime.local.DatabaseProvider
 import com.sae.wavetime.ui.dialog.SoftDeleteDialog
@@ -40,6 +40,10 @@ class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
             CompleteTaskUseCase(
                 taskRepo,           // ✔ dùng lại
                 inventoryRepo,
+                db
+            ),
+            StartTimerTaskUseCase(
+                taskRepo,
                 db
             )
         )
@@ -103,7 +107,7 @@ class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
                 dialog.show(parentFragmentManager, "SoftDeleteDialog")
             }
             binding.btnSuccess.setOnClickListener {
-                viewModel.completeTask(task, task.completeMode,task.reward.items)
+                viewModel.completeTask(task)
 
                 if (task.completeMode == "tap") {
                     requireActivity().onBackPressedDispatcher.onBackPressed()

@@ -32,9 +32,44 @@ interface TaskDao {
         date: String
     ): TaskEntity?
 
+    @Query("""
+    SELECT EXISTS(
+        SELECT 1 FROM tasks
+        WHERE status = 'in_progress'
+        AND completeMode = 'timer'
+        AND finishAt IS NOT NULL
+        AND finishAt > :now
+    )
+""")
+    suspend fun hasRunningTimerTask(now: Long): Boolean
+
+    @Query("""
+    SELECT * FROM tasks
+    WHERE status = 'in_progress'
+    AND completeMode = 'timer'
+    AND finishAt IS NOT NULL
+    AND finishAt > :now
+    LIMIT 1
+""")
+    suspend fun getRunningTimerTask(now: Long): TaskEntity?
+
     // Create method
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(task: TaskEntity)
+
+    @Query("""
+    UPDATE tasks
+    SET 
+        startedAt = :startedAt,
+        finishAt = :finishAt,
+        status = 'in_progress'
+    WHERE id = :taskId
+""")
+    suspend fun startTimerTask(
+        taskId: String,
+        startedAt: Long,
+        finishAt: Long
+    )
 
     // Update method
     @Query("""
@@ -92,4 +127,13 @@ interface TaskDao {
 
     @Query("UPDATE tasks SET isDeleted = 1, finishAt = null WHERE id = :taskId")
     suspend fun softDelete(taskId: String)
+
+
+    @Query("""
+    UPDATE tasks 
+    SET finishAt = NULL
+    WHERE id = :taskId
+""")
+    suspend fun clearTaskTimer(taskId: String)
+
 }

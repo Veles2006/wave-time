@@ -7,4 +7,10 @@ data class TaskListState(
     val isLoading: Boolean = false,
     val tasks: List<Task> = emptyList(),
     val error: String? = null,
+    val timerStartEvent: TimerStartEvent? = null
+)
+
+data class TimerStartEvent(
+    val taskId: String,
+    val finishAt: Long
 )

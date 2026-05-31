@@ -19,6 +19,10 @@ class TaskAdapter(
         tasks = newList
         notifyDataSetChanged()
     }
+
+    fun getTaskAt(position: Int): Task {
+        return tasks[position]
+    }
     class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val cardTask: MaterialCardView = itemView.findViewById(R.id.cardTask)
         val tvName: TextView = itemView.findViewById(R.id.tvName)
@@ -69,6 +73,8 @@ class TaskAdapter(
             )
         }
     }
+
+
 
     override fun getItemCount(): Int {
         return tasks.size
