@@ -17,6 +17,14 @@ class TaskRepository(
     private val taskDao: TaskDao,
     private val templateDao: TaskTemplateDao
 ) {
+    fun getAll(): Flow<List<Task>> {
+        return taskDao
+            .getAll()
+            .map { list ->
+                list.map { it.toDomain() }
+            }
+    }
+
     fun getPendingTasks(): Flow<List<Task>> {
         return taskDao
             .getAll()
