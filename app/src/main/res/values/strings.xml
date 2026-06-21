@@ -1,13 +1,13 @@
 <resources>
     <string name="app_name">Wave Time</string>
     <string name="bar_button">Bar Button</string>
-    <string name="wave_time">Wave Time</string>
+    <string name="wave_time" translatable="false">Wave Time</string>
     <string name="btn_task">Task</string>
     <string name="btn_block">Block</string>
     <string name="btn_item">Item</string>
-    <string name="avatar">Avatar</string>
+    <string name="avatar" translatable="false">Avatar</string>
     <string name="user_name">Veles</string>
-    <string name="user_email">user@email.com</string>
+    <string name="user_email" translatable="false">user@email.com</string>
     <string name="title_login">Login</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
@@ -33,7 +33,7 @@
     <string name="edit_task">Edit Task</string>
     <string name="delete_task">Delete Task</string>
     <string name="change_item">Change item</string>
-    <string name="accessibility_service_description">Chặn các ứng dụng gây mất tập trung</string>
+    <string name="accessibility_service_description" translatable="false">Chặn các ứng dụng gây mất tập trung</string>
     <string name="type">Type</string>
     <string name="create_block">Create Block</string>
     <string name="edit_block">Edit Block</string>
@@ -50,4 +50,7 @@
     <string name="timer">Timer</string>
     <string name="complete_mode">Complete Mode</string>
     <string name="required_duration_minutes">Required Duration Minutes</string>
+    <string name="theme">Theme</string>
+    <string name="language">Language</string>
+    <string name="select_your_language">Select your language</string>
 </resources>

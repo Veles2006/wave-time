@@ -7,13 +7,13 @@
         android:icon="@drawable/ic_clock_rotate_left_solid_full"/>
 
     <item
-        android:id="@+id/menu_pomodoro"
-        android:title="Pomodoro"
-        android:icon="@drawable/ic_alarm_clock_regular_full"/>
+        android:id="@+id/menu_theme"
+        android:title="@string/theme"
+        android:icon="@drawable/ic_palette_solid_full"/>
 
     <item
-        android:id="@+id/menu_achievement"
-        android:title="Achievement"
-        android:icon="@drawable/ic_star_regular_full"/>
+        android:id="@+id/menu_language"
+        android:title="@string/language"
+        android:icon="@drawable/ic_language_solid_full"/>
 
 </menu>

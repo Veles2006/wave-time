@@ -42,4 +42,9 @@ class MainContentFragment : Fragment(R.layout.fragment_main_content) {
             (activity as? DrawerController)?.openDrawer()
         }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

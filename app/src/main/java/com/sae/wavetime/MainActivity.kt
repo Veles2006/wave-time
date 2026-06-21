@@ -1,8 +1,11 @@
 package com.sae.wavetime
 
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import androidx.core.view.GravityCompat
 import androidx.navigation.findNavController
 import com.sae.wavetime.databinding.ActivityMainBinding
@@ -70,9 +73,43 @@ class MainActivity : AppCompatActivity(), DrawerController {
                     openTaskHistory()
                     true
                 }
+                R.id.menu_language -> {
+                    showLanguageDialog()
+                    true
+                }
 
                 else -> false
             }
         }
+    }
+
+    private fun setLanguage(languageTag: String?) {
+        if (languageTag != null) {
+            val appLocale = LocaleListCompat.forLanguageTags(languageTag)
+            AppCompatDelegate.setApplicationLocales(appLocale)
+        } else {
+            resetToSystemLanguage()
+        }
+    }
+
+    private fun resetToSystemLanguage() {
+        AppCompatDelegate.setApplicationLocales(
+            LocaleListCompat.getEmptyLocaleList()
+        )
+    }
+
+    private fun showLanguageDialog() {
+        val languages = arrayOf(getString(R.string.default_text), "English", "Tiếng Việt", "繁體中文")
+        val languageTags = arrayOf(null, "en", "vi", "zh-TW")
+
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.select_your_language))
+            .setItems(languages) { dialog, which ->
+                val selectedLanguageTag = languageTags[which]
+                setLanguage(selectedLanguageTag)
+
+                dialog.dismiss()
+            }
+            .show()
     }
 }
