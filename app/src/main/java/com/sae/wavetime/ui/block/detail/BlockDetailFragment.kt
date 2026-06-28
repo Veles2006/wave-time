@@ -14,6 +14,7 @@ import com.sae.wavetime.data.resolver.AppIconResolver
 import com.sae.wavetime.data.resolver.InstalledAppResolver
 import com.sae.wavetime.databinding.FragmentBlockDetailBinding
 import com.sae.wavetime.local.DatabaseProvider
+import com.sae.wavetime.ui.common.toBlockTypeText
 import com.sae.wavetime.ui.dialog.SoftDeleteDialog
 import kotlinx.coroutines.launch
 
@@ -48,9 +49,9 @@ class BlockDetailFragment : Fragment(R.layout.fragment_block_detail){
         state.block?.let { block ->
             val icon = AppIconResolver(requireContext()).getIcon(block.packageName)
             binding.tvAppName.text = block.appName
-            binding.tvPackageName.text = block.packageName
-            binding.tvBlockType.text = block.blockType
-            binding.tvPenaltyMinutes.text = "${block.penaltyMinutes}"
+            binding.tvPackageName.text = getString(R.string.package_name_format, block.packageName)
+            binding.tvBlockType.text = getString(R.string.block_type_format, block.blockType.toBlockTypeText(requireContext()))
+            binding.tvPenaltyMinutes.text = getString(R.string.penalty_minutes_format, block.penaltyMinutes)
             binding.tvTimer.text = state.remainingTime
 
             if (icon != null) {
@@ -63,7 +64,7 @@ class BlockDetailFragment : Fragment(R.layout.fragment_block_detail){
                 (activity as? MainActivity)?.openBlockForm(block.id)
             }
             binding.btnDelete.setOnClickListener {
-                val dialog = SoftDeleteDialog.newInstance("Do you want to detele this blck?")
+                val dialog = SoftDeleteDialog.newInstance("Do you want to detele this block?")
 
                 dialog.setOnConfirmListener {
                     viewModel.softDelete(block.id)

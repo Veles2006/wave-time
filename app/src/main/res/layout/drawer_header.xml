@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:gravity="bottom"
     android:padding="16dp"
-    android:background="@color/primary_blue_light">
+    android:background="@color/primary">
 
     <ImageButton
         android:id="@+id/imgAvatar"
@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/user_name"
-        android:textColor="@color/white"
+        android:textColor="@color/on_primary"
         android:textStyle="bold"
         android:textSize="18sp" />
 
@@ -32,6 +32,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/user_email"
-        android:textColor="@color/white"
+        android:textColor="@color/on_primary"
         android:textSize="14sp" />
 </LinearLayout>

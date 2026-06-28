@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/screen_bg">
     <LinearLayout
         android:id="@+id/layout_header"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:paddingTop="50dp"
-        android:background="@color/primary_blue_light"
+        android:background="@color/primary"
         android:orientation="horizontal"
         android:gravity="center_vertical"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,7 +25,7 @@
             android:background="@android:color/transparent"
             android:foreground="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_arrow_left_solid_full"
-            app:tint="@color/white"
+            app:tint="@color/on_primary"
             android:contentDescription="@string/back_task_list" />
         <TextView
             android:id="@+id/tvTitle"
@@ -37,7 +37,7 @@
             android:text="@string/task_history"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="@color/white"
+            android:textColor="@color/on_primary"
             android:gravity="center_vertical"
             android:paddingStart="12dp"
             android:paddingEnd="0dp"/>
@@ -54,7 +54,7 @@
             android:background="@android:color/transparent"
             android:foreground="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_filter_solid_full"
-            app:tint="@color/white"
+            app:tint="@color/on_primary"
             android:contentDescription="@string/task_filter"
             tools:listitem="@layout/item_history_task" />
     </LinearLayout>

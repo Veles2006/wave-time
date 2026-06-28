@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/gray_bg">
+    android:background="@color/screen_bg">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvTasks"
@@ -31,7 +31,7 @@
             android:padding="12dp"
             android:src="@drawable/ic_plus_solid_full"
             android:scaleType="centerInside"
-            app:tint="@color/white"
+            app:tint="@color/on_primary"
             android:background="@drawable/bg_primary_blue_circle"
             android:foreground="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Create Task"

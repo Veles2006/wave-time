@@ -12,7 +12,7 @@
     app:cardCornerRadius="12dp"
     app:cardElevation="6dp"
     app:cardUseCompatPadding="false"
-    app:cardBackgroundColor="@color/white"
+    app:cardBackgroundColor="@color/card_bg"
     app:strokeWidth="0dp"
     app:strokeColor="@android:color/transparent">
 

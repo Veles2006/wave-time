@@ -1,9 +1,11 @@
 package com.sae.wavetime.utils
 
+import android.content.Context
+import com.sae.wavetime.R
 import com.sae.wavetime.domain.model.Reward
 import com.sae.wavetime.domain.model.Penalty
 
-fun Reward.toDisplayString(): String {
+fun Reward.toDisplayString(context: Context): String {
     val parts = mutableListOf<String>()
 
     if (gold > 0) parts.add("💰 $gold")
@@ -18,10 +20,10 @@ fun Reward.toDisplayString(): String {
         parts.add(itemText)
     }
 
-    return if (parts.isEmpty()) "No reward" else parts.joinToString(" • ")
+    return if (parts.isEmpty()) context.getString(R.string.no_reward) else parts.joinToString(" • ")
 }
 
-fun Penalty.toDisplayString(): String {
+fun Penalty.toDisplayString(context: Context): String {
     val parts = mutableListOf<String>()
 
     if (gold > 0) parts.add("-💰 $gold")
@@ -29,5 +31,5 @@ fun Penalty.toDisplayString(): String {
     if (diamond > 0) parts.add("-💎 $diamond")
     if (gem > 0) parts.add("-🔷 $gem")
 
-    return if (parts.isEmpty()) "No penalty" else parts.joinToString(" • ")
+    return if (parts.isEmpty()) context.getString(R.string.no_penalty) else parts.joinToString(" • ")
 }

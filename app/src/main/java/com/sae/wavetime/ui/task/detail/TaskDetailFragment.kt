@@ -16,6 +16,10 @@ import com.sae.wavetime.domain.usecase.CompleteTaskUseCase
 import com.sae.wavetime.domain.usecase.StartTimerTaskUseCase
 import com.sae.wavetime.engine.service.TaskTimerService
 import com.sae.wavetime.local.DatabaseProvider
+import com.sae.wavetime.ui.common.toCompleteModeText
+import com.sae.wavetime.ui.common.toDifficultyText
+import com.sae.wavetime.ui.common.toStatusText
+import com.sae.wavetime.ui.common.toTaskTypeText
 import com.sae.wavetime.ui.dialog.SoftDeleteDialog
 import com.sae.wavetime.utils.toDisplayString
 import kotlinx.coroutines.delay
@@ -83,15 +87,35 @@ class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
 
         state.task?.let { task ->
             binding.tvTaskName.text = task.name
-            binding.tvDescription.text = "Description: ${task.description}"
-            binding.tvStatus.text = "Status: ${task.status}"
-            binding.tvTypeTask.text = "Type: ${task.type}"
-            binding.tvCompleteMode.text = "Complete Mode: ${task.completeMode}"
-            binding.tvDate.text = "Date: ${task.date}"
-            binding.tvDifficulty.text = "Difficulty: ${task.difficulty}"
-            binding.tvReward.text = "Reward: ${task.reward.toDisplayString()}"
-            binding.tvPenalty.text = "Penalty: ${task.penalty.toDisplayString()}"
-            binding.tvRequiredDurationMinutes.text = "Required Duration Minutes: ${task.requiredDurationMinutes}"
+            binding.tvDescription.text =
+                getString(R.string.task_description_format, task.description ?: getString(R.string.none))
+
+            binding.tvStatus.text =
+                getString(R.string.task_status_format, task.status.toStatusText(requireContext()))
+
+            binding.tvTypeTask.text =
+                getString(R.string.task_type_format, task.type.toTaskTypeText(requireContext()))
+
+            binding.tvCompleteMode.text =
+                getString(R.string.task_complete_mode_format, task.completeMode.toCompleteModeText(requireContext()))
+
+            binding.tvDate.text =
+                getString(R.string.task_date_format, task.date ?: getString(R.string.none))
+
+            binding.tvDifficulty.text =
+                getString(R.string.task_difficulty_format, task.difficulty.toDifficultyText(requireContext()))
+
+            binding.tvReward.text =
+                getString(R.string.task_reward_format, task.reward.toDisplayString(requireContext()))
+
+            binding.tvPenalty.text =
+                getString(R.string.task_penalty_format, task.penalty.toDisplayString(requireContext()))
+
+            binding.tvRequiredDurationMinutes.text =
+                getString(
+                    R.string.task_required_duration_format,
+                    task.requiredDurationMinutes ?: 0
+                )
 
             binding.btnEdit.setOnClickListener {
                 (activity as? MainActivity)?.openTaskForm(task.id)

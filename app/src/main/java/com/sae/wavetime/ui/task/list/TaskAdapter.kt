@@ -55,27 +55,27 @@ class TaskAdapter(
 
         if (!task.isDeleted && task.status == "in_progress" && task.completeMode == "timer") {
             holder.cardTask.setCardBackgroundColor(
-                ContextCompat.getColor(context, R.color.selected_app_bg)
+                ContextCompat.getColor(context, R.color.primary)
             )
 
             holder.tvName.setTextColor(
-                ContextCompat.getColor(context, R.color.white)
+                ContextCompat.getColor(context, R.color.on_primary)
             )
 
             holder.tvDescription.setTextColor(
-                ContextCompat.getColor(context, R.color.white)
+                ContextCompat.getColor(context, R.color.on_primary)
             )
         } else {
             holder.cardTask.setCardBackgroundColor(
-                ContextCompat.getColor(context, R.color.white)
+                ContextCompat.getColor(context, R.color.card_bg)
             )
 
             holder.tvName.setTextColor(
-                ContextCompat.getColor(context, R.color.black)
+                ContextCompat.getColor(context, R.color.text_primary)
             )
 
             holder.tvDescription.setTextColor(
-                ContextCompat.getColor(context, R.color.black)
+                ContextCompat.getColor(context, R.color.text_secondary)
             )
         }
     }

@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray_bg">
+    android:background="@color/screen_bg">
     <LinearLayout
         android:id="@+id/layout_header"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:paddingTop="50dp"
-        android:background="@color/primary_blue_light"
+        android:background="@color/primary"
         android:orientation="horizontal"
         android:gravity="center_vertical"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,7 +25,7 @@
             android:background="@android:color/transparent"
             android:foreground="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_arrow_left_solid_full"
-            app:tint="@color/white"
+            app:tint="@color/on_primary"
             android:contentDescription="@string/back_task_list" />
 
         <TextView
@@ -38,7 +38,7 @@
             android:maxLines="1"
             android:paddingStart="12dp"
             android:paddingEnd="0dp"
-            android:textColor="@color/white"
+            android:textColor="@color/on_primary"
             android:textSize="20sp"
             android:textStyle="bold"
             tools:text="@string/create_task" />
@@ -49,7 +49,7 @@
             android:layout_height="48dp"
             android:scaleType="centerInside"
             android:src="@drawable/ic_check_solid_full"
-            app:tint="@color/white"
+            app:tint="@color/on_primary"
             android:background="@android:color/transparent"
             android:foreground="?attr/selectableItemBackgroundBorderless"
             android:padding="12dp"
@@ -78,7 +78,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_rounded_white"
+                    android:background="@drawable/bg_section_rounded_12"
                     android:padding="12dp"
                     android:layout_margin="8dp"
                     >
@@ -88,7 +88,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/tittle_basic"
                         android:textSize="18sp"
-                        android:textColor="@color/black"
+                        android:textColor="@color/text_primary"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
                     <ImageButton
@@ -98,7 +98,7 @@
                         android:padding="2dp"
                         android:src="@drawable/ic_question_solid_full"
                         android:scaleType="centerInside"
-                        app:tint="@color/white"
+                        app:tint="@color/on_primary"
                         android:background="@drawable/bg_light_blue_circle"
                         android:foreground="?attr/selectableItemBackgroundBorderless"
                         android:contentDescription="@string/btn_basic_question"
@@ -113,8 +113,12 @@
                         android:hint="@string/til_task_name"
 
                         app:boxBackgroundMode="outline"
-                        app:boxStrokeColor="@color/primary_blue_light"
-                        app:hintTextColor="@color/primary_blue_light"
+                        app:boxBackgroundColor="@color/text_field_bg"
+                        app:boxStrokeColor="@color/text_field_box_stroke"
+                        app:boxStrokeWidth="1dp"
+                        app:boxStrokeWidthFocused="2dp"
+                        app:hintTextColor="@color/text_field_box_stroke"
+
                         app:layout_constraintTop_toBottomOf="@id/tvBasicTitle"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent">
@@ -122,8 +126,14 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/edtTaskName"
                             android:layout_width="match_parent"
-                            android:layout_height="54dp"
-                            android:textColor="@color/black"/>
+                            android:layout_height="wrap_content"
+                            android:minLines="1"
+                            android:gravity="top|start"
+                            android:inputType="textMultiLine"
+                            android:singleLine="false"
+                            android:imeOptions="actionNone"
+                            android:textColor="@color/text_primary"
+                            android:textColorHint="@color/text_secondary"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -134,8 +144,12 @@
                         android:hint="@string/til_task_description"
 
                         app:boxBackgroundMode="outline"
-                        app:boxStrokeColor="@color/primary_blue_light"
-                        app:hintTextColor="@color/primary_blue_light"
+                        app:boxBackgroundColor="@color/text_field_bg"
+                        app:boxStrokeColor="@color/text_field_box_stroke"
+                        app:boxStrokeWidth="1dp"
+                        app:boxStrokeWidthFocused="2dp"
+                        app:hintTextColor="@color/text_field_box_stroke"
+
                         app:layout_constraintTop_toBottomOf="@id/tilTaskName"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent">
@@ -149,7 +163,8 @@
                             android:inputType="textMultiLine"
                             android:singleLine="false"
                             android:imeOptions="actionNone"
-                            android:textColor="@color/black"/>
+                            android:textColor="@color/text_primary"
+                            android:textColorHint="@color/text_secondary" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -158,7 +173,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_rounded_white"
+                    android:background="@drawable/bg_section_rounded_12"
                     android:padding="12dp"
                     android:layout_margin="8dp"
                     >
@@ -168,7 +183,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/tittle_basic"
                         android:textSize="18sp"
-                        android:textColor="@color/black"
+                        android:textColor="@color/text_primary"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
                     <ImageButton
@@ -178,7 +193,7 @@
                         android:padding="2dp"
                         android:src="@drawable/ic_question_solid_full"
                         android:scaleType="centerInside"
-                        app:tint="@color/white"
+                        app:tint="@color/on_primary"
                         android:background="@drawable/bg_light_blue_circle"
                         android:foreground="?attr/selectableItemBackgroundBorderless"
                         android:contentDescription="@string/btn_basic_question"
@@ -198,9 +213,9 @@
                         app:trackHeight="6dp"
                         app:thumbRadius="10dp"
                         app:haloRadius="14dp"
-                        app:trackColorActive="@color/primary_blue_light"
-                        app:trackColorInactive="@color/gray_bg"
-                        app:thumbColor="@color/primary_blue_light"
+                        app:trackColorActive="@color/primary"
+                        app:trackColorInactive="@color/divider"
+                        app:thumbColor="@color/primary"
                         app:layout_constraintTop_toBottomOf="@id/tvDifficultyTitle"
                         app:layout_constraintStart_toStartOf="parent"/>
 
@@ -218,6 +233,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/default_text"
+                            android:textColor="@color/text_secondary"
                             android:checked="true" />
 
                         <RadioButton
@@ -225,6 +241,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/daily"
+                            android:textColor="@color/text_secondary"
                             android:layout_marginStart="12dp" />
 
                     </RadioGroup>
@@ -243,6 +260,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/tap"
+                            android:textColor="@color/text_secondary"
                             android:checked="true" />
 
                         <RadioButton
@@ -250,6 +268,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/timer"
+                            android:textColor="@color/text_secondary"
                             android:layout_marginStart="12dp" />
 
                     </RadioGroup>
@@ -271,8 +290,8 @@
                             android:layout_height="wrap_content"
                             android:hint="Minutes"
                             app:boxBackgroundMode="outline"
-                            app:boxStrokeColor="@color/primary_blue_light"
-                            app:hintTextColor="@color/primary_blue_light">
+                            app:boxStrokeColor="@color/primary"
+                            app:hintTextColor="@color/primary">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/edtTimer"
@@ -281,7 +300,7 @@
                                 android:inputType="number"
                                 android:maxLength="3"
                                 android:singleLine="true"
-                                android:textColor="@color/black" />
+                                android:textColor="@color/text_primary" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                     </LinearLayout>
@@ -291,7 +310,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_rounded_white"
+                    android:background="@drawable/bg_section_rounded_12"
                     android:padding="12dp"
                     android:layout_margin="8dp"
                     >
@@ -301,7 +320,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/title_reward"
                         android:textSize="18sp"
-                        android:textColor="@color/black"
+                        android:textColor="@color/text_primary"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
                     <ImageButton
@@ -311,7 +330,7 @@
                         android:padding="2dp"
                         android:src="@drawable/ic_question_solid_full"
                         android:scaleType="centerInside"
-                        app:tint="@color/white"
+                        app:tint="@color/on_primary"
                         android:background="@drawable/bg_light_blue_circle"
                         android:foreground="?attr/selectableItemBackgroundBorderless"
                         android:contentDescription="@string/btn_reward_question"
@@ -404,7 +423,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_rounded_white"
+                    android:background="@drawable/bg_section_rounded_12"
                     android:padding="12dp"
                     android:layout_margin="8dp"
                     >
@@ -414,7 +433,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/title_order"
                         android:textSize="18sp"
-                        android:textColor="@color/black"
+                        android:textColor="@color/text_primary"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
                     <ImageButton
@@ -424,7 +443,7 @@
                         android:padding="2dp"
                         android:src="@drawable/ic_question_solid_full"
                         android:scaleType="centerInside"
-                        app:tint="@color/white"
+                        app:tint="@color/on_primary"
                         android:background="@drawable/bg_light_blue_circle"
                         android:contentDescription="@string/btn_order_question"
                         app:layout_constraintTop_toTopOf="parent"
@@ -441,10 +460,10 @@
                         android:paddingHorizontal="12dp"
                         android:text="@string/btn_penalty"
                         android:textSize="12sp"
-                        android:textColor="@color/black"
+                        android:textColor="@color/text_secondary"
                         android:foreground="?attr/selectableItemBackgroundBorderless"
                         android:backgroundTint="@android:color/transparent"
-                        app:strokeColor="@color/black"
+                        app:strokeColor="@color/border"
                         app:strokeWidth="1dp"
                         app:layout_constraintTop_toBottomOf="@id/tvOrderTitle"
                         app:layout_constraintStart_toStartOf="parent"

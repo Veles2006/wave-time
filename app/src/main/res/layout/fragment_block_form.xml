@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray_bg"
+    android:background="@color/screen_bg"
     >
     <LinearLayout
         android:id="@+id/layout_header"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:paddingTop="50dp"
-        android:background="@color/primary_blue_light"
+        android:background="@color/primary"
         android:orientation="horizontal"
         android:gravity="center_vertical"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,7 +26,7 @@
             android:background="@android:color/transparent"
             android:foreground="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_arrow_left_solid_full"
-            app:tint="@color/white"
+            app:tint="@color/on_primary"
             android:contentDescription="@string/back_task_list" />
 
         <TextView
@@ -39,7 +39,7 @@
             android:maxLines="1"
             android:paddingStart="12dp"
             android:paddingEnd="0dp"
-            android:textColor="@color/white"
+            android:textColor="@color/on_primary"
             android:textSize="20sp"
             android:textStyle="bold"
             tools:text="@string/create_block" />
@@ -50,7 +50,7 @@
             android:layout_height="48dp"
             android:scaleType="centerInside"
             android:src="@drawable/ic_check_solid_full"
-            app:tint="@color/white"
+            app:tint="@color/on_primary"
             android:background="@android:color/transparent"
             android:foreground="?attr/selectableItemBackgroundBorderless"
             android:padding="12dp"
@@ -95,7 +95,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_rounded_white"
+                    android:background="@drawable/bg_section_rounded_12"
                     android:padding="12dp"
                     android:layout_margin="8dp"
                     >
@@ -105,7 +105,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/tittle_basic"
                         android:textSize="18sp"
-                        android:textColor="@color/black"
+                        android:textColor="@color/text_primary"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
                     <ImageButton
@@ -115,7 +115,7 @@
                         android:padding="2dp"
                         android:src="@drawable/ic_question_solid_full"
                         android:scaleType="centerInside"
-                        app:tint="@color/white"
+                        app:tint="@color/on_primary"
                         android:background="@drawable/bg_light_blue_circle"
                         android:foreground="?attr/selectableItemBackgroundBorderless"
                         android:contentDescription="@string/btn_basic_question"
@@ -127,11 +127,15 @@
                         android:id="@+id/tilAppName"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:hint="App name"
+                        android:hint="@string/app_name_text"
 
                         app:boxBackgroundMode="outline"
-                        app:boxStrokeColor="@color/primary_blue_light"
-                        app:hintTextColor="@color/primary_blue_light"
+                        app:boxBackgroundColor="@color/text_field_bg"
+                        app:boxStrokeColor="@color/text_field_box_stroke"
+                        app:boxStrokeWidth="1dp"
+                        app:boxStrokeWidthFocused="2dp"
+                        app:hintTextColor="@color/text_field_box_stroke"
+
                         app:layout_constraintTop_toBottomOf="@id/tvBasicTitle"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent">
@@ -139,12 +143,15 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/edtAppName"
                             android:layout_width="match_parent"
-                            android:layout_height="54dp"
-                            android:textColor="@color/black"
+                            android:layout_height="wrap_content"
+                            android:minLines="1"
+                            android:gravity="top|start"
+                            android:textColor="@color/text_primary"
+                            android:textColorHint="@color/text_secondary"
                             android:focusable="false"
                             android:focusableInTouchMode="false"
                             android:cursorVisible="false"
-                            android:inputType="none"
+                            android:inputType="textMultiLine"
                             android:clickable="true"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -153,11 +160,15 @@
                         android:id="@+id/tilPackageName"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:hint="Package name"
+                        android:hint="@string/package_name_text"
 
                         app:boxBackgroundMode="outline"
-                        app:boxStrokeColor="@color/primary_blue_light"
-                        app:hintTextColor="@color/primary_blue_light"
+                        app:boxBackgroundColor="@color/text_field_bg"
+                        app:boxStrokeColor="@color/text_field_box_stroke"
+                        app:boxStrokeWidth="1dp"
+                        app:boxStrokeWidthFocused="2dp"
+                        app:hintTextColor="@color/text_field_box_stroke"
+
                         app:layout_constraintTop_toBottomOf="@id/tilAppName"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent">
@@ -165,12 +176,15 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/edtPackageName"
                             android:layout_width="match_parent"
-                            android:layout_height="54dp"
-                            android:textColor="@color/black"
+                            android:layout_height="wrap_content"
+                            android:minLines="1"
+                            android:gravity="top|start"
+                            android:textColor="@color/text_primary"
+                            android:textColorHint="@color/text_secondary"
                             android:focusable="false"
                             android:focusableInTouchMode="false"
                             android:cursorVisible="false"
-                            android:inputType="none"
+                            android:inputType="textMultiLine"
                             android:clickable="true"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -180,7 +194,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_rounded_white"
+                    android:background="@drawable/bg_section_rounded_12"
                     android:padding="12dp"
                     android:layout_margin="8dp"
                     >
@@ -190,7 +204,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/type"
                         android:textSize="18sp"
-                        android:textColor="@color/black"
+                        android:textColor="@color/text_primary"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
                     <ImageButton
@@ -200,7 +214,7 @@
                         android:padding="2dp"
                         android:src="@drawable/ic_question_solid_full"
                         android:scaleType="centerInside"
-                        app:tint="@color/white"
+                        app:tint="@color/on_primary"
                         android:background="@drawable/bg_light_blue_circle"
                         android:foreground="?attr/selectableItemBackgroundBorderless"
                         android:contentDescription="@string/btn_basic_question"
@@ -221,9 +235,9 @@
                             android:id="@+id/rbPermanent"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Vĩnh viễn"
+                            android:text="@string/block_type_permanent"
                             android:textSize="16sp"
-                            android:textColor="@color/black"
+                            android:textColor="@color/text_secondary"
                             android:checked="true"/>
 
                         <RadioButton
@@ -231,18 +245,20 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
-                            android:text="Lịch"
-                            android:textColor="@color/black"
-                            android:textSize="16sp"/>
+                            android:text="@string/block_type_schedule"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="16sp"
+                            android:visibility="gone"/>
 
                         <RadioButton
                             android:id="@+id/rbTimer"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
-                            android:text="Hẹn giờ"
-                            android:textColor="@color/black"
-                            android:textSize="16sp"/>
+                            android:text="@string/block_type_timer"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="16sp"
+                            android:visibility="gone"/>
 
                     </RadioGroup>
 

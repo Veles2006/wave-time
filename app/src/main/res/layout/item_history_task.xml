@@ -29,6 +29,7 @@
         android:scaleType="centerInside"
         android:background="@android:color/transparent"
         android:src="@drawable/ic_ellipsis_vertical_solid_full"
+        app:tint="@color/on_primary"
         app:layout_constraintTop_toBottomOf="@id/tvTime"
         app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

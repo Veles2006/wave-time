@@ -5,4 +5,45 @@
     <color name="primary_blue_light">#3B82F6</color>
     <color name="gray_bg">#f7f7f7</color>
     <color name="selected_app_bg">#3B82F6</color>
+
+    <!-- Brand -->
+    <color name="primary">#3B82F6</color>
+    <color name="primary_dark">#2563EB</color>
+    <color name="primary_light">#DBEAFE</color>
+    <color name="on_primary">#FFFFFF</color>
+    <color name="primary_container">#DBEAFE</color>
+
+    <!-- Background -->
+    <color name="screen_bg">#F8FAFC</color>
+    <color name="card_bg">#FFFFFF</color>
+    <color name="section_bg">#FFFFFF</color>
+    <color name="section_border">#E2E8F0</color>
+    <color name="surface_bg">#F1F5F9</color>
+
+    <!-- Text -->
+    <color name="text_primary">#0F172A</color>
+    <color name="text_secondary">#64748B</color>
+    <color name="text_disabled">#94A3B8</color>
+
+    <color name="text_field_bg">#F8FAFC</color>
+    <color name="text_field_border">#CBD5E1</color>
+    <color name="text_field_border_focused">#2563EB</color>
+    <color name="text_field_border_error">#EF4444</color>
+
+    <!-- State -->
+    <color name="success">#22C55E</color>
+    <color name="warning">#F59E0B</color>
+    <color name="error">#EF4444</color>
+    <color name="info">#0EA5E9</color>
+
+    <!-- Border / Divider -->
+    <color name="divider">#E2E8F0</color>
+    <color name="border">#CBD5E1</color>
+
+    <!-- Wave Time specific -->
+    <color name="task_color">#3B82F6</color>
+    <color name="block_color">#EF4444</color>
+    <color name="item_color">#8B5CF6</color>
+    <color name="reward_color">#22C55E</color>
+    <color name="penalty_color">#F97316</color>
 </resources>

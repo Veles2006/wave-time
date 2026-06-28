@@ -18,7 +18,13 @@ object AuthKeys {
 }
 
 object SettingKeys {
-    val DARK_MODE = booleanPreferencesKey("dark_mode")
+    val THEME_MODE = stringPreferencesKey("theme_mode")
+}
+
+enum class ThemeMode {
+    SYSTEM,
+    LIGHT,
+    DARK
 }
 
 class AppDataStore(
@@ -27,6 +33,15 @@ class AppDataStore(
     val accessTokenFlow: Flow<String?> =
         context.dataStore.data.map { prefs ->
             prefs[AuthKeys.ACCESS_TOKEN]
+        }
+
+    val themeModeFlow: Flow<ThemeMode> =
+        context.dataStore.data.map { prefs ->
+            when (prefs[SettingKeys.THEME_MODE]) {
+                "light" -> ThemeMode.LIGHT
+                "dark" -> ThemeMode.DARK
+                else -> ThemeMode.SYSTEM
+            }
         }
 
     @Volatile
@@ -50,6 +65,16 @@ class AppDataStore(
     suspend fun clearAccessToken() {
         context.dataStore.edit { prefs ->
             prefs.remove(AuthKeys.ACCESS_TOKEN)
+        }
+    }
+
+    suspend fun saveThemeMode(mode: ThemeMode) {
+        context.dataStore.edit { prefs ->
+            prefs[SettingKeys.THEME_MODE] = when (mode) {
+                ThemeMode.SYSTEM -> "system"
+                ThemeMode.LIGHT -> "light"
+                ThemeMode.DARK -> "dark"
+            }
         }
     }
 }

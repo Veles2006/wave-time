@@ -6,7 +6,7 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/surface_bg"
     >
 
     <androidx.fragment.app.FragmentContainerView
@@ -24,8 +24,8 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="@drawable/bg_drawer_square"
-        app:itemIconTint="@color/primary_blue_light"
-        app:itemTextColor="@color/primary_blue_light"
+        app:itemIconTint="@color/primary"
+        app:itemTextColor="@color/primary"
         app:headerLayout="@layout/drawer_header"
         app:menu="@menu/drawer_menu"/>
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.card.MaterialCardView
 import com.sae.wavetime.R
 import com.sae.wavetime.ui.model.AppUiModel
 
@@ -22,6 +23,7 @@ class AppSelectAdapter(
     }
 
     class AppSelectViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val cardBlock: MaterialCardView = itemView.findViewById(R.id.cardBlock)
         val tvName: TextView = itemView.findViewById(R.id.tvName)
         val tvPackageName: TextView = itemView.findViewById(R.id.tvPackageName)
         val imgApp: ImageView = itemView.findViewById(R.id.imgApp)
@@ -35,7 +37,7 @@ class AppSelectAdapter(
 
     override fun onBindViewHolder(holder: AppSelectViewHolder, position: Int) {
         val app = apps[position]
-
+        val context = holder.itemView.context
 
         holder.tvName.text = app.appName
         holder.tvPackageName.text = app.packageName
@@ -48,28 +50,25 @@ class AppSelectAdapter(
 
         val isSelected = app.packageName == selectedPackageName
 
-        holder.itemView.setBackgroundColor(
-            if (isSelected) {
-                holder.itemView.context.getColor(R.color.selected_app_bg)
-            } else {
-                holder.itemView.context.getColor(R.color.white)
-            }
-        )
-        holder.tvName.setTextColor(
-            if (isSelected) {
-                holder.itemView.context.getColor(R.color.white)
-            } else {
-                holder.itemView.context.getColor(R.color.black)
-            }
-        )
+        if (isSelected) {
+            holder.cardBlock.setCardBackgroundColor(
+                context.getColor(R.color.selected_app_bg)
+            )
+            holder.cardBlock.strokeColor = context.getColor(R.color.primary)
+            holder.cardBlock.strokeWidth = 2
 
-        holder.tvPackageName.setTextColor(
-            if (isSelected) {
-                holder.itemView.context.getColor(R.color.white)
-            } else {
-                holder.itemView.context.getColor(R.color.black)
-            }
-        )
+            holder.tvName.setTextColor(context.getColor(R.color.on_primary))
+            holder.tvPackageName.setTextColor(context.getColor(R.color.on_primary))
+        } else {
+            holder.cardBlock.setCardBackgroundColor(
+                context.getColor(R.color.card_bg)
+            )
+            holder.cardBlock.strokeColor = context.getColor(android.R.color.transparent)
+            holder.cardBlock.strokeWidth = 0
+
+            holder.tvName.setTextColor(context.getColor(R.color.on_primary))
+            holder.tvPackageName.setTextColor(context.getColor(R.color.on_primary))
+        }
 
         holder.itemView.setOnClickListener {
             selectedPackageName = app.packageName

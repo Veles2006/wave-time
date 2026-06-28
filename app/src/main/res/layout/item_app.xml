@@ -12,7 +12,7 @@
     app:cardCornerRadius="12dp"
     app:cardElevation="6dp"
     app:cardUseCompatPadding="false"
-    app:cardBackgroundColor="@color/white"
+    app:cardBackgroundColor="@color/card_bg"
     app:strokeWidth="0dp"
     app:strokeColor="@android:color/transparent">
 
@@ -50,8 +50,9 @@
                 android:id="@+id/tvName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="App Name"
+                android:text="@string/app_name_text"
                 android:textSize="18sp"
+                android:textColor="@color/on_primary"
                 android:maxLines="1"
                 android:ellipsize="end" />
 
@@ -59,8 +60,9 @@
                 android:id="@+id/tvPackageName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Item Package Name"
+                android:text="@string/package_name_text"
                 android:textSize="16sp"
+                android:textColor="@color/on_primary"
                 android:maxLines="1"
                 android:ellipsize="end" />
 

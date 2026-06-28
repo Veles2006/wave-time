@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/screen_bg">
 
     <LinearLayout
         android:id="@+id/layout_header"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:paddingTop="50dp"
-        android:background="@color/primary_blue_light"
+        android:background="@color/primary"
         android:orientation="horizontal"
         android:gravity="center_vertical"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,7 +26,7 @@
             android:background="@android:color/transparent"
             android:foreground="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_arrow_left_solid_full"
-            app:tint="@color/white"
+            app:tint="@color/on_primary"
             android:contentDescription="@string/back_task_list" />
         <TextView
             android:id="@+id/tvTitle"
@@ -38,7 +38,7 @@
             android:text="@string/task_detail"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="@color/white"
+            android:textColor="@color/on_primary"
             android:gravity="center_vertical"
             android:paddingStart="12dp"
             android:paddingEnd="0dp"/>
@@ -55,7 +55,7 @@
             android:background="@android:color/transparent"
             android:foreground="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_pen_solid_full"
-            app:tint="@color/white"
+            app:tint="@color/on_primary"
             android:contentDescription="@string/edit_task" />
 
         <ImageButton
@@ -70,7 +70,7 @@
             android:background="@android:color/transparent"
             android:foreground="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_trash_solid_full"
-            app:tint="@color/white"
+            app:tint="@color/on_primary"
             android:contentDescription="@string/delete_task" />
         
         <ImageButton
@@ -79,7 +79,7 @@
             android:layout_height="48dp"
             android:scaleType="centerInside"
             android:src="@drawable/ic_check_solid_full"
-            app:tint="@color/white"
+            app:tint="@color/on_primary"
             android:background="@android:color/transparent"
             android:foreground="?attr/selectableItemBackgroundBorderless"
             android:padding="12dp"
@@ -104,7 +104,7 @@
             android:layout_marginEnd="14dp"
             android:layout_marginTop="24dp"
             android:text="Task Name"
-            android:textColor="@color/black"
+            android:textColor="@color/text_primary"
             android:textSize="20sp"
             android:maxLines="2"
             android:ellipsize="end"
@@ -120,6 +120,7 @@
             android:layout_marginTop="18dp"
             android:padding="4dp"
             android:src="@drawable/ic_circle_solid_full"
+            app:tint="@color/text_secondary"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvTaskName" />
 
@@ -131,7 +132,7 @@
             android:layout_marginTop="18dp"
             android:gravity="center"
             android:text="Description"
-            android:textColor="@color/black"
+            android:textColor="@color/text_secondary"
             android:textSize="14sp"
             app:layout_constraintStart_toEndOf="@id/ivDescriptionIcon"
             app:layout_constraintTop_toBottomOf="@id/tvTaskName" />
@@ -144,6 +145,7 @@
             android:layout_marginTop="18dp"
             android:padding="4dp"
             android:src="@drawable/ic_circle_solid_full"
+            app:tint="@color/text_secondary"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvDescription" />
 
@@ -155,7 +157,7 @@
             android:layout_marginTop="18dp"
             android:gravity="center"
             android:text="Status"
-            android:textColor="@color/black"
+            android:textColor="@color/text_secondary"
             android:textSize="14sp"
             app:layout_constraintStart_toEndOf="@id/ivStatusIcon"
             app:layout_constraintTop_toBottomOf="@id/tvDescription" />
@@ -168,6 +170,7 @@
             android:layout_marginTop="18dp"
             android:padding="4dp"
             android:src="@drawable/ic_circle_solid_full"
+            app:tint="@color/text_secondary"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvStatus" />
 
@@ -179,7 +182,7 @@
             android:layout_marginTop="18dp"
             android:gravity="center"
             android:text="@string/type_test"
-            android:textColor="@color/black"
+            android:textColor="@color/text_secondary"
             android:textSize="14sp"
             app:layout_constraintStart_toEndOf="@id/ivTypeTaskIcon"
             app:layout_constraintTop_toBottomOf="@id/tvStatus" />
@@ -193,6 +196,7 @@
             android:layout_marginTop="18dp"
             android:padding="4dp"
             android:src="@drawable/ic_circle_solid_full"
+            app:tint="@color/text_secondary"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvTypeTask" />
 
@@ -204,7 +208,7 @@
             android:layout_marginTop="18dp"
             android:gravity="center"
             android:text="@string/complete_mode"
-            android:textColor="@color/black"
+            android:textColor="@color/text_secondary"
             android:textSize="14sp"
             app:layout_constraintStart_toEndOf="@id/ivCompleteModeIcon"
             app:layout_constraintTop_toBottomOf="@id/tvTypeTask" />
@@ -217,6 +221,7 @@
             android:layout_marginTop="18dp"
             android:padding="4dp"
             android:src="@drawable/ic_circle_solid_full"
+            app:tint="@color/text_secondary"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvCompleteMode" />
 
@@ -228,7 +233,7 @@
             android:layout_marginTop="18dp"
             android:gravity="center"
             android:text="@string/required_duration_minutes"
-            android:textColor="@color/black"
+            android:textColor="@color/text_secondary"
             android:textSize="14sp"
             app:layout_constraintStart_toEndOf="@id/ivRequiredDurationMinutesIcon"
             app:layout_constraintTop_toBottomOf="@id/tvCompleteMode" />
@@ -240,6 +245,7 @@
             android:layout_marginStart="14dp"
             android:layout_marginTop="18dp"
             android:src="@drawable/ic_calendar_solid_full"
+            app:tint="@color/text_secondary"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvRequiredDurationMinutes" />
 
@@ -251,7 +257,7 @@
             android:layout_marginTop="18dp"
             android:gravity="center"
             android:text="Date"
-            android:textColor="@color/black"
+            android:textColor="@color/text_secondary"
             android:textSize="14sp"
             app:layout_constraintStart_toEndOf="@id/ivDateIcon"
             app:layout_constraintTop_toBottomOf="@id/tvRequiredDurationMinutes" />
@@ -263,6 +269,7 @@
             android:layout_marginStart="14dp"
             android:layout_marginTop="18dp"
             android:src="@drawable/ic_star_solid_full"
+            app:tint="@color/text_secondary"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvDate" />
 
@@ -274,7 +281,7 @@
             android:layout_marginTop="18dp"
             android:gravity="center"
             android:text="Difficulty"
-            android:textColor="@color/black"
+            android:textColor="@color/text_secondary"
             android:textSize="14sp"
             app:layout_constraintStart_toEndOf="@id/ivDifficultyIcon"
             app:layout_constraintTop_toBottomOf="@id/tvDate" />
@@ -286,6 +293,7 @@
             android:layout_marginStart="14dp"
             android:layout_marginTop="18dp"
             android:src="@drawable/ic_gift_solid_full"
+            app:tint="@color/text_secondary"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvDifficulty" />
 
@@ -297,7 +305,7 @@
             android:layout_marginTop="18dp"
             android:gravity="center"
             android:text="Reward"
-            android:textColor="@color/black"
+            android:textColor="@color/text_secondary"
             android:textSize="14sp"
             app:layout_constraintStart_toEndOf="@id/ivRewardIcon"
             app:layout_constraintTop_toBottomOf="@id/tvDifficulty" />
@@ -310,6 +318,7 @@
             android:layout_marginStart="14dp"
             android:layout_marginTop="18dp"
             android:src="@drawable/ic_circle_solid_full"
+            app:tint="@color/text_secondary"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvReward" />
 
@@ -321,7 +330,7 @@
             android:layout_marginTop="18dp"
             android:gravity="center"
             android:text="Penalty"
-            android:textColor="@color/black"
+            android:textColor="@color/text_secondary"
             android:textSize="14sp"
             app:layout_constraintStart_toEndOf="@id/ivPenaltyIcon"
             app:layout_constraintTop_toBottomOf="@id/tvReward" />

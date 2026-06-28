@@ -1,18 +1,28 @@
 package com.sae.wavetime
 
 import android.app.AlertDialog
+import android.graphics.Color
 import android.os.Bundle
+import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import androidx.core.view.GravityCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.sae.wavetime.databinding.ActivityMainBinding
+import com.sae.wavetime.local.AppDataStore
+import com.sae.wavetime.local.ThemeMode
 import com.sae.wavetime.ui.common.DrawerController
+import com.sae.wavetime.utils.ThemeManager
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class MainActivity : AppCompatActivity(), DrawerController {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var appDataStore: AppDataStore
 
     override fun openDrawer() {
         binding.drawerLayout.openDrawer(GravityCompat.START)
@@ -60,8 +70,25 @@ class MainActivity : AppCompatActivity(), DrawerController {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        appDataStore = AppDataStore(applicationContext)
+
+        val themeMode = runBlocking {
+            appDataStore.themeModeFlow.first()
+        }
+
+        ThemeManager.applyTheme(themeMode)
+
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.light(
+                Color.TRANSPARENT,
+                Color.TRANSPARENT
+            ),
+            navigationBarStyle = SystemBarStyle.light(
+                Color.TRANSPARENT,
+                Color.TRANSPARENT
+            )
+        )
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -77,7 +104,10 @@ class MainActivity : AppCompatActivity(), DrawerController {
                     showLanguageDialog()
                     true
                 }
-
+                R.id.menu_theme -> {
+                    showThemeDialog()
+                    true
+                }
                 else -> false
             }
         }
@@ -107,6 +137,34 @@ class MainActivity : AppCompatActivity(), DrawerController {
             .setItems(languages) { dialog, which ->
                 val selectedLanguageTag = languageTags[which]
                 setLanguage(selectedLanguageTag)
+
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun showThemeDialog() {
+        val themes = arrayOf(
+            getString(R.string.default_text),
+            getString(R.string.theme_light),
+            getString(R.string.theme_dark)
+        )
+
+        val themeModes = arrayOf(
+            ThemeMode.SYSTEM,
+            ThemeMode.LIGHT,
+            ThemeMode.DARK
+        )
+
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.select_theme))
+            .setItems(themes) { dialog, which ->
+                val selectedThemeMode = themeModes[which]
+
+                lifecycleScope.launch {
+                    appDataStore.saveThemeMode(selectedThemeMode)
+                    ThemeManager.applyTheme(selectedThemeMode)
+                }
 
                 dialog.dismiss()
             }
