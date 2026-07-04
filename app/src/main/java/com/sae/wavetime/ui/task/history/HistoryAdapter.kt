@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.sae.wavetime.R
+import com.sae.wavetime.ui.common.toHourMinuteSecond
 import com.sae.wavetime.ui.model.HistoryListItemUiModel
 
 class HistoryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -29,8 +30,10 @@ class HistoryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val tvTime : TextView = itemView.findViewById(R.id.tvTime)
 
         fun bind(item: HistoryListItemUiModel.TaskItem) {
+            val context = itemView.context
+
             tvName.text = item.task.name
-            tvTime.text = item.task.lastCompletedAt.toString()
+            tvTime.text = item.task.lastCompletedAt.toHourMinuteSecond(context)
         }
     }
 

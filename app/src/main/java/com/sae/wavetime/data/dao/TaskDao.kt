@@ -42,6 +42,16 @@ interface TaskDao {
     )
 """)
     suspend fun hasRunningTimerTask(now: Long): Boolean
+    @Query("""
+    SELECT EXISTS(
+        SELECT 1 FROM tasks
+        WHERE status = 'in_progress'
+        AND completeMode = 'timer'
+        AND finishAt IS NOT NULL
+        AND finishAt > :now
+    )
+""")
+    fun hasRunningTimerTaskFlow(now: Long): Flow<Boolean>
 
     @Query("""
     SELECT * FROM tasks

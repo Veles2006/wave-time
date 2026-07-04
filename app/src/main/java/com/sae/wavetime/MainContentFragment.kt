@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import com.sae.wavetime.databinding.FragmentMainContentBinding
 import com.sae.wavetime.ui.common.DrawerController
 

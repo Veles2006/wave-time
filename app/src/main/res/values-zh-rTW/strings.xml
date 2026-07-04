@@ -91,4 +91,9 @@
     <string name="select_theme">選擇主題</string>
     <string name="theme_light">淺色</string>
     <string name="theme_dark">深色</string>
+    <string name="no_tasks_yet">目前沒有任務。\n新增一個任務來開始吧。</string>
+    <string name="no_blocks_yet">目前沒有封鎖的應用程式。\n新增一個需要管理的應用程式。</string>
+    <string name="no_items_yet">目前沒有道具。\n完成任務來獲得獎勵。</string>
+    <string name="minutes">分鐘</string>
+    <string name="completion_time">完成時間：</string>
 </resources>

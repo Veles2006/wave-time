@@ -6,6 +6,7 @@ data class TaskDetailState(
     val isLoading: Boolean = false,
     val task: Task? = null,
     val error: String? = null,
+    val hasRunningTimerTask: Boolean = false,
 
     val timerStartEvent: TimerStartEvent? = null
 )

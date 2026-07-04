@@ -57,8 +57,8 @@ class AppSelectAdapter(
             holder.cardBlock.strokeColor = context.getColor(R.color.primary)
             holder.cardBlock.strokeWidth = 2
 
-            holder.tvName.setTextColor(context.getColor(R.color.on_primary))
-            holder.tvPackageName.setTextColor(context.getColor(R.color.on_primary))
+            holder.tvName.setTextColor(context.getColor(R.color.text_secondary))
+            holder.tvPackageName.setTextColor(context.getColor(R.color.text_secondary))
         } else {
             holder.cardBlock.setCardBackgroundColor(
                 context.getColor(R.color.card_bg)
@@ -66,8 +66,8 @@ class AppSelectAdapter(
             holder.cardBlock.strokeColor = context.getColor(android.R.color.transparent)
             holder.cardBlock.strokeWidth = 0
 
-            holder.tvName.setTextColor(context.getColor(R.color.on_primary))
-            holder.tvPackageName.setTextColor(context.getColor(R.color.on_primary))
+            holder.tvName.setTextColor(context.getColor(R.color.text_secondary))
+            holder.tvPackageName.setTextColor(context.getColor(R.color.text_secondary))
         }
 
         holder.itemView.setOnClickListener {

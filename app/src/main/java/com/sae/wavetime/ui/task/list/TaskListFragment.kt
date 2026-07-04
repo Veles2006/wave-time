@@ -155,6 +155,16 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
         }
 
         adapter.submitList(state.tasks)
+
+        if (state.tasks.isEmpty()) {
+            binding.rvTasks.visibility = View.GONE
+            binding.tvEmptyTask.visibility = View.VISIBLE
+            binding.ivEmptyTask.visibility = View.VISIBLE
+        } else {
+            binding.rvTasks.visibility = View.VISIBLE
+            binding.tvEmptyTask.visibility = View.GONE
+            binding.ivEmptyTask.visibility = View.GONE
+        }
     }
 
 

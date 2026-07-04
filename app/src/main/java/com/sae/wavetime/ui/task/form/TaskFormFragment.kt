@@ -1,8 +1,17 @@
 package com.sae.wavetime.ui.task.form
 
+import android.Manifest
+import android.app.AlertDialog
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
-import android.util.Log
+import android.provider.Settings
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -18,6 +27,7 @@ import com.sae.wavetime.data.repository.ItemRepository
 import com.sae.wavetime.data.repository.TaskRepository
 import com.sae.wavetime.databinding.FragmentTaskFormBinding
 import com.sae.wavetime.local.DatabaseProvider
+import com.sae.wavetime.ui.common.toDifficultyText
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.util.UUID
@@ -62,11 +72,10 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
         binding.rvItems.visibility =
             if (filteredList.isEmpty()) View.GONE else View.VISIBLE
 
-        binding.btnItem.setText(
-            if (filteredList.isEmpty())
-                getString(R.string.not_set)
-            else
-                getString(R.string.change_item))
+        binding.btnItem.text = if (filteredList.isEmpty())
+            getString(R.string.not_set)
+        else
+            getString(R.string.change_item)
 
         adapter.submitList(filteredList)
 
@@ -111,6 +120,66 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
         }
     }
 
+    private fun isNotificationEnabled(): Boolean {
+        val appNotificationEnabled =
+            NotificationManagerCompat.from(requireContext()).areNotificationsEnabled()
+
+        val runtimePermissionGranted =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) == PackageManager.PERMISSION_GRANTED
+            } else {
+                true
+            }
+
+        return appNotificationEnabled && runtimePermissionGranted
+    }
+
+    private val notificationPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+            if (granted) {
+                // Người dùng đã bật notification
+            } else {
+                showNotificationSettingsDialog()
+            }
+        }
+    private fun requestNotificationPermissionIfNeeded() {
+        if (isNotificationEnabled()) return
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        } else {
+            showNotificationSettingsDialog()
+        }
+    }
+
+    private fun showNotificationSettingsDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Bật thông báo")
+            .setMessage("Wave Time cần thông báo để nhắc bạn khi timer hoàn thành nhiệm vụ.")
+            .setPositiveButton("Mở cài đặt") { _, _ ->
+                openAppNotificationSettings()
+            }
+            .setNegativeButton("Để sau", null)
+            .show()
+    }
+
+    private fun openAppNotificationSettings() {
+        val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
+                putExtra(Settings.EXTRA_APP_PACKAGE, requireContext().packageName)
+            }
+        } else {
+            Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                data = Uri.parse("package:${requireContext().packageName}")
+            }
+        }
+
+        startActivity(intent)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -123,6 +192,10 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
 
         binding.rvItems.layoutManager = LinearLayoutManager(requireContext())
         binding.rvItems.adapter = adapter
+
+        binding.sliderDifficulty.setLabelFormatter { value ->
+            value.toInt().toDifficultyText(requireContext())
+        }
 
         viewModel.loadRewards()
 
@@ -192,6 +265,16 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
 
         binding.btnSuccess.setOnClickListener {
 
+            val completeMode = when (binding.rgCompleteMode.checkedRadioButtonId) {
+                R.id.rbTimerMode -> "timer"
+                else -> "tap"
+            }
+
+            if (completeMode == "timer" && !isNotificationEnabled()) {
+                requestNotificationPermissionIfNeeded()
+                return@setOnClickListener
+            }
+
             val taskName = binding.edtTaskName.text.toString().trim()
             val taskDesc = binding.edtTaskDesc.text?.toString()?.trim()
             val taskItemReward = viewModel.state.value.selectedRewards
@@ -219,7 +302,6 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
                 completeMode == "timer" &&
                 (requiredDurationMinutes == null || requiredDurationMinutes <= 0)
                 ) {
-                Log.d("dd", "${requiredDurationMinutes}")
                 binding.edtTimer.error = "Please enter a valid timer"
                 return@setOnClickListener
             }
@@ -249,6 +331,8 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
                     description = taskDesc,
                     status = "pending",
                     type = taskType,
+                    completeMode = completeMode,
+                    requiredDurationMinutes = requiredDurationMinutes,
                     difficulty = taskDifficulty,
                     reward = Reward(
                         gold = coinValue,

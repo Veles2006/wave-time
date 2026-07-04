@@ -13,12 +13,20 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
+import android.widget.Toast
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 
 class FocusAccessibilityService : AccessibilityService() {
 
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     @Volatile
     private var blocks: List<Block> = emptyList()
+    @Volatile
+    private var currentPackageName: String? = null
+
+    private var blockJob: Job? = null
+    private var unlockWatcherJob: Job? = null
 
     override fun onServiceConnected() {
         super.onServiceConnected()
@@ -39,6 +47,10 @@ class FocusAccessibilityService : AccessibilityService() {
                 }
                 .collect { newBlocks ->
                     blocks = newBlocks
+
+                    launch(Dispatchers.Main) {
+                        checkCurrentApp()
+                    }
                 }
         }
     }
@@ -46,27 +58,70 @@ class FocusAccessibilityService : AccessibilityService() {
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
         event ?: return
 
-        if (event.eventType != AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) return
+        if (
+            event.eventType != AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED &&
+            event.eventType != AccessibilityEvent.TYPE_WINDOWS_CHANGED
+        ) {
+            return
+        }
 
-        val currentPackageName = event.packageName?.toString() ?: return
+        val packageName = event.packageName?.toString() ?: return
 
-        if (currentPackageName == applicationContext.packageName) return
+        if (packageName == applicationContext.packageName) return
+
+        currentPackageName = packageName
+
+        checkCurrentApp()
+    }
+
+    private fun checkCurrentApp() {
+        val packageName = currentPackageName ?: return
+
+        if (packageName == applicationContext.packageName) return
 
         val block = blocks.find {
-            it.packageName == currentPackageName
+            it.packageName == packageName
         } ?: return
 
         val now = System.currentTimeMillis()
 
         if (now < block.unlockUntil) {
+            scheduleBlockWhenUnlockExpires(block)
             return
         }
 
         blockApp(block)
     }
 
+    private fun scheduleBlockWhenUnlockExpires(block: Block) {
+        unlockWatcherJob?.cancel()
+
+        val delayMs = (block.unlockUntil - System.currentTimeMillis())
+            .coerceAtLeast(0L)
+
+        unlockWatcherJob = serviceScope.launch(Dispatchers.Main) {
+            delay(delayMs)
+
+            if (currentPackageName == block.packageName) {
+                checkCurrentApp()
+            }
+        }
+    }
+
     private fun blockApp(block: Block) {
-        performGlobalAction(GLOBAL_ACTION_HOME)
+        if (blockJob?.isActive == true) return
+
+        blockJob = serviceScope.launch(Dispatchers.Main) {
+            Toast.makeText(
+                applicationContext,
+                "The world",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            delay(800)
+
+            performGlobalAction(GLOBAL_ACTION_HOME)
+        }
     }
 
     override fun onInterrupt() {

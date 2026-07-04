@@ -2,7 +2,6 @@ package com.sae.wavetime.ui.task.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sae.wavetime.domain.model.RewardItem
 import com.sae.wavetime.data.repository.TaskRepository
 import com.sae.wavetime.domain.model.Task
 import com.sae.wavetime.domain.usecase.CompleteTaskUseCase
@@ -22,6 +21,13 @@ class TaskDetailViewModel(
     val state: StateFlow<TaskDetailState> = _state
     fun observeTask(id: String) {
         viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    isLoading = true,
+                    error = null
+                )
+            }
+
             taskRepo.getTaskByIdFlow(id)
                 .catch { e ->
                     _state.update {
@@ -37,6 +43,36 @@ class TaskDetailViewModel(
                             isLoading = false,
                             task = task,
                             error = if (task == null) "Task not found" else null
+                        )
+                    }
+                }
+        }
+    }
+
+    fun observeRunningTimerTask() {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    isLoading = true,
+                    error = null
+                )
+            }
+
+            taskRepo.hasRunningTimerTaskFlow()
+                .catch { e ->
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            error = e.message ?: "Check running timer task failed"
+                        )
+                    }
+                }
+                .collect { bool ->
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            hasRunningTimerTask = bool,
+                            error = null
                         )
                     }
                 }

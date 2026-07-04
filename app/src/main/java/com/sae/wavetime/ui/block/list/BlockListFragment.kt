@@ -45,6 +45,16 @@ class BlockListFragment : Fragment(R.layout.fragment_block_list) {
         }
 
         adapter.submitList(state.blocks)
+
+        if (state.blocks.isEmpty()) {
+            binding.rvBlocks.visibility = View.GONE
+            binding.tvEmptyBlock.visibility = View.VISIBLE
+            binding.ivEmptyBlock.visibility = View.VISIBLE
+        } else {
+            binding.rvBlocks.visibility = View.VISIBLE
+            binding.tvEmptyBlock.visibility = View.GONE
+            binding.ivEmptyBlock.visibility = View.GONE
+        }
     }
 
     private fun showBlockOptionsDialog(app: AppUiModel) {

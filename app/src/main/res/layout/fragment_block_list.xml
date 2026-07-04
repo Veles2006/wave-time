@@ -14,6 +14,39 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+
+    <ImageView
+        android:id="@+id/ivEmptyBlock"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:src="@drawable/ic_lock_solid_full"
+        android:layout_marginEnd="12dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="0dp"
+        android:contentDescription="@null"
+        android:importantForAccessibility="no"
+        android:visibility="gone"
+        app:tint="@color/text_secondary"
+        app:layout_constraintTop_toTopOf="@id/tvEmptyBlock"
+        app:layout_constraintBottom_toBottomOf="@id/tvEmptyBlock"
+        app:layout_constraintStart_toStartOf="@id/tvEmptyBlock" />
+
+    <TextView
+        android:id="@+id/tvEmptyBlock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxWidth="400dp"
+        android:layout_marginTop="32dp"
+        android:paddingStart="52dp"
+        android:paddingEnd="0dp"
+        android:text="@string/no_blocks_yet"
+        android:textColor="@color/text_secondary"
+        android:textSize="14sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ImageButton
         android:id="@+id/btnCreateBlock"
         android:layout_width="52dp"

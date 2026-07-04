@@ -2,6 +2,7 @@ package com.sae.wavetime.ui.task.detail
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -64,85 +65,97 @@ class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
     private fun renderTimer(state: TaskDetailState) {
         val finishAt = state.task?.finishAt
 
-        binding.tvTimer.text = if (finishAt == null) {
-            "00:00"
-        } else {
-            val remainingMillis = finishAt - System.currentTimeMillis()
+        if (state.isLoading || finishAt == null) {
+            return
+        }
+
+        val remainingMillis = finishAt - System.currentTimeMillis()
+
+        binding.tvTimer.text =
             if (remainingMillis <= 0L) {
                 "00:00"
             } else {
                 formatRemainingTime(remainingMillis)
             }
-        }
     }
 
     private fun render(state: TaskDetailState) {
-        if (state.isLoading) {
-            // show loading
-        }
+        val task = state.task
+
+        binding.tvTimer.isVisible = !state.isLoading && task?.finishAt != null
+        binding.tvTimerTitle.isVisible = state.isLoading || task?.finishAt != null
 
         if (state.error != null) {
-            // show error
+            binding.tvTimer.isVisible = false
+            binding.tvTimerTitle.isVisible = false
+            return
         }
 
-        state.task?.let { task ->
-            binding.tvTaskName.text = task.name
-            binding.tvDescription.text =
-                getString(R.string.task_description_format, task.description ?: getString(R.string.none))
+        if (task == null) return
 
-            binding.tvStatus.text =
-                getString(R.string.task_status_format, task.status.toStatusText(requireContext()))
+        binding.tvTaskName.text = task.name
+        binding.tvDescription.text =
+            getString(R.string.task_description_format, task.description ?: getString(R.string.none))
 
-            binding.tvTypeTask.text =
-                getString(R.string.task_type_format, task.type.toTaskTypeText(requireContext()))
+        binding.tvStatus.text =
+            getString(R.string.task_status_format, task.status.toStatusText(requireContext()))
 
-            binding.tvCompleteMode.text =
-                getString(R.string.task_complete_mode_format, task.completeMode.toCompleteModeText(requireContext()))
+        binding.tvTypeTask.text =
+            getString(R.string.task_type_format, task.type.toTaskTypeText(requireContext()))
 
-            binding.tvDate.text =
-                getString(R.string.task_date_format, task.date ?: getString(R.string.none))
+        binding.tvCompleteMode.text =
+            getString(R.string.task_complete_mode_format, task.completeMode.toCompleteModeText(requireContext()))
 
-            binding.tvDifficulty.text =
-                getString(R.string.task_difficulty_format, task.difficulty.toDifficultyText(requireContext()))
+        binding.tvDate.text =
+            getString(R.string.task_date_format, task.date ?: getString(R.string.none))
 
-            binding.tvReward.text =
-                getString(R.string.task_reward_format, task.reward.toDisplayString(requireContext()))
+        binding.tvDifficulty.text =
+            getString(R.string.task_difficulty_format, task.difficulty.toDifficultyText(requireContext()))
 
-            binding.tvPenalty.text =
-                getString(R.string.task_penalty_format, task.penalty.toDisplayString(requireContext()))
+        binding.tvReward.text =
+            getString(R.string.task_reward_format, task.reward.toDisplayString(requireContext()))
 
-            binding.tvRequiredDurationMinutes.text =
-                getString(
-                    R.string.task_required_duration_format,
-                    task.requiredDurationMinutes ?: 0
-                )
+        binding.tvPenalty.text =
+            getString(R.string.task_penalty_format, task.penalty.toDisplayString(requireContext()))
 
-            binding.btnEdit.setOnClickListener {
-                (activity as? MainActivity)?.openTaskForm(task.id)
-            }
-            binding.btnDelete.setOnClickListener {
-                val dialog = SoftDeleteDialog.newInstance("Do you want to detele this task?")
+        binding.tvRequiredDurationMinutes.text =
+            getString(
+                R.string.task_required_duration_format,
+                task.requiredDurationMinutes ?: 0
+            )
 
-                dialog.setOnConfirmListener {
-                    viewModel.softDeleteTask(task.id)
-                    requireActivity().onBackPressedDispatcher.onBackPressed()
-                }
+        binding.btnEdit.setOnClickListener {
+            (activity as? MainActivity)?.openTaskForm(task.id)
+        }
 
-                dialog.show(parentFragmentManager, "SoftDeleteDialog")
-            }
-            binding.btnSuccess.setOnClickListener {
-                viewModel.completeTask(task)
+        binding.tvTimerTitle.isVisible = task.finishAt != null
 
-                if (task.completeMode == "tap") {
-                    requireActivity().onBackPressedDispatcher.onBackPressed()
-                }
-            }
-            binding.btnBack.setOnClickListener {
+        binding.btnDelete.setOnClickListener {
+            val dialog = SoftDeleteDialog.newInstance("Do you want to detele this task?")
+
+            dialog.setOnConfirmListener {
+                viewModel.softDeleteTask(task.id)
                 requireActivity().onBackPressedDispatcher.onBackPressed()
             }
 
-
+            dialog.show(parentFragmentManager, "SoftDeleteDialog")
         }
+        binding.btnSuccess.isVisible =
+            task.status != "in_progress" &&
+                    task.status != "completed"
+
+        binding.btnSuccess.setOnClickListener {
+            viewModel.completeTask(task)
+
+            if (task.completeMode == "tap") {
+                requireActivity().onBackPressedDispatcher.onBackPressed()
+            }
+        }
+
+        binding.btnBack.setOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -154,6 +167,8 @@ class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
             ?: throw IllegalArgumentException("Missing taskId")
 
         viewModel.observeTask(taskId)
+        viewModel.observeRunningTimerTask()
+
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -169,6 +184,8 @@ class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
 
                         viewModel.clearTimerStartEvent()
                     }
+
+                    binding.btnSuccess.isVisible = !state.hasRunningTimerTask
                 }
             }
         }

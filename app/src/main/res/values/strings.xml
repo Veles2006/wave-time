@@ -95,4 +95,9 @@
     <string name="select_theme">Select theme</string>
     <string name="theme_light">Light</string>
     <string name="theme_dark">Dark</string>
+    <string name="no_tasks_yet">No tasks yet.\nAdd a new task to get started.</string>
+    <string name="no_blocks_yet">No blocked apps yet.\nAdd an app to control.</string>
+    <string name="no_items_yet">No items yet.\nComplete tasks to earn rewards.</string>
+    <string name="minutes">Minutes</string>
+    <string name="completion_time">Completion time:</string>
 </resources>

@@ -94,6 +94,16 @@ class ItemListFragment : Fragment(R.layout.fragment_item_list) {
         }
 
         adapter.submitList(state.items)
+
+        if (state.items.isEmpty()) {
+            binding.rvItems.visibility = View.GONE
+            binding.tvEmptyItem.visibility = View.VISIBLE
+            binding.ivEmptyItem.visibility = View.VISIBLE
+        } else {
+            binding.rvItems.visibility = View.VISIBLE
+            binding.tvEmptyItem.visibility = View.GONE
+            binding.ivEmptyItem.visibility = View.GONE
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

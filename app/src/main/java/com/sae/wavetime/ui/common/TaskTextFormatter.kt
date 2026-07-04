@@ -42,3 +42,25 @@ fun String.toDifficultyText(context: Context): String {
         else -> this
     }
 }
+
+fun Int.toDifficultyText(context: Context): String {
+    return when (this) {
+        1 -> context.getString(R.string.difficulty_mortal)
+        2 -> context.getString(R.string.difficulty_yao)
+        3 -> context.getString(R.string.difficulty_gui)
+        4 -> context.getString(R.string.difficulty_mara)
+        5 -> context.getString(R.string.difficulty_sage)
+        6 -> context.getString(R.string.difficulty_xian)
+        7 -> context.getString(R.string.difficulty_deity)
+        8 -> context.getString(R.string.difficulty_creation)
+        else -> this.toString()
+    }
+}
+
+fun Long?.toHourMinuteSecond(context: Context): String {
+    if (this == null) return context.getString(R.string.status_pending)
+
+    val date = java.util.Date(this)
+    val formatter = java.text.SimpleDateFormat("HH:mm:ss", java.util.Locale.getDefault())
+    return formatter.format(date)
+}

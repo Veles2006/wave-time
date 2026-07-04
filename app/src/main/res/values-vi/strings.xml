@@ -68,8 +68,8 @@
     <string name="difficulty_mortal">Phàm nhân</string>
     <string name="difficulty_yao">Yêu</string>
     <string name="difficulty_gui">Quỷ</string>
-    <string name="difficulty_mara">Ma La</string>
-    <string name="difficulty_sage">Thánh nhân</string>
+    <string name="difficulty_mara">Ma</string>
+    <string name="difficulty_sage">Thánh</string>
     <string name="difficulty_xian">Tiên</string>
     <string name="difficulty_deity">Thần</string>
     <string name="difficulty_creation">Tạo hóa</string>
@@ -91,4 +91,10 @@
     <string name="select_theme">Chọn giao diện</string>
     <string name="theme_light">Sáng</string>
     <string name="theme_dark">Tối</string>
+    <string name="no_tasks_yet">Chưa có nhiệm vụ nào.\nHãy thêm một nhiệm vụ mới.</string>
+    <string name="no_blocks_yet">Chưa có ứng dụng bị chặn nào.\nHãy thêm ứng dụng cần kiểm soát.</string>
+    <string name="no_items_yet">Chưa có vật phẩm nào.\nHoàn thành nhiệm vụ để nhận phần thưởng.</string>
+    <string name="app_is_blocked">Ứng dụng này đang bị chặn</string>
+    <string name="minutes">Phút</string>
+    <string name="completion_time">Thời gian hoàn thành:</string>
 </resources>
