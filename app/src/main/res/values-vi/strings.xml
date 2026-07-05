@@ -17,6 +17,11 @@
     <string name="btn_login">Đăng nhập</string>
     <string name="tittle_basic">Cơ bản</string>
     <string name="btn_basic_question">Câu hỏi phần cơ bản</string>
+    <string name="title_config">Thiết lập</string>
+    <string name="btn_config_question">Câu hỏi về thiết lập</string>
+    <string name="difficulty">Cấp độ</string>
+    <string name="title_task_type">Loại nhiệm vụ</string>
+    <string name="title_complete_mode">Cách hoàn thành</string>
     <string name="til_task_name">Tên nhiệm vụ</string>
     <string name="til_task_description">Mô tả</string>
     <string name="title_reward">Phần thưởng</string>
@@ -56,7 +61,7 @@
     <string name="task_complete_mode_format">Cách hoàn thành: %1$s</string>
     <string name="task_date_format">Ngày: %1$s</string>
     <string name="task_difficulty_format">Độ khó: %1$s</string>
-    <string name="task_reward_format">Phần thưởng: %1$s</string>
+    <string name="task_reward_format">Phần thưởng: \n%1$s</string>
     <string name="task_penalty_format">Hình phạt: %1$s</string>
     <string name="task_required_duration_format">Thời gian yêu cầu: %1$d phút</string>
     <string name="none">Không có</string>
@@ -94,7 +99,6 @@
     <string name="no_tasks_yet">Chưa có nhiệm vụ nào.\nHãy thêm một nhiệm vụ mới.</string>
     <string name="no_blocks_yet">Chưa có ứng dụng bị chặn nào.\nHãy thêm ứng dụng cần kiểm soát.</string>
     <string name="no_items_yet">Chưa có vật phẩm nào.\nHoàn thành nhiệm vụ để nhận phần thưởng.</string>
-    <string name="app_is_blocked">Ứng dụng này đang bị chặn</string>
     <string name="minutes">Phút</string>
     <string name="completion_time">Thời gian hoàn thành:</string>
     <string name="select_item">Chọn vật phẩm</string>
@@ -131,4 +135,7 @@
     <string name="go_home">Về màn hình chính</string>
     <string name="blocked_title">Ứng dụng %1$s đang bị khóa</string>
     <string name="blocked_message">Bạn cần dùng chìa khóa để mở khóa tạm thời ứng dụng này.\n\nPackage: %1$s</string>
+    <string name="tier_format">Bậc: %1$s</string>
+    <string name="btn_type_question">Câu hỏi về loại chặn</string>
+    <string name="item_key_format">Chìa %1$s</string>
 </resources>

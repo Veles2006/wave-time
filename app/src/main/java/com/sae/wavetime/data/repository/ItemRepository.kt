@@ -54,7 +54,7 @@ class ItemRepository(
 
     suspend fun createKeysForBlock(block: Block) {
         keyColors.forEachIndexed { index, color ->
-            val keyName = "${color.replaceFirstChar { it.uppercase() }} Access Key"
+            val keyName = "${color.replaceFirstChar { it.uppercase() }} Key"
             val description = "Unlocks ${block.appName} temporarily. Higher-rank keys provide stronger access privileges."
 
             val item = ItemEntity(

@@ -14,6 +14,11 @@
     <string name="btn_login">登入</string>
     <string name="tittle_basic">基本</string>
     <string name="btn_basic_question">基本問題</string>
+    <string name="title_config">設定</string>
+    <string name="btn_config_question">設定說明</string>
+    <string name="difficulty">難度</string>
+    <string name="title_task_type">任務類型</string>
+    <string name="title_complete_mode">完成方式</string>
     <string name="til_task_name">任務名稱</string>
     <string name="til_task_description">描述</string>
     <string name="title_reward">獎勵</string>
@@ -56,7 +61,7 @@
     <string name="task_complete_mode_format">完成方式：%1$s</string>
     <string name="task_date_format">日期：%1$s</string>
     <string name="task_difficulty_format">難度：%1$s</string>
-    <string name="task_reward_format">獎勵：%1$s</string>
+    <string name="task_reward_format">獎勵：\n%1$s</string>
     <string name="task_penalty_format">懲罰：%1$s</string>
     <string name="task_required_duration_format">所需時間：%1$d 分鐘</string>
     <string name="none">無</string>
@@ -130,4 +135,7 @@
     <string name="go_home">回到主畫面</string>
     <string name="blocked_title">%1$s 已被鎖定</string>
     <string name="blocked_message">你需要使用鑰匙來暫時解鎖此應用程式。\n\n套件名稱：%1$s</string>
+    <string name="tier_format">階級：%1$s</string>
+    <string name="btn_type_question">封鎖類型說明</string>
+    <string name="item_key_format">%1$s鑰匙</string>
 </resources>

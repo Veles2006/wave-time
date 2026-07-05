@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.sae.wavetime.R
+import com.sae.wavetime.ui.common.toTierText
 import com.sae.wavetime.ui.model.RewardSelectUiModel
 
 class TaskFormRewardAdapter : RecyclerView.Adapter<TaskFormRewardAdapter.TaskFormRewardViewHolder>() {
@@ -30,10 +31,14 @@ class TaskFormRewardAdapter : RecyclerView.Adapter<TaskFormRewardAdapter.TaskFor
 
     override fun onBindViewHolder(holder: TaskFormRewardViewHolder, position: Int) {
         val reward = rewards[position]
+        val context = holder.itemView.context
 
         holder.tvName.text = reward.name
-        holder.tvTier.text = "Rank: ${reward.tier}"
-        holder.tvQuantity.text = "X${reward.quantity}"
+        holder.tvTier.text = holder.itemView.context.getString(
+            R.string.tier_format,
+            reward.tier.toTierText(context)
+        )
+        holder.tvQuantity.text = "x${reward.quantity}"
     }
 
     override fun getItemCount(): Int {

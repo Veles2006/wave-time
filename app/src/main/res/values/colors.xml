@@ -46,6 +46,7 @@
     <!-- Border / Divider -->
     <color name="divider">#E2E8F0</color>
     <color name="border">#CBD5E1</color>
+    <color name="surface_border">#CBD5E1</color>
 
     <!-- Wave Time specific -->
     <color name="task_color">#3B82F6</color>

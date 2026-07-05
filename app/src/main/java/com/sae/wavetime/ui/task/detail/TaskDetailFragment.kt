@@ -84,10 +84,12 @@ class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
 
         binding.tvTimer.isVisible = !state.isLoading && task?.finishAt != null
         binding.tvTimerTitle.isVisible = state.isLoading || task?.finishAt != null
+        binding.layoutTimerInfo.isVisible = state.isLoading || task?.finishAt != null
 
         if (state.error != null) {
             binding.tvTimer.isVisible = false
             binding.tvTimerTitle.isVisible = false
+            binding.layoutTimerInfo.isVisible = false
             return
         }
 

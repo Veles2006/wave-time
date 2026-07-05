@@ -341,7 +341,6 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
                 val taskData = task?.copy(
                     name = taskName,
                     description = taskDesc,
-                    status = "pending",
                     type = taskType,
                     completeMode = completeMode,
                     requiredDurationMinutes = requiredDurationMinutes,

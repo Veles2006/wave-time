@@ -4,6 +4,8 @@ import android.content.Context
 import com.sae.wavetime.R
 import com.sae.wavetime.domain.model.Reward
 import com.sae.wavetime.domain.model.Penalty
+import com.sae.wavetime.ui.common.toTierText
+import java.util.Locale
 
 fun Reward.toDisplayString(context: Context): String {
     val parts = mutableListOf<String>()
@@ -13,14 +15,16 @@ fun Reward.toDisplayString(context: Context): String {
     if (diamond > 0) parts.add("💎 $diamond")
     if (gem > 0) parts.add("🔷 $gem")
 
-    if (items.isNotEmpty()) {
-        val itemText = items.joinToString(", ") {
-            "📦 ${it.itemId.name} x${it.quantity}"
-        }
-        parts.add(itemText)
+    items.forEach {
+        val itemName = it.itemId.name.toLocalizedKeyName(context)
+        parts.add("📦 $itemName x${it.quantity}")
     }
 
-    return if (parts.isEmpty()) context.getString(R.string.no_reward) else parts.joinToString(" • ")
+    return if (parts.isEmpty()) {
+        context.getString(R.string.no_reward)
+    } else {
+        parts.joinToString("\n")
+    }
 }
 
 fun Penalty.toDisplayString(context: Context): String {
@@ -32,4 +36,26 @@ fun Penalty.toDisplayString(context: Context): String {
     if (gem > 0) parts.add("-🔷 $gem")
 
     return if (parts.isEmpty()) context.getString(R.string.no_penalty) else parts.joinToString(" • ")
+}
+
+fun String.toLocalizedKeyName(context: Context): String {
+    val parts = this.split("·").map { it.trim() }
+
+    val keyPart = parts.getOrNull(0) ?: return this
+    val appName = parts.getOrNull(1)
+
+    val tier = keyPart
+        .removeSuffix("Key")
+        .trim()
+        .lowercase(Locale.ROOT)
+
+    val tierText = tier.toTierText(context)
+
+    val keyName = context.getString(R.string.item_key_format, tierText)
+
+    return if (appName.isNullOrBlank()) {
+        keyName
+    } else {
+        "$keyName · $appName"
+    }
 }

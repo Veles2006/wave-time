@@ -17,6 +17,11 @@
     <string name="btn_login">Login</string>
     <string name="tittle_basic">Basic</string>
     <string name="btn_basic_question">Basic Question</string>
+    <string name="title_config">Config</string>
+    <string name="btn_config_question">Config Question</string>
+    <string name="difficulty">Difficulty</string>
+    <string name="title_task_type">Task Type</string>
+    <string name="title_complete_mode">Complete Mode</string>
     <string name="til_task_name">Task name</string>
     <string name="til_task_description">Description</string>
     <string name="title_reward">Reward</string>
@@ -59,7 +64,7 @@
     <string name="task_complete_mode_format">Complete Mode: %1$s</string>
     <string name="task_date_format">Date: %1$s</string>
     <string name="task_difficulty_format">Difficulty: %1$s</string>
-    <string name="task_reward_format">Reward: %1$s</string>
+    <string name="task_reward_format">Reward: \n%1$s</string>
     <string name="task_penalty_format">Penalty: %1$s</string>
     <string name="task_required_duration_format">Required Duration Minutes: %1$d</string>
     <string name="none">None</string>
@@ -134,4 +139,7 @@
     <string name="go_home">Go to home screen</string>
     <string name="blocked_title">%1$s is blocked</string>
     <string name="blocked_message">You need to use a key to temporarily unlock this app.\n\nPackage: %1$s</string>
+    <string name="tier_format">Tier: %1$s</string>
+    <string name="btn_type_question">Type Question</string>
+    <string name="item_key_format">%1$s Key</string>
 </resources>

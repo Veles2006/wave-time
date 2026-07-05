@@ -24,3 +24,8 @@ fun String.toTierText(context: Context): String {
         else -> this
     }
 }
+
+fun String.toKeyName(context: Context): String {
+    val tierText = this.toTierText(context)
+    return context.getString(R.string.item_key_format, tierText)
+}
