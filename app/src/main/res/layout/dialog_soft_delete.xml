@@ -20,7 +20,6 @@
             android:id="@+id/tvDialogTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Set Coin"
             android:textColor="@color/text_primary"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -29,45 +28,16 @@
             android:id="@+id/tvDialogMessage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:text="Enter the amount you want to add."
+            android:layout_marginTop="8dp"
             android:textColor="@color/text_secondary"
-            android:textSize="14sp" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilValue"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
-            android:hint="Amount"
-            app:boxBackgroundColor="@color/text_field_bg"
-            app:boxBackgroundMode="outline"
-            app:boxCornerRadiusBottomEnd="16dp"
-            app:boxCornerRadiusBottomStart="16dp"
-            app:boxCornerRadiusTopEnd="16dp"
-            app:boxCornerRadiusTopStart="16dp"
-            app:boxStrokeColor="@color/text_field_border"
-            app:hintTextColor="@color/text_secondary">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edtValue"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:inputType="number"
-                android:maxLines="1"
-                android:paddingStart="14dp"
-                android:paddingEnd="14dp"
-                android:textColor="@color/text_primary"
-                android:textColorHint="@color/text_disabled"
-                android:textSize="16sp" />
-
-        </com.google.android.material.textfield.TextInputLayout>
+            android:textSize="14sp"
+            android:lineSpacingExtra="2dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="22dp"
-            android:gravity="end"
+            android:layout_marginTop="24dp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <com.google.android.material.button.MaterialButton
@@ -75,7 +45,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="46dp"
                 android:minWidth="88dp"
-                android:text="Cancel"
+                android:text="@string/cancel"
                 android:textAllCaps="false"
                 android:textColor="@color/text_secondary"
                 app:backgroundTint="@color/surface_bg"
@@ -90,10 +60,10 @@
                 android:layout_height="46dp"
                 android:layout_marginStart="10dp"
                 android:minWidth="88dp"
-                android:text="Confirm"
+                android:text="@string/delete"
                 android:textAllCaps="false"
                 android:textColor="@color/on_primary"
-                app:backgroundTint="@color/primary"
+                app:backgroundTint="@color/error"
                 app:cornerRadius="14dp"
                 app:elevation="0dp" />
 

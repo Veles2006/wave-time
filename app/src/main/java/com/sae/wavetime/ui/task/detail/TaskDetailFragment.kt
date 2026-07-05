@@ -131,14 +131,19 @@ class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
         binding.tvTimerTitle.isVisible = task.finishAt != null
 
         binding.btnDelete.setOnClickListener {
-            val dialog = SoftDeleteDialog.newInstance("Do you want to detele this task?")
+            val dialog = SoftDeleteDialog.newInstance(
+                title = getString(R.string.delete_task_title),
+                message = getString(R.string.delete_task_message)
+            )
 
             dialog.setOnConfirmListener {
                 viewModel.softDeleteTask(task.id)
                 requireActivity().onBackPressedDispatcher.onBackPressed()
             }
 
-            dialog.show(parentFragmentManager, "SoftDeleteDialog")
+            if (parentFragmentManager.findFragmentByTag("SoftDeleteDialog") == null) {
+                dialog.show(parentFragmentManager, "SoftDeleteDialog")
+            }
         }
         binding.btnSuccess.isVisible =
             task.status != "in_progress" &&

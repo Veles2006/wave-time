@@ -1,13 +1,17 @@
 package com.sae.wavetime.ui.dialog
 
+import android.app.Dialog
+import android.graphics.Color
 import android.os.Bundle
-import android.view.View
-import android.widget.TextView
+import android.view.Window
 import androidx.fragment.app.DialogFragment
-import com.google.android.material.button.MaterialButton
-import com.sae.wavetime.R
+import com.sae.wavetime.databinding.DialogSoftDeleteBinding
+import androidx.core.graphics.drawable.toDrawable
 
-class SoftDeleteDialog : DialogFragment(R.layout.dialog_confirm_delete) {
+class SoftDeleteDialog : DialogFragment() {
+
+    private var _binding: DialogSoftDeleteBinding? = null
+    private val binding get() = _binding!!
 
     private var onConfirm: (() -> Unit)? = null
 
@@ -15,31 +19,50 @@ class SoftDeleteDialog : DialogFragment(R.layout.dialog_confirm_delete) {
         onConfirm = listener
     }
 
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        _binding = DialogSoftDeleteBinding.inflate(layoutInflater)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        val dialog = Dialog(requireContext())
+        val title = arguments?.getString(ARG_TITLE).orEmpty()
+        val message = arguments?.getString(ARG_MESSAGE).orEmpty()
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(binding.root)
+        dialog.window?.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
 
-        val tvTitle = view.findViewById<TextView>(R.id.tvTitle)
-        val btnConfirm = view.findViewById<MaterialButton>(R.id.btnConfirm)
-        val btnCancel = view.findViewById<MaterialButton>(R.id.btnCancel)
+        binding.tvDialogTitle.text = title
+        binding.tvDialogMessage.text = message
 
-        tvTitle.text = arguments?.getString("title") ?: ""
-        // callback = không survive lifecycle, nên sửa trong tương lai
-        btnConfirm.setOnClickListener {
+        binding.btnCancel.setOnClickListener {
+            dismiss()
+        }
+
+        binding.btnConfirm.setOnClickListener {
             onConfirm?.invoke()
             dismiss()
         }
-        btnCancel.setOnClickListener {
-            dismiss()
-        }
+
+        return dialog
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     companion object {
-        fun newInstance(title: String): SoftDeleteDialog {
-            val dialog = SoftDeleteDialog()
-            val bundle = Bundle()
-            bundle.putString("title", title)
-            dialog.arguments = bundle
-            return dialog
+        private const val ARG_TITLE = "title"
+        private const val ARG_MESSAGE = "message"
+
+        fun newInstance(
+            title: String,
+            message: String
+        ): SoftDeleteDialog {
+            return SoftDeleteDialog().apply {
+                arguments = Bundle().apply {
+                    putString(ARG_TITLE, title)
+                    putString(ARG_MESSAGE, message)
+                }
+            }
         }
     }
 }

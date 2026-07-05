@@ -64,14 +64,19 @@ class BlockDetailFragment : Fragment(R.layout.fragment_block_detail){
                 (activity as? MainActivity)?.openBlockForm(block.id)
             }
             binding.btnDelete.setOnClickListener {
-                val dialog = SoftDeleteDialog.newInstance("Do you want to detele this block?")
+                val dialog = SoftDeleteDialog.newInstance(
+                    title = getString(R.string.delete_block_title),
+                    message = getString(R.string.delete_block_message)
+                )
 
                 dialog.setOnConfirmListener {
                     viewModel.softDelete(block.id)
                     requireActivity().onBackPressedDispatcher.onBackPressed()
                 }
 
-                dialog.show(parentFragmentManager, "SoftDeleteDialog")
+                if (parentFragmentManager.findFragmentByTag("SoftDeleteDialog") == null) {
+                    dialog.show(parentFragmentManager, "SoftDeleteDialog")
+                }
             }
             binding.btnSuccess.setOnClickListener {
 

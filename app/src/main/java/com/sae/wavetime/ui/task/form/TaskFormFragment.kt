@@ -218,22 +218,34 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
         }
 
         binding.btnCoin.setOnClickListener {
-            val dialog = CoinExperienceDialog { text ->
+            val dialog = CoinExperienceDialog(
+                title = getString(R.string.set_coin),
+                message = getString(R.string.enter_coin_amount),
+                unit = getString(R.string.coin),
+                errorMessage = getString(R.string.please_enter_value)
+            ) { text ->
                 coinValue = text.toIntOrNull() ?: 0
-                binding.btnCoin.text = "$coinValue Coin"
+                binding.btnCoin.text = getString(R.string.coin_format, coinValue)
             }
-            if (parentFragmentManager.findFragmentByTag("CoinExperience") == null) {
-                dialog.show(parentFragmentManager, "CoinExperience")
+
+            if (parentFragmentManager.findFragmentByTag("CoinDialog") == null) {
+                dialog.show(parentFragmentManager, "CoinDialog")
             }
         }
 
         binding.btnExp.setOnClickListener {
-            val dialog = CoinExperienceDialog { text ->
+            val dialog = CoinExperienceDialog(
+                title = getString(R.string.set_exp),
+                message = getString(R.string.enter_exp_amount),
+                unit = getString(R.string.exp),
+                errorMessage = getString(R.string.please_enter_value)
+            ) { text ->
                 expValue = text.toIntOrNull() ?: 0
-                binding.btnExp.text = "$expValue EXP"
+                binding.btnExp.text = getString(R.string.exp_format, expValue)
             }
-            if (parentFragmentManager.findFragmentByTag("CoinExperience") == null) {
-                dialog.show(parentFragmentManager, "CoinExperience")
+
+            if (parentFragmentManager.findFragmentByTag("ExpDialog") == null) {
+                dialog.show(parentFragmentManager, "ExpDialog")
             }
         }
 

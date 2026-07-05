@@ -1,46 +1,69 @@
 package com.sae.wavetime.ui.task.form
 
+import android.app.Dialog
 import android.os.Bundle
-import android.view.View
-import android.view.ViewGroup
+import android.view.LayoutInflater
+import android.view.Window
+import android.view.inputmethod.InputMethodManager
+import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import androidx.fragment.app.DialogFragment
-import com.google.android.material.button.MaterialButton
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
-import com.sae.wavetime.R
+import com.sae.wavetime.databinding.DialogCoinExperienceBinding
 
 class CoinExperienceDialog(
+    private val title: String,
+    private val message: String,
+    private val unit: String,
+    private val errorMessage: String,
     private val onConfirm: (String) -> Unit
-) : DialogFragment(R.layout.dialog_coin_experience) {
+) : DialogFragment() {
 
-    override fun onStart() {
-        super.onStart()
-        dialog?.window?.setLayout(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-    }
+    private var _binding: DialogCoinExperienceBinding? = null
+    private val binding get() = _binding!!
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        _binding = DialogCoinExperienceBinding.inflate(LayoutInflater.from(requireContext()))
 
-        val tilCoinOrExperience = view.findViewById<TextInputLayout>(R.id.tilCoinOrExperience)
-        val edtCoinOrExperience = view.findViewById<TextInputEditText>(R.id.edtCoinOrExperience)
-        val btnConfirm = view.findViewById<MaterialButton>(R.id.btnConfirm)
+        val dialog = Dialog(requireContext())
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(binding.root)
 
-        btnConfirm.setOnClickListener {
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-            val text = edtCoinOrExperience.text?.toString()?.trim()
+        binding.tvDialogTitle.text = title
+        binding.tvDialogMessage.text = message
+        binding.tilValue.hint = unit
 
-            if (text.isNullOrEmpty()) {
-                tilCoinOrExperience.error = "This field cannot be empty."
-                return@setOnClickListener
-            } else {
-                tilCoinOrExperience.error = null
-            }
-
-            onConfirm(text)
+        binding.btnCancel.setOnClickListener {
             dismiss()
         }
+
+        binding.btnConfirm.setOnClickListener {
+            val value = binding.edtValue.text?.toString()?.trim().orEmpty()
+
+            if (value.isBlank()) {
+                binding.tilValue.error = errorMessage
+                return@setOnClickListener
+            }
+
+            binding.tilValue.error = null
+            onConfirm(value)
+            dismiss()
+        }
+
+        binding.edtValue.requestFocus()
+        binding.edtValue.postDelayed({
+            val imm = requireContext()
+                .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.showSoftInput(binding.edtValue, InputMethodManager.SHOW_IMPLICIT)
+        }, 200)
+
+        return dialog
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

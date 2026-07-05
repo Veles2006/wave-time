@@ -16,6 +16,7 @@ import com.sae.wavetime.data.resolver.AppIconResolver
 import com.sae.wavetime.data.resolver.InstalledAppResolver
 import com.sae.wavetime.databinding.FragmentBlockListBinding
 import com.sae.wavetime.local.DatabaseProvider
+import com.sae.wavetime.ui.dialog.SoftDeleteDialog
 import com.sae.wavetime.ui.model.AppUiModel
 import kotlinx.coroutines.launch
 
@@ -69,7 +70,19 @@ class BlockListFragment : Fragment(R.layout.fragment_block_list) {
                     }
 
                     1 -> {
-                        viewModel.softDelete(app.id)
+                        val dialog = SoftDeleteDialog.newInstance(
+                            title = getString(R.string.delete_block_title),
+                            message = getString(R.string.delete_block_message)
+                        )
+
+                        dialog.setOnConfirmListener {
+                            viewModel.softDelete(app.id)
+                            requireActivity().onBackPressedDispatcher.onBackPressed()
+                        }
+
+                        if (parentFragmentManager.findFragmentByTag("SoftDeleteDialog") == null) {
+                            dialog.show(parentFragmentManager, "SoftDeleteDialog")
+                        }
                     }
                 }
             }

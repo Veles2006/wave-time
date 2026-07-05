@@ -21,6 +21,7 @@ import com.sae.wavetime.domain.usecase.CompleteTaskUseCase
 import com.sae.wavetime.domain.usecase.StartTimerTaskUseCase
 import com.sae.wavetime.engine.service.TaskTimerService
 import com.sae.wavetime.local.DatabaseProvider
+import com.sae.wavetime.ui.dialog.SoftDeleteDialog
 import com.sae.wavetime.ui.model.AppUiModel
 import com.sae.wavetime.ui.task.detail.TaskDetailModelFactory
 import kotlinx.coroutines.Job
@@ -70,7 +71,19 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                     }
 
                     1 -> {
-                        viewModel.softDeleteTask(task.id)
+                        val dialog = SoftDeleteDialog.newInstance(
+                            title = getString(R.string.delete_task_title),
+                            message = getString(R.string.delete_task_message)
+                        )
+
+                        dialog.setOnConfirmListener {
+                            viewModel.softDeleteTask(task.id)
+                            requireActivity().onBackPressedDispatcher.onBackPressed()
+                        }
+
+                        if (parentFragmentManager.findFragmentByTag("SoftDeleteDialog") == null) {
+                            dialog.show(parentFragmentManager, "SoftDeleteDialog")
+                        }
                     }
                 }
             }

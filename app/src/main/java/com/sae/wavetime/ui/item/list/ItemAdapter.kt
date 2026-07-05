@@ -7,6 +7,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.sae.wavetime.R
+import com.sae.wavetime.ui.common.toCleanItemName
+import com.sae.wavetime.ui.common.toTierText
 import com.sae.wavetime.ui.model.InventoryUiModel
 
 class ItemAdapter(
@@ -36,10 +38,11 @@ class ItemAdapter(
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val item = items[position]
+        val context = holder.itemView.context
 
-        holder.tvName.text = item.name
-        holder.tvTier.text = item.tier
-        holder.tvQuantity.text = "X${item.quantity}"
+        holder.tvName.text = item.name.toCleanItemName()
+        holder.tvTier.text = item.tier.toTierText(context)
+        holder.tvQuantity.text = "x${item.quantity}"
         holder.btnUseItem.setOnClickListener {
             useItem(item.id, 1)
         }

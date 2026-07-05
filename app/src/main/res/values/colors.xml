@@ -32,9 +32,16 @@
 
     <!-- State -->
     <color name="success">#22C55E</color>
+    <color name="success_container">#DCFCE7</color>
+
     <color name="warning">#F59E0B</color>
+    <color name="warning_container">#FEF3C7</color>
+
     <color name="error">#EF4444</color>
+    <color name="error_container">#FEE2E2</color>
+
     <color name="info">#0EA5E9</color>
+    <color name="info_container">#E0F2FE</color>
 
     <!-- Border / Divider -->
     <color name="divider">#E2E8F0</color>
@@ -42,8 +49,17 @@
 
     <!-- Wave Time specific -->
     <color name="task_color">#3B82F6</color>
+    <color name="task_container">#DBEAFE</color>
+
     <color name="block_color">#EF4444</color>
-    <color name="item_color">#8B5CF6</color>
+    <color name="block_container">#FEE2E2</color>
+
+    <color name="item_color">#0EA5E9</color>
+    <color name="item_container">#E0F2FE</color>
+
     <color name="reward_color">#22C55E</color>
+    <color name="reward_container">#DCFCE7</color>
+
     <color name="penalty_color">#F97316</color>
+    <color name="penalty_container">#FFEDD5</color>
 </resources>
