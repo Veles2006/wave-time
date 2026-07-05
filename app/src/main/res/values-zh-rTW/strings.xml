@@ -138,4 +138,6 @@
     <string name="tier_format">階級：%1$s</string>
     <string name="btn_type_question">封鎖類型說明</string>
     <string name="item_key_format">%1$s鑰匙</string>
+    <string name="remaining_time_format">剩餘時間：%1$s</string>
+    <string name="running_timer_task_title">計時任務進行中</string>
 </resources>

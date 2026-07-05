@@ -2,7 +2,9 @@ package com.sae.wavetime.ui.task.list
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
@@ -157,6 +159,14 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
         }
     }
 
+    private fun formatRemainingTime(millis: Long): String {
+        val totalSeconds = millis / 1000
+        val minutes = totalSeconds / 60
+        val seconds = totalSeconds % 60
+
+        return "%02d:%02d".format(minutes, seconds)
+    }
+
     private fun render(state: TaskListState) {
 
         if (state.isLoading) {
@@ -178,6 +188,18 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
             binding.tvEmptyTask.visibility = View.GONE
             binding.ivEmptyTask.visibility = View.GONE
         }
+
+        binding.layoutTimerInfo.isVisible = state.runningTimer.task != null
+
+        binding.tvTimerTitle.text = getString(R.string.running_timer_task_title)
+
+        binding.tvTimerTaskName.text =
+            state.runningTimer.task?.name ?: getString(R.string.til_task_name)
+
+        binding.tvTimer.text = getString(
+            R.string.remaining_time_format,
+            formatRemainingTime(state.runningTimer.remainingMillis)
+        )
     }
 
 

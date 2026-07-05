@@ -63,6 +63,16 @@ interface TaskDao {
 """)
     suspend fun getRunningTimerTask(now: Long): TaskEntity?
 
+    @Query("""
+    SELECT * FROM tasks
+    WHERE status = 'in_progress'
+    AND completeMode = 'timer'
+    AND finishAt IS NOT NULL
+    ORDER BY finishAt ASC
+    LIMIT 1
+""")
+    fun observeRunningTimerTask(): Flow<TaskEntity?>
+
     // Create method
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(task: TaskEntity)

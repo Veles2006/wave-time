@@ -30,7 +30,7 @@ object TaskTimerNotification {
 
     fun build(
         context: Context,
-        taskName: String = "Task is running",
+        taskName: String = context.getString(R.string.running_timer_task_title),
         remainingMillis: Long
     ): Notification {
         val remainingText = formatRemainingTime(remainingMillis)
@@ -38,7 +38,7 @@ object TaskTimerNotification {
         return NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_clock_rotate_left_solid_full)
             .setContentTitle(taskName)
-            .setContentText("Remaining: $remainingText")
+            .setContentText(context.getString(R.string.remaining_time_format, remainingText))
             .setOngoing(true)
             .setOnlyAlertOnce(true)
             .setPriority(NotificationCompat.PRIORITY_LOW)

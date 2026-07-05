@@ -8,13 +8,18 @@ import com.sae.wavetime.domain.usecase.CompleteTaskUseCase
 import com.sae.wavetime.domain.usecase.StartTimerTaskUseCase
 import com.sae.wavetime.engine.event.TaskEvent
 import com.sae.wavetime.engine.event.TaskEventBus
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 class TaskListViewModel(
@@ -52,10 +57,18 @@ class TaskListViewModel(
             )
 
     init {
+        generateTodayDailyTasks()
+        observeTaskEvents()
+        observeRunningTimer()
+    }
+
+    private fun generateTodayDailyTasks() {
         viewModelScope.launch {
             repository.generateTodayDailyTasks()
         }
+    }
 
+    private fun observeTaskEvents() {
         viewModelScope.launch {
             TaskEventBus.event.collect { event ->
                 when (event) {
@@ -75,25 +88,73 @@ class TaskListViewModel(
         }
     }
 
-    fun softDeleteTask(id: String) {
+    private fun observeRunningTimer() {
         viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true, error = null) }
+            combine(
+                repository.observeRunningTimerTask(),
+                tickerFlow()
+            ) { task, now ->
 
-            try {
-                repository.softDeleteTask(id)
+                val finishAt = task?.finishAt
 
-                val tasks = repository.getPendingTasks()
+                if (task == null || finishAt == null) {
+                    RunningTimerUiState()
+                } else {
+                    val remaining = finishAt - now
 
-                _uiState.update {
-                    it.copy(
-                        isLoading = false,
+                    RunningTimerUiState(
+                        task = task,
+                        remainingMillis = remaining.coerceAtLeast(0L),
+                        isRunning = remaining > 0
                     )
                 }
-            } catch (e: Exception) {
+
+            }.catch { e ->
+                _uiState.update {
+                    it.copy(
+                        runningTimer = RunningTimerUiState(),
+                        error = e.message ?: "Observe timer failed"
+                    )
+                }
+            }.collect { runningTimer ->
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        runningTimer = runningTimer
+                    )
+                }
+            }
+        }
+    }
+
+    private fun tickerFlow(): Flow<Long> = flow {
+        while (currentCoroutineContext().isActive) {
+            emit(System.currentTimeMillis())
+            delay(1000L)
+        }
+    }
+
+    fun softDeleteTask(id: String) {
+        viewModelScope.launch {
+            _uiState.update {
+                it.copy(
+                    isLoading = true,
+                    error = null
+                )
+            }
+
+            runCatching {
+                repository.softDeleteTask(id)
+            }.onSuccess {
+                _uiState.update {
+                    it.copy(
+                        isLoading = false
+                    )
+                }
+            }.onFailure { e ->
                 _uiState.update {
                     it.copy(
                         isLoading = false,
-                        error = e.message ?: "Unknown error",
+                        error = e.message ?: "Delete task failed"
                     )
                 }
             }

@@ -142,4 +142,6 @@
     <string name="tier_format">Tier: %1$s</string>
     <string name="btn_type_question">Type Question</string>
     <string name="item_key_format">%1$s Key</string>
+    <string name="remaining_time_format">Remaining: %1$s</string>
+    <string name="running_timer_task_title">Timer task in progress</string>
 </resources>

@@ -50,9 +50,14 @@ class TaskRepository(
             .map { it?.toDomain() }
     }
 
-    suspend fun hasRunningTimerTaskFlow(): Flow<Boolean> {
+    fun hasRunningTimerTaskFlow(): Flow<Boolean> {
         val now = System.currentTimeMillis()
         return taskDao.hasRunningTimerTaskFlow(now)
+    }
+
+    fun observeRunningTimerTask(): Flow<Task?> {
+        return taskDao.observeRunningTimerTask()
+            .map { it?.toDomain() }
     }
 
     suspend fun getTaskById(id: String): Task? {
