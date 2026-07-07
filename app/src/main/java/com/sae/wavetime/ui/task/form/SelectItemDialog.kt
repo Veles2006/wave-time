@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.sae.wavetime.R
+import com.sae.wavetime.analytics.AnalyticsTracker
 import com.sae.wavetime.data.repository.ItemRepository
 import com.sae.wavetime.data.repository.TaskRepository
 import com.sae.wavetime.local.DatabaseProvider
@@ -32,7 +33,8 @@ class SelectItemDialog(
             ),
             ItemRepository(
                 DatabaseProvider.getDatabase(requireContext()).itemDao()
-            )
+            ),
+            analyticsLogger = AnalyticsTracker(requireContext())
         )
     }
 

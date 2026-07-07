@@ -59,7 +59,7 @@ class BlockListFragment : Fragment(R.layout.fragment_block_list) {
     }
 
     private fun showBlockOptionsDialog(app: AppUiModel) {
-        val options = arrayOf("Chỉnh sửa", "Xoá")
+        val options = arrayOf(getString(R.string.edit), getString(R.string.delete))
 
         AlertDialog.Builder(requireContext())
             .setTitle(app.appName)
@@ -77,7 +77,6 @@ class BlockListFragment : Fragment(R.layout.fragment_block_list) {
 
                         dialog.setOnConfirmListener {
                             viewModel.softDelete(app.id)
-                            requireActivity().onBackPressedDispatcher.onBackPressed()
                         }
 
                         if (parentFragmentManager.findFragmentByTag("SoftDeleteDialog") == null) {

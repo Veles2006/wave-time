@@ -8,6 +8,7 @@ import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
 import android.util.Log
+import com.sae.wavetime.analytics.AnalyticsTracker
 import com.sae.wavetime.data.repository.InventoryRepository
 import com.sae.wavetime.data.repository.TaskRepository
 import com.sae.wavetime.domain.usecase.CompleteTaskUseCase
@@ -118,7 +119,8 @@ class TaskTimerService : Service() {
                 val completeTaskUseCase = CompleteTaskUseCase(
                     taskRepo = taskRepo,
                     inventoryRepo = inventoryRepo,
-                    database = db
+                    database = db,
+                    analyticsLogger = AnalyticsTracker(applicationContext)
                 )
 
                 val task = taskRepo.getTaskById(taskId)

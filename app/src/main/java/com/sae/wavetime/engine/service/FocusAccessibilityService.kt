@@ -16,6 +16,8 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import com.sae.wavetime.BlockedActivity
+import com.sae.wavetime.analytics.AnalyticsLogger
+import com.sae.wavetime.analytics.AnalyticsTracker
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 
@@ -24,7 +26,7 @@ class FocusAccessibilityService : AccessibilityService() {
     companion object {
         private const val TAG = "FocusService"
     }
-
+    private lateinit var analyticsLogger: AnalyticsLogger
     private var launcherPackageName: String? = null
 
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
@@ -47,6 +49,8 @@ class FocusAccessibilityService : AccessibilityService() {
             AppIconResolver(applicationContext),
             InstalledAppResolver(applicationContext)
         )
+
+        analyticsLogger = AnalyticsTracker(applicationContext)
 
         launcherPackageName = getDefaultLauncherPackage()
         Log.d(TAG, "Default launcher = $launcherPackageName")
@@ -176,6 +180,9 @@ class FocusAccessibilityService : AccessibilityService() {
 
             if (isTargetStillForeground) {
                 Log.d(TAG, "Target app still foreground. Re-check now.")
+                analyticsLogger.logBlockRelocked(
+                    reason = "Relocked"
+                )
                 checkCurrentApp()
             } else {
                 Log.d(TAG, "Target app not foreground. Skip block.")
@@ -191,6 +198,10 @@ class FocusAccessibilityService : AccessibilityService() {
             return
         }
 
+        analyticsLogger.logBlockTriggered(
+            blockType = block.blockType,
+            isTemporarilyUnlocked = true
+        )
         blockJob = serviceScope.launch(Dispatchers.Main) {
             Log.d(TAG, "Starting BlockedActivity for ${block.packageName}")
 

@@ -19,6 +19,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sae.wavetime.R
+import com.sae.wavetime.analytics.AnalyticsTracker
 import com.sae.wavetime.data.mapper.toRewardItemList
 import com.sae.wavetime.domain.model.Penalty
 import com.sae.wavetime.domain.model.Reward
@@ -55,7 +56,8 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
             ),
             ItemRepository(
                 db.itemDao()
-            )
+            ),
+            analyticsLogger = AnalyticsTracker(requireContext())
         )
     }
     private fun render(state: TaskFormState) {

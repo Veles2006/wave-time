@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.sae.wavetime.MainActivity
 import com.sae.wavetime.R
+import com.sae.wavetime.analytics.AnalyticsTracker
 import com.sae.wavetime.data.repository.InventoryRepository
 import com.sae.wavetime.data.repository.TaskRepository
 import com.sae.wavetime.databinding.FragmentTaskDetailBinding
@@ -45,7 +46,8 @@ class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
             CompleteTaskUseCase(
                 taskRepo,           // ✔ dùng lại
                 inventoryRepo,
-                db
+                db,
+                analyticsLogger = AnalyticsTracker(requireContext())
             ),
             StartTimerTaskUseCase(
                 taskRepo,

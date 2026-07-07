@@ -1,6 +1,7 @@
 package com.sae.wavetime.domain.usecase
 
 import androidx.room.withTransaction
+import com.sae.wavetime.analytics.AnalyticsLogger
 import com.sae.wavetime.data.repository.BlockRepository
 import com.sae.wavetime.data.repository.InventoryRepository
 import com.sae.wavetime.data.repository.ItemRepository
@@ -10,7 +11,8 @@ class UseItemUseCase(
     private val itemRepo: ItemRepository,
     private val inventoryRepo: InventoryRepository,
     private val blockRepo: BlockRepository,
-    private val database: AppDatabase
+    private val database: AppDatabase,
+    private val analyticsLogger: AnalyticsLogger
 ) {
     suspend fun execute(
         itemId: String,
@@ -49,6 +51,12 @@ class UseItemUseCase(
             blockRepo.setUnlockUntil(
                 blockId = blockId,
                 unlockUntil = newUnlockUntil
+            )
+            analyticsLogger.logItemUsedUnlock(
+                itemCategory = item.category
+            )
+            analyticsLogger.logBlockTemporarilyUnlocked(
+                durationMinutes = item.keyInfo.durationMinutes
             )
         }
     }

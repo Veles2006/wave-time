@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sae.wavetime.MainActivity
 import com.sae.wavetime.R
+import com.sae.wavetime.analytics.AnalyticsTracker
 import com.sae.wavetime.data.repository.InventoryRepository
 import com.sae.wavetime.data.repository.TaskRepository
 import com.sae.wavetime.databinding.FragmentTaskListBinding
@@ -52,7 +53,8 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
             CompleteTaskUseCase(
                 taskRepo,           // ✔ dùng lại
                 inventoryRepo,
-                db
+                db,
+                analyticsLogger = AnalyticsTracker(requireContext())
             ),
             StartTimerTaskUseCase(
                 taskRepo,
@@ -62,7 +64,7 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
     }
 
     private fun showTaskOptionsDialog(task: Task) {
-        val options = arrayOf("Chỉnh sửa", "Xoá")
+        val options = arrayOf(getString(R.string.edit), getString(R.string.delete))
 
         AlertDialog.Builder(requireContext())
             .setTitle(task.name)
@@ -80,7 +82,6 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
 
                         dialog.setOnConfirmListener {
                             viewModel.softDeleteTask(task.id)
-                            requireActivity().onBackPressedDispatcher.onBackPressed()
                         }
 
                         if (parentFragmentManager.findFragmentByTag("SoftDeleteDialog") == null) {

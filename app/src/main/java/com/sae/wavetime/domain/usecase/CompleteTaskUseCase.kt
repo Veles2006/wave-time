@@ -2,6 +2,7 @@ package com.sae.wavetime.domain.usecase
 
 import android.util.Log
 import androidx.room.withTransaction
+import com.sae.wavetime.analytics.AnalyticsLogger
 import com.sae.wavetime.data.repository.BlockRepository
 import com.sae.wavetime.data.repository.InventoryRepository
 import com.sae.wavetime.data.repository.TaskRepository
@@ -11,7 +12,8 @@ import com.sae.wavetime.local.AppDatabase
 class CompleteTaskUseCase(
     private val taskRepo: TaskRepository,
     private val inventoryRepo: InventoryRepository,
-    private val database: AppDatabase
+    private val database: AppDatabase,
+    private val analyticsLogger: AnalyticsLogger
 ) {
     suspend fun execute(taskId: String) {
         database.withTransaction {
@@ -41,6 +43,14 @@ class CompleteTaskUseCase(
             taskRepo.clearTaskTimer(taskId)
 
             inventoryRepo.addQuantity(rewards)
+
+            analyticsLogger.logTaskCompleted(
+                completeMode = task.completeMode,
+                taskType = task.type
+            )
+            analyticsLogger.logRewardGenerated(
+                hasItemReward = task.reward.items.isNotEmpty()
+            )
         }
     }
 }

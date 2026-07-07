@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import com.sae.wavetime.analytics.AnalyticsTracker
 import com.sae.wavetime.data.repository.InventoryRepository
 import com.sae.wavetime.data.repository.TaskRepository
 import com.sae.wavetime.domain.usecase.CompleteTaskUseCase
@@ -41,7 +42,8 @@ class TaskTimerReceiver : BroadcastReceiver() {
                 val completeTaskUseCase = CompleteTaskUseCase(
                     taskRepo = taskRepo,
                     inventoryRepo = inventoryRepo,
-                    database = db
+                    database = db,
+                    analyticsLogger = AnalyticsTracker(context)
                 )
                 Log.d("TaskTimerReceiver", "completeTask executed")
 

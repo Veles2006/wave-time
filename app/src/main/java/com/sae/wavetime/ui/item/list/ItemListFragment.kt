@@ -9,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sae.wavetime.R
+import com.sae.wavetime.analytics.AnalyticsTracker
 import com.sae.wavetime.data.repository.BlockRepository
 import com.sae.wavetime.data.repository.InventoryRepository
 import com.sae.wavetime.data.repository.ItemRepository
@@ -45,7 +46,8 @@ class ItemListFragment : Fragment(R.layout.fragment_item_list) {
                 itemRepo,
                 inventoryRepo,
                 blockRepo,
-                db
+                db,
+                analyticsLogger = AnalyticsTracker(requireContext())
             )
         )
     }

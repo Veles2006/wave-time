@@ -2,6 +2,7 @@ package com.sae.wavetime.ui.task.form
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sae.wavetime.analytics.AnalyticsLogger
 import com.sae.wavetime.data.mapper.toRewardSelectUiModelList
 import com.sae.wavetime.domain.model.Task
 import com.sae.wavetime.data.repository.ItemRepository
@@ -15,7 +16,8 @@ import kotlinx.coroutines.launch
 
 class TaskFormViewModel(
     private val taskRepo: TaskRepository,
-    private val itemRepo: ItemRepository
+    private val itemRepo: ItemRepository,
+    private val analyticsLogger: AnalyticsLogger
 ) : ViewModel() {
     private val _state = MutableStateFlow(TaskFormState())
     val state: StateFlow<TaskFormState> = _state
@@ -95,8 +97,21 @@ class TaskFormViewModel(
 
     fun addTask(task: Task) {
         viewModelScope.launch {
-            taskRepo.insertTask(task)
-            taskRepo.insertTaskTemplate(task)
+            try {
+                taskRepo.insertTask(task)
+                taskRepo.insertTaskTemplate(task)
+
+                analyticsLogger.logTaskCreated(
+                    completeMode = task.completeMode,
+                    taskType = task.type
+                )
+            } catch (e: Exception) {
+                _state.update {
+                    it.copy(
+                        error = e.message ?: "Unknown error"
+                    )
+                }
+            }
         }
     }
 

@@ -140,4 +140,5 @@
     <string name="item_key_format">%1$s鑰匙</string>
     <string name="remaining_time_format">剩餘時間：%1$s</string>
     <string name="running_timer_task_title">計時任務進行中</string>
+    <string name="edit">編輯</string>
 </resources>
