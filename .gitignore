@@ -82,3 +82,6 @@ Thumbs.db
 
 
 .gradle-user-home/
+
+# Firebase config
+app/google-services.json
