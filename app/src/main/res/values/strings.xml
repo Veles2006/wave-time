@@ -38,7 +38,7 @@
     <string name="edit_task">Edit Task</string>
     <string name="delete_task">Delete Task</string>
     <string name="change_item">Change item</string>
-    <string name="accessibility_service_description" translatable="false">Chặn các ứng dụng gây mất tập trung</string>
+    <string name="accessibility_service_description">Wave Time uses Accessibility permission to detect the app currently being opened and block the distracting apps you selected. When enabling this permission, only turn on the top switch. You do not need to enable any other buttons or permissions.</string>
     <string name="type">Type</string>
     <string name="create_block">Create Block</string>
     <string name="edit_block">Edit Block</string>
@@ -145,4 +145,17 @@
     <string name="remaining_time_format">Remaining: %1$s</string>
     <string name="running_timer_task_title">Timer task in progress</string>
     <string name="edit">Edit</string>
+    <string name="accessibility_info">
+        To block apps, Wave Time needs Accessibility permission.
+        This permission is only used to detect the app currently
+        being opened and block the apps you selected.
+    </string>
+
+    <string name="accessibility_instruction">
+        How to enable it: tap the button below → open Accessibility →
+        Downloaded apps or Installed apps → Wave Time → turn on the top switch.
+    </string>
+
+    <string name="open_accessibility_settings">Open Accessibility settings</string>
+    <string name="accessibility_open_failed">Unable to open Accessibility settings on this device.</string>
 </resources>

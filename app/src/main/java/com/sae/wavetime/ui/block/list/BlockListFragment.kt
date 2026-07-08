@@ -3,6 +3,7 @@ package com.sae.wavetime.ui.block.list
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -15,9 +16,12 @@ import com.sae.wavetime.data.repository.BlockRepository
 import com.sae.wavetime.data.resolver.AppIconResolver
 import com.sae.wavetime.data.resolver.InstalledAppResolver
 import com.sae.wavetime.databinding.FragmentBlockListBinding
+import com.sae.wavetime.engine.service.FocusAccessibilityService
 import com.sae.wavetime.local.DatabaseProvider
 import com.sae.wavetime.ui.dialog.SoftDeleteDialog
 import com.sae.wavetime.ui.model.AppUiModel
+import com.sae.wavetime.utils.isAccessibilityServiceEnabled
+import com.sae.wavetime.utils.openAccessibilitySettings
 import kotlinx.coroutines.launch
 
 class BlockListFragment : Fragment(R.layout.fragment_block_list) {
@@ -26,6 +30,8 @@ class BlockListFragment : Fragment(R.layout.fragment_block_list) {
     private var _binding: FragmentBlockListBinding? = null
 
     private val binding get() = _binding!!
+
+    private var enabled: Boolean = false
 
     private val viewModel: BlockListViewModel by viewModels {
         BlockListViewModelFactory(
@@ -37,25 +43,26 @@ class BlockListFragment : Fragment(R.layout.fragment_block_list) {
     }
 
     private fun render(state: BlockListState) {
-        if (state.isLoading) {
-            // show loading
-        }
-
-        if (state.error != null) {
-            // show error
-        }
+        val accessibilityEnabled = requireContext().isAccessibilityServiceEnabled(
+            FocusAccessibilityService::class.java
+        )
 
         adapter.submitList(state.blocks)
 
-        if (state.blocks.isEmpty()) {
-            binding.rvBlocks.visibility = View.GONE
-            binding.tvEmptyBlock.visibility = View.VISIBLE
-            binding.ivEmptyBlock.visibility = View.VISIBLE
-        } else {
-            binding.rvBlocks.visibility = View.VISIBLE
-            binding.tvEmptyBlock.visibility = View.GONE
-            binding.ivEmptyBlock.visibility = View.GONE
-        }
+        binding.tvAccessibilityInfo.isVisible = !accessibilityEnabled
+        binding.tvAccessibilityInstruction.isVisible = !accessibilityEnabled
+        binding.btnOpenAccessibility.isVisible = !accessibilityEnabled
+        binding.btnCreateBlock.isVisible = accessibilityEnabled
+
+        binding.rvBlocks.isVisible =
+            accessibilityEnabled && state.blocks.isNotEmpty()
+
+
+        binding.tvEmptyBlock.isVisible =
+            accessibilityEnabled && state.blocks.isEmpty() && !state.isLoading
+
+        binding.ivEmptyBlock.isVisible =
+            accessibilityEnabled && state.blocks.isEmpty() && !state.isLoading
     }
 
     private fun showBlockOptionsDialog(app: AppUiModel) {
@@ -120,6 +127,10 @@ class BlockListFragment : Fragment(R.layout.fragment_block_list) {
 
         binding.btnCreateBlock.setOnClickListener {
             (activity as? MainActivity)?.openBlockForm()
+        }
+
+        binding.btnOpenAccessibility.setOnClickListener {
+            requireContext().openAccessibilitySettings()
         }
     }
 

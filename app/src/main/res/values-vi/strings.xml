@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Wave Time</string>
+    <string name="accessibility_service_description">" Wave Time dùng quyền Trợ năng/Hỗ trợ để nhận biết ứng dụng đang mở và chặn các ứng dụng gây mất tập trung mà bạn đã chọn. Khi bật quyền, chỉ bật công tắc trên cùng. Không cần bật thêm nút hoặc quyền nào khác."</string>
     <string name="type">Loại</string>
     <string name="create_block">Tạo chặn</string>
     <string name="user_name">Vô danh</string>
@@ -141,4 +142,16 @@
     <string name="remaining_time_format">Còn lại: %1$s</string>
     <string name="running_timer_task_title">Nhiệm vụ đếm giờ đang tiến hành</string>
     <string name="edit">Chỉnh sửa</string>
+    <string name="accessibility_info">
+        Để chặn ứng dụng, Wave Time cần quyền Trợ năng/Hỗ trợ.
+        Quyền này chỉ dùng để nhận biết ứng dụng đang mở và khóa các ứng dụng bạn đã chọn.
+    </string>
+
+    <string name="accessibility_instruction">
+        Cách bật: nhấn nút bên dưới → chọn Trợ năng/Hỗ trợ →
+        Ứng dụng đã tải xuống hoặc Ứng dụng đã cài đặt → Wave Time → bật công tắc trên cùng.
+    </string>
+
+    <string name="open_accessibility_settings">Mở cài đặt Trợ năng</string>
+    <string name="accessibility_open_failed">Không thể mở cài đặt Trợ năng trên thiết bị này.</string>
 </resources>
