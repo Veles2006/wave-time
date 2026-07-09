@@ -12,6 +12,7 @@ import com.sae.wavetime.data.repository.InstalledAppRepository
 import com.sae.wavetime.data.repository.TaskRepository
 import com.sae.wavetime.data.resolver.AppIconResolver
 import com.sae.wavetime.data.resolver.InstalledAppResolver
+import com.sae.wavetime.engine.timer.TaskTimerRecoveryManager
 import com.sae.wavetime.local.DatabaseProvider
 import com.sae.wavetime.ui.block.form.InstalledAppViewModel
 import com.sae.wavetime.ui.block.form.InstalledAppViewModelFactory
@@ -52,8 +53,13 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
         installedAppViewModel.refresh()
 
         viewLifecycleOwner.lifecycleScope.launch {
+            TaskTimerRecoveryManager.recover(requireContext())
+
             viewModel.prepareTodayTasks()
+
             findNavController().navigate(R.id.action_splashFragment_to_mainContentFragment)
         }
+
+
     }
 }

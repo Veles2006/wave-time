@@ -103,14 +103,15 @@
                     android:textColor="@color/text_primary"
                     android:textSize="18sp"
                     android:textStyle="bold"
+                    android:paddingVertical="4dp"
                     app:layout_constraintEnd_toStartOf="@id/btnBasicQuestion"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageButton
                     android:id="@+id/btnBasicQuestion"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:background="@drawable/bg_light_blue_circle"
                     android:contentDescription="@string/btn_basic_question"
                     android:foreground="?attr/selectableItemBackgroundBorderless"
@@ -225,14 +226,15 @@
                     android:textColor="@color/text_primary"
                     android:textSize="18sp"
                     android:textStyle="bold"
+                    android:paddingVertical="4dp"
                     app:layout_constraintEnd_toStartOf="@id/btnTypeQuestion"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageButton
                     android:id="@+id/btnTypeQuestion"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:background="@drawable/bg_light_blue_circle"
                     android:contentDescription="@string/btn_type_question"
                     android:foreground="?attr/selectableItemBackgroundBorderless"

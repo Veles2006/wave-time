@@ -29,6 +29,7 @@ import com.sae.wavetime.data.repository.TaskRepository
 import com.sae.wavetime.databinding.FragmentTaskFormBinding
 import com.sae.wavetime.local.DatabaseProvider
 import com.sae.wavetime.ui.common.toDifficultyText
+import com.sae.wavetime.ui.dialog.FeatureGuideDialog
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.util.UUID
@@ -197,6 +198,39 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
 
         binding.sliderDifficulty.setLabelFormatter { value ->
             value.toInt().toDifficultyText(requireContext())
+        }
+
+        binding.btnBasicQuestion.setOnClickListener {
+            val dialog = FeatureGuideDialog.newInstance(
+                title = getString(R.string.basic_guide_title),
+                message = getString(R.string.basic_guide_message)
+            )
+
+            if (parentFragmentManager.findFragmentByTag("FeatureGuideDialog") == null) {
+                dialog.show(parentFragmentManager, "FeatureGuideDialog")
+            }
+        }
+
+        binding.btnConfigQuestion.setOnClickListener {
+            val dialog = FeatureGuideDialog.newInstance(
+                title = getString(R.string.config_guide_title),
+                message = getString(R.string.config_guide_message)
+            )
+
+            if (parentFragmentManager.findFragmentByTag("FeatureGuideDialog") == null) {
+                dialog.show(parentFragmentManager, "FeatureGuideDialog")
+            }
+        }
+
+        binding.btnRewardQuestion.setOnClickListener {
+            val dialog = FeatureGuideDialog.newInstance(
+                title = getString(R.string.reward_guide_title),
+                message = getString(R.string.reward_guide_message)
+            )
+
+            if (parentFragmentManager.findFragmentByTag("FeatureGuideDialog") == null) {
+                dialog.show(parentFragmentManager, "FeatureGuideDialog")
+            }
         }
 
         viewModel.loadRewards()

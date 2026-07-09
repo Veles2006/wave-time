@@ -57,20 +57,36 @@ class TaskTimerService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Log.d(TAG, "onStartCommand called")
-        taskId = intent?.getStringExtra(EXTRA_TASK_ID)
-        finishAt = intent?.getLongExtra(EXTRA_FINISH_AT, 0L) ?: 0L
+        Log.d(TAG, "onStartCommand called intent=$intent")
 
-        Log.d(TAG, "taskId=$taskId finishAt=$finishAt")
+        if (intent == null) {
+            recoverRunningTimer()
+            return START_STICKY
+        }
+
+        taskId = intent.getStringExtra(EXTRA_TASK_ID)
+        finishAt = intent.getLongExtra(EXTRA_FINISH_AT, 0L)
 
         if (taskId == null || finishAt <= 0L) {
             stopSelf()
             return START_NOT_STICKY
         }
 
+        startTimer(taskId!!, finishAt)
+
+        return START_REDELIVER_INTENT
+    }
+
+    private fun startTimer(
+        taskId: String,
+        finishAt: Long
+    ) {
+        this.taskId = taskId
+        this.finishAt = finishAt
+
         TaskTimerAlarmScheduler.schedule(
             context = this,
-            taskId = taskId!!,
+            taskId = taskId,
             finishAt = finishAt
         )
 
@@ -80,14 +96,12 @@ class TaskTimerService : Service() {
             TaskTimerNotification.NOTIFICATION_ID,
             TaskTimerNotification.build(
                 context = this,
-                remainingMillis = remainingMillis
+                remainingMillis = remainingMillis.coerceAtLeast(0L)
             )
         )
 
         handler.removeCallbacks(timerRunnable)
         handler.post(timerRunnable)
-
-        return START_STICKY
     }
 
     private fun updateNotification(remainingMillis: Long) {
@@ -142,6 +156,39 @@ class TaskTimerService : Service() {
                 Log.d(TAG, "completeTaskFromService success taskId=$taskId")
             } catch (e: Exception) {
                 Log.e(TAG, "completeTaskFromService failed", e)
+            }
+        }
+    }
+
+    private fun recoverRunningTimer() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val db = DatabaseProvider.getDatabase(applicationContext)
+
+            val taskRepo = TaskRepository(
+                taskDao = db.taskDao(),
+                templateDao = db.taskTemplateDao()
+            )
+
+            val runningTask = taskRepo.getRunningTimerTask()
+
+            if (runningTask == null || runningTask.finishAt == null) {
+                stopSelf()
+                return@launch
+            }
+
+            val now = System.currentTimeMillis()
+
+            if (runningTask.finishAt <= now) {
+                completeTaskFromService(runningTask.id)
+                stopSelf()
+                return@launch
+            }
+
+            handler.post {
+                startTimer(
+                    taskId = runningTask.id,
+                    finishAt = runningTask.finishAt
+                )
             }
         }
     }

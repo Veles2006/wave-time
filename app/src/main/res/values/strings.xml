@@ -150,12 +150,51 @@
         This permission is only used to detect the app currently
         being opened and block the apps you selected.
     </string>
-
     <string name="accessibility_instruction">
         How to enable it: tap the button below → open Accessibility →
         Downloaded apps or Installed apps → Wave Time → turn on the top switch.
     </string>
-
     <string name="open_accessibility_settings">Open Accessibility settings</string>
     <string name="accessibility_open_failed">Unable to open Accessibility settings on this device.</string>
+    <string name="basic_guide_title">Basic section introduction</string>
+    <string name="basic_guide_message">In the basic section, you need to enter a task name and
+        can add a description if needed.\n\nThe task name is the name of the task you want to create.
+        This field is required.\n\nThe description is used to add notes about the task you want to complete.
+        This field is optional.
+    </string>
+    <string name="config_guide_title">Configuration  section introduction</string>
+    <string name="config_guide_message">The configuration section allows you to configure the difficulty
+        level, task type, and completion method.\n\nThe difficulty level represents how hard the
+        task is and the rewards that may be received after completion. The available levels are:
+        Mortal, Yao, Gui, Mara, Sage, Xian, Deity, and Creation. This feature is still under
+        development and is not fully complete yet.\n\nThe task type is used to classify the task.
+        Currently, only the default type is supported.\n\nThere are two completion methods: tap and
+        timer.\n\nTap: you only need to press the button to complete the task.\n\nTimer: you need to
+        wait for a certain amount of time before the task can be completed.\n\nNote: while a timer
+        task is running, you cannot complete any other task.
+    </string>
+    <string name="reward_guide_title">Reward section introduction</string>
+    <string name="reward_guide_message">
+        Rewards are what you receive after completing a task.\n\nCoin reward is the number of coins
+        you receive after completing a task.\n\nExperience reward is the amount of experience you
+        receive after completing a task.\n\nItem rewards are items created by you, or keys that are
+        automatically created when you create an app block.\n\nKeys are items used to temporarily
+        unlock blocked apps. There are currently 8 types of keys, each with a different color and
+        unlock duration:\n\nWhite: 10 minutes\nGray: 30 minutes\nGreen: 60 minutes\nBlue:
+        120 minutes\nPurple: 240 minutes\nYellow: 480 minutes\nRed: 1440 minutes\nBlack: 10080
+        minutes
+    </string>
+    <string name="block_basic_guide_title">Basic section introduction</string>
+    <string name="block_basic_guide_message">
+        In the basic section, you can choose the app you want to block.\n\nTap App name or Package
+        name to open the app selection dialog.\n\nAfter selecting an app, press the confirm button
+        to save your choice.
+    </string>
+    <string name="block_type_guide_title">Type section introduction</string>
+    <string name="block_type_guide_message">
+        The block type determines how the system blocks the app.
+        \n\nCurrently, only the permanent type is supported.\n\nPermanent means the app will remain
+        blocked while the block is active. You can only unlock it temporarily with a key. After the
+        unlock time ends, the app will be blocked again automatically.
+    </string>
 </resources>

@@ -146,12 +146,41 @@
         若要封鎖應用程式，Wave Time 需要啟用「無障礙/輔助功能」權限。
         此權限只會用來偵測目前開啟的應用程式，並封鎖你選擇的應用程式。
     </string>
-
     <string name="accessibility_instruction">
         開啟方式：點擊下方按鈕 → 選擇「無障礙/輔助功能」→
         「已下載的應用程式」或「已安裝的應用程式」→ Wave Time → 開啟最上方的開關。
     </string>
-
     <string name="open_accessibility_settings">開啟無障礙設定</string>
     <string name="accessibility_open_failed">無法在此裝置上開啟無障礙設定。</string>
+    <string name="basic_guide_title">基本部分介紹</string>
+    <string name="basic_guide_message">
+        在基本部分中，你需要輸入任務名稱，也可以視需要新增描述。
+        \n\n任務名稱是你想建立的任務名稱，這是必填項目。
+        \n\n描述用來補充說明你想執行的任務，此欄位不是必填。
+    </string>
+    <string name="config_guide_title">設定部分介紹</string>
+    <string name="config_guide_message">
+        設定部分可讓你調整任務的難度等級、任務類型以及完成方式。\n\n難度等級代表任務的困難程度，以及完成後可能獲得
+        的獎勵。目前的等級包括：凡人、妖、鬼、魔、聖、仙、神、造化。此功能目前仍在開發中，尚未完全完成。\n\n任務類
+        型用於分類任務。目前系統只支援預設類型。\n\n完成方式分為兩種：點擊與計時。\n\n點擊：只需要按下按鈕即可完成
+        任務。\n\n計時：需要等待一段指定時間後，任務才會完成。\n\n注意：計時任務進行中，無法完成任何其他任務。
+    </string>
+    <string name="reward_guide_title">獎勵部分介紹</string>
+    <string name="reward_guide_message">獎勵是你完成任務後可以獲得的內容。\n\n金幣獎勵是你完成任務後可以獲得的
+        金幣數量。\n\n經驗獎勵是你完成任務後可以獲得的經驗值。\n\n物品獎勵是由你自行建立的物品，或是在建立應用程式
+        封鎖時自動產生的鑰匙。\n\n鑰匙是用來暫時解鎖被封鎖應用程式的物品。目前共有 8 種鑰匙，每種鑰匙都有不同的顏
+        色與解鎖時間：\n\n白色：10 分鐘\n灰色：30 分鐘\n綠色：60 分鐘\n藍色：120 分鐘\n紫色：240 分鐘\n黃色：
+        480 分鐘\n紅色：1440 分鐘\n黑色：10080 分鐘
+    </string>
+    <string name="block_basic_guide_title">基本部分介紹</string>
+
+    <string name="block_basic_guide_message">
+        在基本部分中，你可以選擇想要封鎖的應用程式。\n\n只要點擊「應用程式名稱」或「應用程式套件名稱」，就可以開啟
+        應用程式選擇視窗。\n\n選擇完成後，請按下確認按鈕來儲存選擇。
+    </string>
+    <string name="block_type_guide_title">類型部分介紹</string>
+    <string name="block_type_guide_message">
+        封鎖類型決定系統封鎖應用程式的方式。\n\n目前系統只支援永久類型。\n\n永久表示當封鎖功能啟用時，該應用程式會
+        持續被封鎖。你只能使用鑰匙暫時解鎖。解鎖時間結束後，應用程式會自動再次被封鎖。
+    </string>
 </resources>

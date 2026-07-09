@@ -1,8 +1,12 @@
 package com.sae.wavetime.ui.task.form
 
+import android.app.Dialog
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import androidx.core.graphics.drawable.toDrawable
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -51,6 +55,26 @@ class SelectItemDialog(
         adapter.submitList(state.availableRewards)
     }
 
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        return super.onCreateDialog(savedInstanceState).apply {
+            requestWindowFeature(Window.FEATURE_NO_TITLE)
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        val width = (resources.displayMetrics.widthPixels * 0.9).toInt()
+
+        dialog?.window?.apply {
+            setLayout(
+                width,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -80,12 +104,6 @@ class SelectItemDialog(
                 }
             }
         }
-
-        // 👇 set size dialog (phải làm ở đây)
-        dialog?.window?.setLayout(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
 
         btnConfirm.setOnClickListener {
             val selected = viewModel.state.value.availableRewards

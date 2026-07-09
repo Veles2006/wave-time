@@ -19,6 +19,7 @@ import com.sae.wavetime.databinding.FragmentBlockFormBinding
 import com.sae.wavetime.domain.model.Block
 import com.sae.wavetime.domain.usecase.CreateBlockWithKeyUseCase
 import com.sae.wavetime.local.DatabaseProvider
+import com.sae.wavetime.ui.dialog.FeatureGuideDialog
 import kotlinx.coroutines.launch
 import java.util.UUID
 import kotlin.getValue
@@ -110,6 +111,28 @@ class BlockFormFragment : Fragment(R.layout.fragment_block_form){
         } else {
             viewModel.observeBlock(blockId!!)
         }
+
+        binding.btnBasicQuestion.setOnClickListener {
+            val dialog = FeatureGuideDialog.newInstance(
+                title = getString(R.string.block_basic_guide_title),
+                message = getString(R.string.block_basic_guide_message)
+            )
+
+            if (parentFragmentManager.findFragmentByTag("FeatureGuideDialog") == null) {
+                dialog.show(parentFragmentManager, "FeatureGuideDialog")
+            }
+        }
+        binding.btnTypeQuestion.setOnClickListener {
+            val dialog = FeatureGuideDialog.newInstance(
+                title = getString(R.string.block_type_guide_title),
+                message = getString(R.string.block_type_guide_message)
+            )
+
+            if (parentFragmentManager.findFragmentByTag("FeatureGuideDialog") == null) {
+                dialog.show(parentFragmentManager, "FeatureGuideDialog")
+            }
+        }
+
 
         binding.btnBack.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()

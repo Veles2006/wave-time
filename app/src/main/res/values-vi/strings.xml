@@ -154,4 +154,46 @@
 
     <string name="open_accessibility_settings">Mở cài đặt Trợ năng</string>
     <string name="accessibility_open_failed">Không thể mở cài đặt Trợ năng trên thiết bị này.</string>
+    <string name="basic_guide_title">Giới thiệu phần cơ bản</string>
+    <string name="basic_guide_message">
+        Ở phần cơ bản, bạn cần nhập tên nhiệm vụ và có thể thêm mô tả nếu muốn.
+        \n\nTên nhiệm vụ là tên của nhiệm vụ bạn muốn tạo.
+        Đây là thông tin bắt buộc.\n\nMô tả dùng để ghi chú thêm về nhiệm vụ bạn muốn thực hiện.
+        Phần này không bắt buộc.
+    </string>
+    <string name="config_guide_title">Giới thiệu phần thiết lập</string>
+    <string name="config_guide_message">
+        Phần thiết lập cho phép bạn tùy chỉnh cấp độ, loại nhiệm vụ
+        và cách hoàn thành nhiệm vụ.\n\nCấp độ biểu thị độ khó của nhiệm vụ và phần thưởng có thể
+        nhận được sau khi hoàn thành. Các cấp độ hiện có gồm: Phàm nhân, Yêu, Quỷ, Ma, Thánh, Tiên,
+        Thần và Tạo hóa. Tính năng này hiện vẫn đang trong quá trình phát triển nên chưa hoàn thiện.
+        \n\nLoại nhiệm vụ dùng để phân loại nhiệm vụ. Hiện tại, hệ thống chỉ hỗ trợ loại mặc định.
+        \n\nCách hoàn thành gồm hai loại: chạm và đếm giờ.\n\nChạm: bạn chỉ cần nhấn để hoàn thành
+        nhiệm vụ.\n\nĐếm giờ: bạn cần chờ hết một khoảng thời gian nhất định thì nhiệm vụ mới được
+        hoàn thành.\n\nLưu ý: trong quá trình đếm giờ, bạn không thể thực hiện bất kỳ nhiệm vụ nào
+        khác.
+    </string>
+    <string name="reward_guide_title">Giới thiệu phần thưởng</string>
+    <string name="reward_guide_message">
+        Phần thưởng là những gì bạn sẽ nhận được sau khi hoàn thành nhiệm vụ.\n\nXu thưởng là số xu
+        bạn nhận được khi hoàn thành nhiệm vụ.\n\nKinh nghiệm thưởng là số kinh nghiệm bạn nhận được
+        khi hoàn thành nhiệm vụ.\n\nVật phẩm thưởng là các vật phẩm do bạn tự tạo, hoặc chìa khóa
+        được tạo tự động khi bạn tạo chặn ứng dụng.\n\nChìa khóa là vật phẩm dùng để mở khóa tạm
+        thời các ứng dụng đang bị chặn. Hiện có 8 loại chìa khóa, mỗi loại có màu sắc và thời gian
+        mở khóa khác nhau:\n\nTrắng: 10 phút\nXám: 30 phút\nXanh lá: 60 phút\nXanh dương: 120 phút
+        \nTím: 240 phút\nVàng: 480 phút\nĐỏ: 1440 phút\nĐen: 10080 phút
+    </string>
+    <string name="block_basic_guide_title">Giới thiệu phần cơ bản</string>
+    <string name="block_basic_guide_message">
+        Ở phần cơ bản, bạn có thể chọn ứng dụng mà bạn muốn chặn.\n\nBạn chỉ cần nhấn vào Tên
+        ứng dụng hoặc Tên gói ứng dụng để mở hộp thoại chọn ứng dụng.\n\nSau khi chọn xong,
+        hãy nhấn nút xác nhận để lưu lựa chọn.
+    </string>
+    <string name="block_type_guide_title">Giới thiệu phần loại</string>
+    <string name="block_type_guide_message">
+        Loại chặn quyết định cách hệ thống chặn ứng dụng.
+        \n\nHiện tại, hệ thống chỉ hỗ trợ loại vĩnh viễn.\n\nVĩnh viễn nghĩa là ứng dụng sẽ luôn
+        bị chặn khi block đang hoạt động. Bạn chỉ có thể mở khóa tạm thời bằng chìa khóa. Sau khi
+        hết thời gian mở khóa, ứng dụng sẽ tự động bị chặn lại.
+    </string>
 </resources>
