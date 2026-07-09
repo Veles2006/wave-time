@@ -58,6 +58,14 @@ class BlockRepository(
             }
     }
 
+    fun observeDeletedBlocks(): Flow<List<Block>> {
+        return blockDao
+            .observeDeletedBlocks()
+            .map { list ->
+                list.toDomainList()
+            }
+    }
+
     suspend fun getByPackageName(packageName: String): Block? {
         return blockDao.getByPackageName(packageName)?.toDomain()
     }

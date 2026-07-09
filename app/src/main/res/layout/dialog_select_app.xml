@@ -29,7 +29,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/btnConfirm"
-        android:visibility="gone">
+        android:visibility="visible">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvApps"
             android:layout_width="0dp"
@@ -53,7 +53,7 @@
         app:layout_constraintBottom_toTopOf="@id/btnConfirm"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <ProgressBar
             android:id="@+id/progressBar"

@@ -25,8 +25,8 @@ class InstalledAppRepository(
     }
 
 
-    suspend fun refreshInstalledApps(blocks: List<AppUiModel>) {
-        val apps = resolver.getInstalledApps(blocks)
+    suspend fun refreshInstalledApps() {
+        val apps = resolver.getInstalledApps()
             .map { it.toInstalledAppEntity() }
         try {
             dao.clearAll()

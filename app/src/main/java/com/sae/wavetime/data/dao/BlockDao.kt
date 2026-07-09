@@ -23,6 +23,12 @@ interface BlockDao {
 """)
     fun observeActiveBlocks(): Flow<List<BlockEntity>>
 
+    @Query("""
+    SELECT * FROM blocks
+    WHERE isDeleted = 1
+""")
+    fun observeDeletedBlocks(): Flow<List<BlockEntity>>
+
     @Query("SELECT * FROM blocks WHERE packageName = :packageName LIMIT 1")
     suspend fun getByPackageName(packageName: String): BlockEntity?
 

@@ -15,8 +15,6 @@ import com.sae.wavetime.data.resolver.InstalledAppResolver
 import com.sae.wavetime.local.DatabaseProvider
 import com.sae.wavetime.ui.block.form.InstalledAppViewModel
 import com.sae.wavetime.ui.block.form.InstalledAppViewModelFactory
-import com.sae.wavetime.ui.block.list.BlockListViewModel
-import com.sae.wavetime.ui.block.list.BlockListViewModelFactory
 import com.sae.wavetime.ui.viewmodel.SplashViewModel
 import com.sae.wavetime.ui.viewmodel.SplashViewModelFactory
 import kotlinx.coroutines.launch
@@ -39,14 +37,7 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
                 db.installedAppDao(),
                 InstalledAppResolver(requireContext().applicationContext),
                 AppIconResolver(requireContext().applicationContext)
-            )
-        )
-    }
-
-    private val blockViewModel: BlockListViewModel by viewModels {
-        val db = DatabaseProvider.getDatabase(requireContext())
-
-        BlockListViewModelFactory(
+            ),
             BlockRepository(
                 db.blockDao(),
                 AppIconResolver(requireContext().applicationContext),
@@ -58,9 +49,7 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val blocks = blockViewModel.state.value.blocks
-
-        installedAppViewModel.refresh(blocks)
+        installedAppViewModel.refresh()
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.prepareTodayTasks()

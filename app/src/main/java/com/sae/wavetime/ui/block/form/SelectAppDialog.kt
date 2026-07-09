@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.sae.wavetime.R
+import com.sae.wavetime.data.repository.BlockRepository
 import com.sae.wavetime.data.repository.InstalledAppRepository
 import com.sae.wavetime.data.resolver.AppIconResolver
 import com.sae.wavetime.data.resolver.InstalledAppResolver
@@ -38,6 +39,11 @@ class SelectAppDialog(
                 db.installedAppDao(),
                 InstalledAppResolver(requireContext().applicationContext),
                 AppIconResolver(requireContext().applicationContext)
+            ),
+            BlockRepository(
+                db.blockDao(),
+                AppIconResolver(requireContext().applicationContext),
+                InstalledAppResolver(requireContext().applicationContext)
             )
         )
     }
@@ -48,8 +54,13 @@ class SelectAppDialog(
         progressBarLayout: LinearLayout,
         appListLayout: ConstraintLayout
     ) {
-        progressBarLayout.visibility = View.GONE
-        appListLayout.visibility = View.VISIBLE
+        if (apps.isNotEmpty()) {
+            progressBarLayout.visibility = View.GONE
+            appListLayout.visibility = View.VISIBLE
+        } else {
+            progressBarLayout.visibility = View.VISIBLE
+            appListLayout.visibility = View.GONE
+        }
         adapter.submitList(apps)
     }
 
