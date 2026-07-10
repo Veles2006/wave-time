@@ -44,7 +44,7 @@ class AppSelectAdapter(
         holder.imgApp.setImageDrawable(
             app.icon ?: AppCompatResources.getDrawable(
                 holder.itemView.context,
-                R.drawable.waifu_2
+                R.drawable.default_app
             )
         )
 

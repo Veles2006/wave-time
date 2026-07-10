@@ -3,100 +3,129 @@ package com.sae.wavetime.ui.block.form
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.drawable.toDrawable
+import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.button.MaterialButton
-import com.sae.wavetime.R
 import com.sae.wavetime.data.repository.BlockRepository
 import com.sae.wavetime.data.repository.InstalledAppRepository
 import com.sae.wavetime.data.resolver.AppIconResolver
 import com.sae.wavetime.data.resolver.InstalledAppResolver
+import com.sae.wavetime.databinding.DialogSelectAppBinding
 import com.sae.wavetime.local.DatabaseProvider
 import com.sae.wavetime.ui.model.AppUiModel
 import kotlinx.coroutines.launch
 
 class SelectAppDialog(
     private val onConfirm: (app: AppUiModel) -> Unit
-) : DialogFragment(R.layout.dialog_select_app) {
+) : DialogFragment() {
+
+    private var _binding: DialogSelectAppBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var adapter: AppSelectAdapter
     private var selectedApp: AppUiModel? = null
 
     private val installedAppViewModel: InstalledAppViewModel by viewModels {
-        val db = DatabaseProvider.getDatabase(requireContext())
+        val appContext = requireContext().applicationContext
+        val db = DatabaseProvider.getDatabase(appContext)
+
+        val appIconResolver = AppIconResolver(appContext)
+        val installedAppResolver = InstalledAppResolver(appContext)
 
         InstalledAppViewModelFactory(
-            InstalledAppRepository(
+            installedAppRepo = InstalledAppRepository(
                 db.installedAppDao(),
-                InstalledAppResolver(requireContext().applicationContext),
-                AppIconResolver(requireContext().applicationContext)
+                installedAppResolver,
+                appIconResolver
             ),
-            BlockRepository(
-                db.blockDao(),
-                AppIconResolver(requireContext().applicationContext),
-                InstalledAppResolver(requireContext().applicationContext)
+            blockRepo = BlockRepository(
+                blockDao = db.blockDao(),
+                appIconResolver = appIconResolver,
+                installedAppResolver = installedAppResolver
             )
         )
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = DialogSelectAppBinding.inflate(
+            inflater,
+            container,
+            false
+        )
 
-    private fun renderApps(
-        apps: List<AppUiModel>,
-        progressBarLayout: LinearLayout,
-        appListLayout: ConstraintLayout
-    ) {
-        if (apps.isNotEmpty()) {
-            progressBarLayout.visibility = View.GONE
-            appListLayout.visibility = View.VISIBLE
-        } else {
-            progressBarLayout.visibility = View.VISIBLE
-            appListLayout.visibility = View.GONE
-        }
-        adapter.submitList(apps)
+        return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?
+    ) {
         super.onViewCreated(view, savedInstanceState)
 
-        val progressBarLayout = view.findViewById<LinearLayout>(R.id.layoutLoading)
-        val appListLayout = view.findViewById<ConstraintLayout>(R.id.layoutAppList)
-        val rvApps = view.findViewById<RecyclerView>(R.id.rvApps)
-        val btnConfirm = view.findViewById<MaterialButton>(R.id.btnConfirm)
+        setupRecyclerView()
+        setupListeners()
+        observeState()
+    }
 
-        adapter = AppSelectAdapter{ app ->
+    private fun setupRecyclerView() {
+        adapter = AppSelectAdapter { app ->
             selectedApp = app
         }
 
-        rvApps.layoutManager = LinearLayoutManager(requireContext())
-        rvApps.adapter = adapter
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                installedAppViewModel.apps.collect { apps ->
-                    renderApps(apps, progressBarLayout, appListLayout)
-                }
-            }
+        binding.rvApps.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = this@SelectAppDialog.adapter
         }
+    }
 
-        btnConfirm.setOnClickListener {
+    private fun setupListeners() {
+        binding.btnConfirm.setOnClickListener {
             val app = selectedApp
+
             if (app != null) {
                 onConfirm(app)
                 dismiss()
             } else {
-                Log.d("cc", "Haven't selected app")
+                Log.d(TAG, "No app selected")
             }
-
         }
+    }
+
+    private fun observeState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                installedAppViewModel.state.collect { state ->
+                    renderState(state)
+                }
+            }
+        }
+    }
+
+    private fun renderState(state: InstalledAppUiState) {
+        binding.layoutLoading.isVisible = state.isLoading
+
+        binding.layoutAppList.isVisible =
+            !state.isLoading && state.apps.isNotEmpty()
+
+        adapter.submitList(state.apps)
+
+        isCancelable = !state.isLoading
+        dialog?.setCanceledOnTouchOutside(!state.isLoading)
+
+        binding.btnConfirm.isEnabled = !state.isLoading
+        binding.rvApps.isEnabled = !state.isLoading
     }
 
     override fun onStart() {
@@ -110,5 +139,15 @@ class SelectAppDialog(
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
         }
+    }
+
+    override fun onDestroyView() {
+        binding.rvApps.adapter = null
+        _binding = null
+        super.onDestroyView()
+    }
+
+    companion object {
+        private const val TAG = "SelectAppDialog"
     }
 }

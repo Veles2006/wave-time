@@ -8,6 +8,7 @@ import com.sae.wavetime.ui.model.AppUiModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -17,7 +18,7 @@ class InstalledAppViewModel(
     private val blockRepo: BlockRepository
 ) : ViewModel() {
 
-    val apps = combine(
+    val state = combine(
         installedAppRepo.getInstalledApps(),
         blockRepo.getBlocksFlow()
     ) { installedApps, blocks ->
@@ -26,7 +27,7 @@ class InstalledAppViewModel(
             .map { it.packageName }
             .toSet()
 
-        installedApps
+        val apps = installedApps
             .filter { app ->
                 app.packageName !in blockedPackages
             }
@@ -39,11 +40,25 @@ class InstalledAppViewModel(
                     isActive = false
                 )
             }
-    }.stateIn(
-        viewModelScope,
-        SharingStarted.WhileSubscribed(5000),
-        emptyList()
-    )
+
+        InstalledAppUiState(
+            isLoading = false,
+            apps = apps
+        )
+    }
+        .catch { e ->
+            emit(
+                InstalledAppUiState(
+                    isLoading = false,
+                    error = e.message ?: "Load installed apps failed"
+                )
+            )
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = InstalledAppUiState()
+        )
 
     fun refresh() {
         viewModelScope.launch(Dispatchers.IO) {

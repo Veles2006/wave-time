@@ -44,7 +44,7 @@ class AppAdapter(
         if (app.icon != null) {
             holder.imgApp.setImageDrawable(app.icon)
         } else {
-            holder.imgApp.setImageResource(R.drawable.waifu_2)
+            holder.imgApp.setImageResource(R.drawable.default_app)
         }
         holder.switchActive.visibility = View.VISIBLE
         holder.switchActive.isChecked = app.isActive

@@ -12,7 +12,7 @@
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_marginBottom="12dp"
-        android:src="@drawable/waifu_1"
+        android:src="@drawable/default_avatar"
         android:scaleType="centerCrop"
         android:clipToOutline="true"
         android:background="@drawable/bg_avatar_circle"

@@ -10,14 +10,14 @@ import java.util.Locale
 fun Reward.toDisplayString(context: Context): String {
     val parts = mutableListOf<String>()
 
-    if (gold > 0) parts.add("💰 $gold")
-    if (exp > 0) parts.add("⭐ $exp")
+    if (gold > 0) parts.add("+ $gold Coin")
+    if (exp > 0) parts.add("+ $exp EXP")
     if (diamond > 0) parts.add("💎 $diamond")
     if (gem > 0) parts.add("🔷 $gem")
 
     items.forEach {
         val itemName = it.itemId.name.toLocalizedKeyName(context)
-        parts.add("📦 $itemName x${it.quantity}")
+        parts.add("+ $itemName x${it.quantity}")
     }
 
     return if (parts.isEmpty()) {

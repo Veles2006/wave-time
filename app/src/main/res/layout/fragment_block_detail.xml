@@ -119,7 +119,7 @@
                     android:contentDescription="@string/app_icon"
                     android:padding="8dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/waifu_3"
+                    android:src="@drawable/default_app"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 

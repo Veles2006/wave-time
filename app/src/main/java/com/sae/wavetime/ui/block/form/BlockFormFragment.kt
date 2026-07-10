@@ -61,7 +61,7 @@ class BlockFormFragment : Fragment(R.layout.fragment_block_form){
             if (icon != null) {
                 binding.ivAppIcon.setImageDrawable(icon)
             } else {
-                binding.ivAppIcon.setImageResource(R.drawable.waifu_2)
+                binding.ivAppIcon.setImageResource(R.drawable.default_app)
             }
         }
 
@@ -89,7 +89,7 @@ class BlockFormFragment : Fragment(R.layout.fragment_block_form){
                     if (icon != null) {
                         binding.ivAppIcon.setImageDrawable(icon)
                     } else {
-                        binding.ivAppIcon.setImageResource(R.drawable.waifu_2)
+                        binding.ivAppIcon.setImageResource(R.drawable.default_app)
                     }
                 }
             }
