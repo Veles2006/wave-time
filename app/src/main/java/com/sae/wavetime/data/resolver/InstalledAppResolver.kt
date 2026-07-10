@@ -1,38 +1,75 @@
 package com.sae.wavetime.data.resolver
 
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
-import android.util.Log
+import android.os.Build
 import com.sae.wavetime.ui.model.AppUiModel
 
 class InstalledAppResolver(
     private val context: Context,
 ) {
+
     fun getInstalledApps(): List<AppUiModel> {
-        val pm = context.packageManager
+        val packageManager = context.packageManager
         val currentPackageName = context.packageName
 
-        val result = runCatching {
-            pm.getInstalledApplications(PackageManager.GET_META_DATA)
+        val launcherIntent = Intent(Intent.ACTION_MAIN).apply {
+            addCategory(Intent.CATEGORY_LAUNCHER)
         }
-            .getOrDefault(emptyList())
-            .mapNotNull { appInfo ->
-                val packageName = appInfo.packageName
 
-                if (packageName == currentPackageName) return@mapNotNull null
-                if (pm.getLaunchIntentForPackage(packageName) == null) return@mapNotNull null
+        val launcherApps = runCatching {
+            queryLauncherActivities(
+                packageManager = packageManager,
+                launcherIntent = launcherIntent,
+            )
+        }.getOrDefault(emptyList())
+
+        return launcherApps
+            .mapNotNull { resolveInfo ->
+                val activityInfo = resolveInfo.activityInfo
+                    ?: return@mapNotNull null
+
+                val packageName = activityInfo.packageName
+
+                // Không hiển thị chính Wave Time trong danh sách chặn
+                if (packageName == currentPackageName) {
+                    return@mapNotNull null
+                }
 
                 AppUiModel(
                     id = packageName,
-                    appName = pm.getApplicationLabel(appInfo).toString(),
+                    appName = runCatching {
+                        resolveInfo.loadLabel(packageManager).toString()
+                    }.getOrDefault(packageName),
                     packageName = packageName,
                     icon = runCatching {
-                        pm.getApplicationIcon(appInfo)
-                    }.getOrNull()
+                        resolveInfo.loadIcon(packageManager)
+                    }.getOrNull(),
                 )
             }
-            .sortedBy { it.appName.lowercase() }
+            // Một ứng dụng có thể có nhiều launcher activity
+            .distinctBy { app ->
+                app.packageName
+            }
+            .sortedBy { app ->
+                app.appName.lowercase()
+            }
+    }
 
-        return result
+    private fun queryLauncherActivities(
+        packageManager: PackageManager,
+        launcherIntent: Intent,
+    ) = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        packageManager.queryIntentActivities(
+            launcherIntent,
+            PackageManager.ResolveInfoFlags.of(0L),
+        )
+    } else {
+        @Suppress("DEPRECATION")
+        packageManager.queryIntentActivities(
+            launcherIntent,
+            0,
+        )
     }
 }

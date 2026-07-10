@@ -146,15 +146,17 @@
     <string name="running_timer_task_title">Timer task in progress</string>
     <string name="edit">Edit</string>
     <string name="accessibility_info">
-        To block apps, Wave Time needs Accessibility permission.
-        This permission is only used to detect the app currently
-        being opened and block the apps you selected.
+        Wave Time uses the Android Accessibility Service to detect the package name of the app
+        currently displayed on your screen. This allows Wave Time to identify and block apps that
+        you have selected while a block is active.\n\nWave Time does not read screen content,
+        messages, passwords, or text that you enter. Information about the foreground app is
+        processed only on your device and is not sent to our servers or shared with third parties.
     </string>
     <string name="accessibility_instruction">
-        How to enable it: tap the button below → open Accessibility →
-        Downloaded apps or Installed apps → Wave Time → turn on the top switch.
+        How to enable it: tap the button below → open Accessibility → Downloaded apps or Installed
+        apps → Wave Time → turn on the switch at the top.
     </string>
-    <string name="open_accessibility_settings">Open Accessibility settings</string>
+    <string name="open_accessibility_settings">Agree and open settings</string>
     <string name="accessibility_open_failed">Unable to open Accessibility settings on this device.</string>
     <string name="basic_guide_title">Basic section introduction</string>
     <string name="basic_guide_message">In the basic section, you need to enter a task name and
@@ -199,4 +201,5 @@
     </string>
     <string name="stop_timer_task">Stop timer task</string>
     <string name="task_timer_default" translatable="false">- - : - -</string>
+    <string name="no_selectable_item">There are currently no items available to select.\n\nPlease create a new block or create an item manually, then return here to select it.</string>
 </resources>

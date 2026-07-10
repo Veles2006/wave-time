@@ -137,24 +137,45 @@
 
         </HorizontalScrollView>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvItems"
+        <FrameLayout
+            android:id="@+id/itemContentContainer"
             android:layout_width="0dp"
             android:layout_height="300dp"
             android:layout_marginTop="14dp"
-            android:clipToPadding="false"
-            android:paddingBottom="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/hsvItemFilter"
-            tools:listitem="@layout/item_reward_select" />
+            app:layout_constraintTop_toBottomOf="@id/hsvItemFilter">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvItems"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingBottom="8dp"
+                android:visibility="gone"
+                tools:listitem="@layout/item_reward_select" />
+
+            <TextView
+                android:id="@+id/tvNoItem"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingHorizontal="4dp"
+                android:paddingBottom="8dp"
+                android:text="@string/no_selectable_item"
+                android:textAlignment="center"
+                android:textColor="@color/text_secondary"
+                android:textSize="15sp"
+                android:visibility="visible" />
+
+        </FrameLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnConfirm"
             android:layout_width="0dp"
             android:layout_height="52dp"
             android:layout_marginTop="14dp"
-            android:text="Confirm"
+            android:text="@string/confirm"
             android:textAllCaps="false"
             android:textColor="@color/on_primary"
             android:textSize="15sp"
@@ -164,7 +185,7 @@
             app:elevation="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rvItems" />
+            app:layout_constraintTop_toBottomOf="@id/itemContentContainer" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

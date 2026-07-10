@@ -13,7 +13,9 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="@color/primary"
-        android:paddingTop="40dp"
+        android:paddingTop="46dp"
+        android:paddingBottom="8dp"
+        android:paddingHorizontal="8dp"
         >
         <ImageButton
             android:id="@+id/btnBar"
@@ -28,13 +30,16 @@
 
         <TextView
             android:id="@+id/tvTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:paddingStart="8dp"
+            android:paddingEnd="16dp"
             android:text="@string/wave_time"
-            android:textStyle="bold"
-            android:padding="16dp"
+            android:textColor="@color/on_primary"
             android:textSize="20sp"
-            android:textColor="@color/on_primary"/>
+            android:textStyle="bold" />
     </LinearLayout>
 
 

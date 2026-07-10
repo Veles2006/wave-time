@@ -7,52 +7,44 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import androidx.core.graphics.drawable.toDrawable
+import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.button.MaterialButton
 import com.sae.wavetime.R
 import com.sae.wavetime.analytics.AnalyticsTracker
 import com.sae.wavetime.data.repository.ItemRepository
 import com.sae.wavetime.data.repository.TaskRepository
+import com.sae.wavetime.databinding.DialogSelectItemBinding
 import com.sae.wavetime.local.DatabaseProvider
 import com.sae.wavetime.ui.model.RewardSelectUiModel
 import kotlinx.coroutines.launch
 
 class SelectItemDialog(
-    private val onConfirm: (List<RewardSelectUiModel>) -> Unit
+    private val onConfirm: (List<RewardSelectUiModel>) -> Unit,
 ) : DialogFragment(R.layout.dialog_select_item) {
+
+    private var _binding: DialogSelectItemBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var adapter: RewardSelectAdapter
 
     private val viewModel: TaskFormViewModel by viewModels {
+        val database = DatabaseProvider.getDatabase(requireContext())
+
         TaskFormViewModelFactory(
             TaskRepository(
-                DatabaseProvider.getDatabase(requireContext()).taskDao(),
-                DatabaseProvider.getDatabase(requireContext()).taskTemplateDao()
+                database.taskDao(),
+                database.taskTemplateDao(),
             ),
             ItemRepository(
-                DatabaseProvider.getDatabase(requireContext()).itemDao()
+                database.itemDao(),
             ),
-            analyticsLogger = AnalyticsTracker(requireContext())
+            AnalyticsTracker(requireContext()),
         )
-    }
-
-    private fun render(state: TaskFormState) {
-
-        if (state.isLoading) {
-            // show loading
-        }
-
-        if (state.error != null) {
-            // show error
-        }
-
-        adapter.submitList(state.availableRewards)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -61,42 +53,52 @@ class SelectItemDialog(
         }
     }
 
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
+        super.onViewCreated(view, savedInstanceState)
+
+        _binding = DialogSelectItemBinding.bind(view)
+
+        setupRecyclerView()
+        observeState()
+        setupListeners()
+
+        viewModel.loadRewards()
+    }
+
     override fun onStart() {
         super.onStart()
 
-        val width = (resources.displayMetrics.widthPixels * 0.9).toInt()
+        val dialogWidth = (resources.displayMetrics.widthPixels * 0.9).toInt()
 
         dialog?.window?.apply {
             setLayout(
-                width,
-                ViewGroup.LayoutParams.WRAP_CONTENT
+                dialogWidth,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
             )
             setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        val rvItems = view.findViewById<RecyclerView>(R.id.rvItems)
-        val btnConfirm = view.findViewById<MaterialButton>(R.id.btnConfirm)
-
+    private fun setupRecyclerView() {
         adapter = RewardSelectAdapter(
             onIncrease = { reward ->
                 viewModel.increaseQuantity(reward)
             },
             onDecrease = { reward ->
                 viewModel.decreaseQuantity(reward)
-            }
+            },
         )
 
-        rvItems.layoutManager = LinearLayoutManager(requireContext())
-        rvItems.adapter = adapter
+        binding.rvItems.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = this@SelectItemDialog.adapter
+        }
+    }
 
-        // 👇 gọi load data
-        viewModel.loadRewards()
-
-        // 👇 collect state (an toàn lifecycle)
+    private fun observeState() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.state.collect { state ->
@@ -104,13 +106,40 @@ class SelectItemDialog(
                 }
             }
         }
+    }
 
-        btnConfirm.setOnClickListener {
-            val selected = viewModel.state.value.availableRewards
-                .filter { it.quantity > 0 }
+    private fun setupListeners() {
+        binding.btnConfirm.setOnClickListener {
+            val selectedRewards = viewModel.state.value.availableRewards
+                .filter { reward ->
+                    reward.quantity > 0
+                }
 
-            onConfirm(selected)
+            onConfirm(selectedRewards)
             dismiss()
         }
+    }
+
+    private fun render(state: TaskFormState) {
+        val hasItems = state.availableRewards.isNotEmpty()
+
+        binding.rvItems.isVisible = hasItems
+        binding.tvNoItem.isVisible = !hasItems
+
+        adapter.submitList(state.availableRewards)
+
+        if (state.isLoading) {
+            // Hiển thị loading nếu layout có ProgressBar
+        }
+
+        state.error?.let { error ->
+            // Hiển thị lỗi bằng Snackbar hoặc TextView
+        }
+    }
+
+    override fun onDestroyView() {
+        binding.rvItems.adapter = null
+        _binding = null
+        super.onDestroyView()
     }
 }

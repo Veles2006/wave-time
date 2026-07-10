@@ -143,14 +143,15 @@
     <string name="running_timer_task_title">計時任務進行中</string>
     <string name="edit">編輯</string>
     <string name="accessibility_info">
-        若要封鎖應用程式，Wave Time 需要啟用「無障礙/輔助功能」權限。
-        此權限只會用來偵測目前開啟的應用程式，並封鎖你選擇的應用程式。
+        Wave Time 使用 Android 無障礙服務來偵測目前顯示於螢幕上的應用程式套件名稱。當封鎖模式啟用時，此資訊可讓
+        Wave Time 識別並封鎖您所選擇的應用程式。\n\nWave Time 不會讀取螢幕內容、訊息、密碼或您輸入的文字。
+        目前顯示中的應用程式資訊只會在您的裝置上處理，不會傳送至我們的伺服器，也不會與第三方分享。
     </string>
     <string name="accessibility_instruction">
-        開啟方式：點擊下方按鈕 → 選擇「無障礙/輔助功能」→
-        「已下載的應用程式」或「已安裝的應用程式」→ Wave Time → 開啟最上方的開關。
+        啟用方式：點擊下方按鈕 → 開啟「無障礙設定」→ 選擇「已下載的應用程式」或「已安裝的應用程式」→ Wave Time →
+        開啟最上方的開關。
     </string>
-    <string name="open_accessibility_settings">開啟無障礙設定</string>
+    <string name="open_accessibility_settings">同意並開啟設定</string>
     <string name="accessibility_open_failed">無法在此裝置上開啟無障礙設定。</string>
     <string name="basic_guide_title">基本部分介紹</string>
     <string name="basic_guide_message">
@@ -183,4 +184,5 @@
         封鎖類型決定系統封鎖應用程式的方式。\n\n目前系統只支援永久類型。\n\n永久表示當封鎖功能啟用時，該應用程式會
         持續被封鎖。你只能使用鑰匙暫時解鎖。解鎖時間結束後，應用程式會自動再次被封鎖。
     </string>
+    <string name="no_selectable_item">目前沒有可供選擇的物品。\n\n請建立新的封鎖項目或自行建立物品，然後返回此處進行選擇。</string>
 </resources>
