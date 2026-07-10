@@ -5,17 +5,19 @@ import androidx.lifecycle.ViewModelProvider
 import com.sae.wavetime.data.repository.TaskRepository
 import com.sae.wavetime.domain.usecase.CompleteTaskUseCase
 import com.sae.wavetime.domain.usecase.StartTimerTaskUseCase
+import com.sae.wavetime.domain.usecase.StopTimerTaskUseCase
 
 class TaskDetailModelFactory(
     private val taskRepo: TaskRepository,
     private val completeTaskUseCase: CompleteTaskUseCase,
-    private val startTimerTaskUseCase: StartTimerTaskUseCase
+    private val startTimerTaskUseCase: StartTimerTaskUseCase,
+    private val stopTimerTaskUseCase: StopTimerTaskUseCase
 ) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
 
         if (modelClass.isAssignableFrom(TaskDetailViewModel::class.java)) {
-            return TaskDetailViewModel(taskRepo, completeTaskUseCase, startTimerTaskUseCase) as T
+            return TaskDetailViewModel(taskRepo, completeTaskUseCase, startTimerTaskUseCase, stopTimerTaskUseCase) as T
         }
 
         throw IllegalArgumentException(

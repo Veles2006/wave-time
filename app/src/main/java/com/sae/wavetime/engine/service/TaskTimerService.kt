@@ -193,6 +193,16 @@ class TaskTimerService : Service() {
         }
     }
 
+    private fun stopTimer() {
+        handler.removeCallbacks(timerRunnable)
+
+        taskId = null
+        finishAt = 0L
+
+        stopForeground(STOP_FOREGROUND_REMOVE)
+        stopSelf()
+    }
+
     override fun onDestroy() {
         handler.removeCallbacks(timerRunnable)
         super.onDestroy()
@@ -203,6 +213,12 @@ class TaskTimerService : Service() {
     companion object {
         private const val EXTRA_TASK_ID = "extra_task_id"
         private const val EXTRA_FINISH_AT = "extra_finish_at"
+
+        private const val ACTION_START_TIMER =
+            "com.sae.wavetime.action.START_TIMER"
+
+        private const val ACTION_STOP_TIMER =
+            "com.sae.wavetime.action.STOP_TIMER"
 
         fun start(
             context: Context,
@@ -215,6 +231,14 @@ class TaskTimerService : Service() {
             }
 
             context.startForegroundService(intent)
+        }
+
+        fun stop(context: Context) {
+            val intent = Intent(context, TaskTimerService::class.java).apply {
+                action = ACTION_STOP_TIMER
+            }
+
+            context.startService(intent)
         }
     }
 }

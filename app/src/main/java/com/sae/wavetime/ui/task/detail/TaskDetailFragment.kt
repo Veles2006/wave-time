@@ -1,6 +1,7 @@
 package com.sae.wavetime.ui.task.detail
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -16,6 +17,7 @@ import com.sae.wavetime.data.repository.TaskRepository
 import com.sae.wavetime.databinding.FragmentTaskDetailBinding
 import com.sae.wavetime.domain.usecase.CompleteTaskUseCase
 import com.sae.wavetime.domain.usecase.StartTimerTaskUseCase
+import com.sae.wavetime.domain.usecase.StopTimerTaskUseCase
 import com.sae.wavetime.engine.service.TaskTimerService
 import com.sae.wavetime.local.DatabaseProvider
 import com.sae.wavetime.ui.common.toCompleteModeText
@@ -52,6 +54,10 @@ class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
             StartTimerTaskUseCase(
                 taskRepo,
                 db
+            ),
+            StopTimerTaskUseCase(
+                requireContext(),
+                taskRepo
             )
         )
     }
@@ -87,6 +93,7 @@ class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
         binding.tvTimer.isVisible = !state.isLoading && task?.finishAt != null
         binding.tvTimerTitle.isVisible = state.isLoading || task?.finishAt != null
         binding.layoutTimerInfo.isVisible = state.isLoading || task?.finishAt != null
+        binding.btnStop.isVisible = state.isLoading || task?.finishAt != null
 
         if (state.error != null) {
             binding.tvTimer.isVisible = false
@@ -99,7 +106,13 @@ class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
 
         binding.tvTaskName.text = task.name
         binding.tvDescription.text =
-            getString(R.string.task_description_format, task.description ?: getString(R.string.none))
+            getString(
+                R.string.task_description_format,
+                if (task.description.isNullOrBlank())
+                    getString(R.string.none)
+                else
+                    task.description
+            )
 
         binding.tvStatus.text =
             getString(R.string.task_status_format, task.status.toStatusText(requireContext()))
@@ -153,12 +166,19 @@ class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
             task.status != "in_progress" &&
                     task.status != "completed"
 
+        Log.d("dd", "${task.status}")
+
         binding.btnSuccess.setOnClickListener {
             viewModel.completeTask(task)
 
             if (task.completeMode == "tap") {
                 requireActivity().onBackPressedDispatcher.onBackPressed()
             }
+        }
+
+        binding.btnStop.setOnClickListener {
+            viewModel.stopRunningTimerTask(taskId)
+            binding.tvTimer.text = getString(R.string.task_timer_default)
         }
 
         binding.btnBack.setOnClickListener {
@@ -193,8 +213,6 @@ class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
 
                         viewModel.clearTimerStartEvent()
                     }
-
-                    binding.btnSuccess.isVisible = !state.hasRunningTimerTask
                 }
             }
         }

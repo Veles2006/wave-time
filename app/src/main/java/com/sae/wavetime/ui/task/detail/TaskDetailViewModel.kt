@@ -6,6 +6,7 @@ import com.sae.wavetime.data.repository.TaskRepository
 import com.sae.wavetime.domain.model.Task
 import com.sae.wavetime.domain.usecase.CompleteTaskUseCase
 import com.sae.wavetime.domain.usecase.StartTimerTaskUseCase
+import com.sae.wavetime.domain.usecase.StopTimerTaskUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -15,7 +16,8 @@ import kotlinx.coroutines.launch
 class TaskDetailViewModel(
     private val taskRepo: TaskRepository,
     private val completeTaskUseCase: CompleteTaskUseCase,
-    private val startTimerTaskUseCase: StartTimerTaskUseCase
+    private val startTimerTaskUseCase: StartTimerTaskUseCase,
+    private val stopTimerTaskUseCase: StopTimerTaskUseCase
 ) : ViewModel() {
     private val _state = MutableStateFlow(TaskDetailState())
     val state: StateFlow<TaskDetailState> = _state
@@ -78,6 +80,36 @@ class TaskDetailViewModel(
                 }
         }
     }
+
+    fun stopRunningTimerTask(taskId: String) {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    isLoading = true,
+                    error = null
+                )
+            }
+
+            runCatching {
+                stopTimerTaskUseCase.execute(taskId)
+            }.onSuccess {
+                _state.update {
+                    it.copy(
+                        isLoading = false,
+                        error = null
+                    )
+                }
+            }.onFailure { e ->
+                _state.update {
+                    it.copy(
+                        isLoading = false,
+                        error = e.message ?: "Stop timer task failed"
+                    )
+                }
+            }
+        }
+    }
+
     fun softDeleteTask(id: String) {
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true, error = null) }

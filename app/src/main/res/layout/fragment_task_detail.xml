@@ -80,6 +80,19 @@
             android:src="@drawable/ic_check_solid_full"
             app:tint="@color/on_primary" />
 
+        <ImageButton
+            android:id="@+id/btnStop"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/stop_timer_task"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:padding="12dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_stop_solid_full"
+            android:visibility="gone"
+            app:tint="@color/on_primary" />
+
     </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -398,7 +411,7 @@
                     android:layout_marginTop="8dp"
                     android:gravity="center"
                     android:includeFontPadding="false"
-                    android:text="- - : - -"
+                    android:text="@string/task_timer_default"
                     android:textColor="@color/text_primary"
                     android:textSize="34sp"
                     android:textStyle="bold"

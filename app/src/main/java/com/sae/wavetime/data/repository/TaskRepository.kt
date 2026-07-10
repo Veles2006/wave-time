@@ -131,6 +131,10 @@ class TaskRepository(
         )
     }
 
+    suspend fun stopTimerTask(taskId: String): Boolean {
+        return taskDao.stopTimerTask(taskId) > 0
+    }
+
     suspend fun updateFullTask(task: Task) {
         taskDao.updateFull(
             taskId = task.id,

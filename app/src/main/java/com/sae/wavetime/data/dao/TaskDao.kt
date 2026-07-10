@@ -91,6 +91,19 @@ interface TaskDao {
         finishAt: Long
     )
 
+
+    @Query(
+        """
+    UPDATE tasks
+    SET status = 'pending',
+        startedAt = NULL,
+        finishAt = NULL
+    WHERE id = :taskId
+      AND status = 'in_progress'
+    """
+    )
+    suspend fun stopTimerTask(taskId: String): Int
+
     // Update method
     @Query("""
         UPDATE tasks

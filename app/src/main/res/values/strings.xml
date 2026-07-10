@@ -197,4 +197,6 @@
         blocked while the block is active. You can only unlock it temporarily with a key. After the
         unlock time ends, the app will be blocked again automatically.
     </string>
+    <string name="stop_timer_task">Stop timer task</string>
+    <string name="task_timer_default" translatable="false">- - : - -</string>
 </resources>
