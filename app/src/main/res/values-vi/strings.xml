@@ -202,4 +202,25 @@
         Hiện tại không có vật phẩm nào có thể chọn.\n\nHãy tạo một chặn mới hoặc tự tạo vật phẩm,
         sau đó quay lại đây để chọn.
     </string>
+    <string name="stop_timer_task">Dừng nhiệm vụ đang tính giờ</string>
+    <string name="task_completed_notification">Bạn đã hoàn thành nhiệm vụ [ %1$s ]</string>
+    <string name="item_used_with_duration">Bạn đã sử dụng [ %1$s ], mở khóa %2$d phút</string>
+    <string name="item_used">Bạn đã sử dụng [ %1$s ]</string>
+    <string name="back_item_list">Quay lại danh sách vật phẩm</string>
+    <string name="item_detail">Chi tiết vật phẩm</string>
+    <string name="item_icon">Biểu tượng vật phẩm</string>
+    <string name="item_name">Tên vật phẩm</string>
+    <string name="item_description_format">Mô tả: \n%1$s</string>
+    <string name="item_tier_format">Bậc: %1$s</string>
+    <string name="item_rank_format">Hạng: %1$d</string>
+    <string name="item_category_format">Loại: %1$s</string>
+    <string name="item_block_name_format">Tên app bị chặn: %1$s</string>
+    <string name="item_duration_minutes_format">Thời lượng: %1$d phút</string>
+    <string name="item_remaining_quantity_format">Số lượng còn lại: x%1$d</string>
+    <string name="item_category_key">Chìa khóa</string>
+    <string name="item_key_description_format">
+        Mô tả: \nĐây là vật phẩm được hệ thống tạo tự động, dùng để mở khóa tạm thời các ứng dụng đang bị
+        chặn. Mỗi chìa khóa chỉ có thể mở khóa ứng dụng được chỉ định là %1$s. Bạn có thể nhận chìa
+        khóa bằng cách hoàn thành nhiệm vụ hoặc mua tại cửa hàng.
+    </string>
 </resources>

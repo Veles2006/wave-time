@@ -9,16 +9,19 @@ plugins {
 
 android {
     namespace = "com.sae.wavetime"
+
     compileSdk {
         version = release(36)
     }
 
     defaultConfig {
         applicationId = "com.sae.wavetime"
+
         minSdk = 26
         targetSdk = 36
+
         versionCode = 1
-        versionName = "1.0"
+        versionName = "0.1.0-beta01"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -30,17 +33,24 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
+
+            ndk {
+                debugSymbolLevel = "SYMBOL_TABLE"
+            }
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
     kotlinOptions {
         jvmTarget = "11"
     }
@@ -62,11 +72,6 @@ dependencies {
 
 
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.4")
-
-//    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
-//
-//    implementation("com.github.bumptech.glide:glide:4.16.0")
-//    kapt("com.github.bumptech.glide:compiler:4.16.0")
 
     implementation("androidx.datastore:datastore-preferences:1.1.1")
 

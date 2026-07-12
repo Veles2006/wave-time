@@ -69,6 +69,15 @@ class MainActivity : AppCompatActivity(), DrawerController {
             .navigate(R.id.action_to_blockDetail, bundle)
     }
 
+    fun openItemDetail(itemId: String) {
+        val bundle = Bundle().apply {
+            putString("itemId", itemId)
+        }
+
+        findNavController(R.id.nav_host_root)
+            .navigate(R.id.action_to_itemDetail, bundle)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         appDataStore = AppDataStore(applicationContext)
 

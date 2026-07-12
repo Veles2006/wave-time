@@ -24,12 +24,12 @@ import com.sae.wavetime.domain.usecase.CompleteTaskUseCase
 import com.sae.wavetime.domain.usecase.StartTimerTaskUseCase
 import com.sae.wavetime.engine.service.TaskTimerService
 import com.sae.wavetime.local.DatabaseProvider
+import com.sae.wavetime.ui.common.UiText
 import com.sae.wavetime.ui.dialog.SoftDeleteDialog
-import com.sae.wavetime.ui.model.AppUiModel
-import com.sae.wavetime.ui.task.detail.TaskDetailModelFactory
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import com.sae.wavetime.ui.common.asString
 
 class TaskListFragment : Fragment(R.layout.fragment_task_list) {
 
@@ -143,17 +143,32 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                 .translationY(0f)
                 .setDuration(250)
                 .start()
+
+            setOnClickListener {
+                hideNotificationMessage()
+            }
         }
 
         notificationJob = viewLifecycleOwner.lifecycleScope.launch {
             delay(5000)
 
-            binding.notificationCard.animate()
+            hideNotificationMessage()
+        }
+    }
+
+    private fun hideNotificationMessage() {
+        notificationJob?.cancel()
+        notificationJob = null
+
+        binding.notificationCard.apply {
+            animate().cancel()
+
+            animate()
                 .alpha(0f)
                 .translationY(80f)
                 .setDuration(250)
                 .withEndAction {
-                    binding.notificationCard.visibility = View.GONE
+                    visibility = View.GONE
                     viewModel.clearNotificationMessage()
                 }
                 .start()
@@ -237,7 +252,9 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                         viewModel.clearTimerStartEvent()
                     }
 
-                    val message = state.notificationMessage
+                    val message = state.notificationMessage?.asString(requireContext())
+
+                    Log.d("dd", "$message")
 
                     if (message != null) {
                         showNotificationMessage(message)

@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.sae.wavetime.R
+import com.sae.wavetime.ui.common.toLocalizedKeyName
 import com.sae.wavetime.ui.common.toTierText
 import com.sae.wavetime.ui.model.RewardSelectUiModel
 
@@ -33,8 +34,8 @@ class TaskFormRewardAdapter : RecyclerView.Adapter<TaskFormRewardAdapter.TaskFor
         val reward = rewards[position]
         val context = holder.itemView.context
 
-        holder.tvName.text = reward.name
-        holder.tvTier.text = holder.itemView.context.getString(
+        holder.tvName.text = reward.name.toLocalizedKeyName(context)
+        holder.tvTier.text = context.getString(
             R.string.tier_format,
             reward.tier.toTierText(context)
         )

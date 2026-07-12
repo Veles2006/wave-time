@@ -2,6 +2,8 @@ package com.sae.wavetime.ui.common
 
 import android.content.Context
 import com.sae.wavetime.R
+import com.sae.wavetime.ui.model.InventoryDetailUiModel
+import java.util.Locale
 
 fun String.toCleanItemName(): String {
     return if (contains("Key", ignoreCase = true) && contains("·")) {
@@ -28,4 +30,50 @@ fun String.toTierText(context: Context): String {
 fun String.toKeyName(context: Context): String {
     val tierText = this.toTierText(context)
     return context.getString(R.string.item_key_format, tierText)
+}
+
+fun String.toKeyTranslate(context: Context): String {
+    return if (this == "key") {
+        context.getString(R.string.item_category_key)
+    } else {
+        this
+    }
+}
+
+fun String.toLocalizedKeyName(context: Context): String {
+    val parts = this.split("·").map { it.trim() }
+
+    val keyPart = parts.getOrNull(0) ?: return this
+    val appName = parts.getOrNull(1)
+
+    val tier = keyPart
+        .removeSuffix("Key")
+        .trim()
+        .lowercase(Locale.ROOT)
+
+    val tierText = tier.toTierText(context)
+
+    val keyName = context.getString(R.string.item_key_format, tierText)
+
+    return if (appName.isNullOrBlank()) {
+        keyName
+    } else {
+        "$keyName · $appName"
+    }
+}
+
+fun InventoryDetailUiModel.getLocalizedDescription(
+    context: Context,
+): String {
+    return when (category) {
+        "key" -> context.getString(
+            R.string.item_key_description_format,
+            blockName.orEmpty(),
+        )
+
+        else -> context.getString(
+            R.string.item_description_format,
+            description
+        )
+    }
 }

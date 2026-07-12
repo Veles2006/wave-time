@@ -2,12 +2,14 @@ package com.sae.wavetime.ui.task.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sae.wavetime.R
 import com.sae.wavetime.data.repository.TaskRepository
 import com.sae.wavetime.domain.model.Task
 import com.sae.wavetime.domain.usecase.CompleteTaskUseCase
 import com.sae.wavetime.domain.usecase.StartTimerTaskUseCase
 import com.sae.wavetime.engine.event.TaskEvent
 import com.sae.wavetime.engine.event.TaskEventBus
+import com.sae.wavetime.ui.common.UiText
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -75,7 +77,10 @@ class TaskListViewModel(
                     is TaskEvent.TaskCompletedByTimer -> {
                         _uiState.update {
                             it.copy(
-                                notificationMessage = "Bạn đã hoàn thành nhiệm vụ [ ${event.taskName} ]"
+                                notificationMessage = UiText.StringResource(
+                                    resId = R.string.task_completed_notification,
+                                    args = listOf(event.taskName)
+                                )
                             )
                         }
 
@@ -198,7 +203,10 @@ class TaskListViewModel(
                     it.copy(
                         isLoading = false,
                         notificationMessage = if (task.completeMode == "tap") {
-                            "Bạn đã hoàn thành nhiệm vụ [ ${task.name} ]"
+                            UiText.StringResource(
+                                resId = R.string.task_completed_notification,
+                                args = listOf(task.name)
+                            )
                         } else {
                             null
                         }

@@ -2,22 +2,18 @@
 # Android Studio / IntelliJ
 # ===============================
 
-*.iml
 .idea/
-.idea/caches/
-.idea/libraries/
-.idea/modules.xml
-.idea/workspace.xml
-.idea/navEditor.xml
-.idea/assetWizardSettings.xml
+*.iml
+out/
 
 # ===============================
 # Gradle
 # ===============================
 
 .gradle/
+.gradle-user-home/
 build/
-*/build/
+**/build/
 
 # ===============================
 # Local configuration
@@ -26,51 +22,45 @@ build/
 local.properties
 
 # ===============================
-# Logs
+# Signing keys and credentials
 # ===============================
 
-*.log
+*.jks
+*.keystore
+keystore.properties
+signing.properties
+key.properties
+secrets.properties
 
 # ===============================
-# Android specific
+# Firebase configuration
+# ===============================
+
+app/google-services.json
+
+# ===============================
+# Generated APK / App Bundle
+# ===============================
+
+*.apk
+*.aab
+*.apks
+
+# ===============================
+# Android generated files
 # ===============================
 
 captures/
 .externalNativeBuild/
 .cxx/
-.externalNativeBuild
-.cxx
-
-# Generated APK/AAB
-*.apk
-*.aab
-
-# Generated files
 *.dex
-
-# ===============================
-# Keystore (QUAN TRỌNG)
-# ===============================
-
-*.jks
-*.keystore
-
-# ===============================
-# Kotlin / Java
-# ===============================
-
 *.class
-*.jar
-*.war
-*.aar
-out/
 
 # ===============================
-# OS files
+# Logs
 # ===============================
 
-.DS_Store
-Thumbs.db
+*.log
 
 # ===============================
 # Temporary files
@@ -80,8 +70,9 @@ Thumbs.db
 *.tmp
 *.bak
 
+# ===============================
+# Operating system files
+# ===============================
 
-.gradle-user-home/
-
-# Firebase config
-app/google-services.json
+.DS_Store
+Thumbs.db

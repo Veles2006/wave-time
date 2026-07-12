@@ -38,6 +38,9 @@
     <color name="info">#38BDF8</color>
     <color name="info_container">#075985</color>
 
+    <color name="button_disabled">#475569</color>
+    <color name="button_disabled_text">#94A3B8</color>
+
     <!-- Border / Divider -->
     <color name="divider">#334155</color>
     <color name="border">#475569</color>

@@ -26,7 +26,7 @@ import com.sae.wavetime.data.room.Converters
         InstalledAppEntity::class,
         TaskTemplateEntity::class
     ],
-    version = 1
+    version = 2
 )
 
 @TypeConverters(Converters::class)

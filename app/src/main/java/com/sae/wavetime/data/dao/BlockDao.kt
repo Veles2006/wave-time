@@ -32,6 +32,16 @@ interface BlockDao {
     @Query("SELECT * FROM blocks WHERE packageName = :packageName LIMIT 1")
     suspend fun getByPackageName(packageName: String): BlockEntity?
 
+    @Query("""
+    SELECT appName
+    FROM blocks
+    WHERE id = :blockId
+    LIMIT 1
+""")
+    fun observeBlockNameById(
+        blockId: String
+    ): Flow<String?>
+
     // Create method
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(block: BlockEntity)

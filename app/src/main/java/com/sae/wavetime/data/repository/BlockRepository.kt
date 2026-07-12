@@ -66,6 +66,12 @@ class BlockRepository(
             }
     }
 
+    fun observeBlockNameById(
+        blockId: String
+    ): Flow<String?> {
+        return blockDao.observeBlockNameById(blockId)
+    }
+
     suspend fun getByPackageName(packageName: String): Block? {
         return blockDao.getByPackageName(packageName)?.toDomain()
     }

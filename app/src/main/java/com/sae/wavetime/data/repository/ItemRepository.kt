@@ -55,7 +55,6 @@ class ItemRepository(
     suspend fun createKeysForBlock(block: Block) {
         keyColors.forEachIndexed { index, color ->
             val keyName = "${color.replaceFirstChar { it.uppercase() }} Key"
-            val description = "Unlocks ${block.appName} temporarily. Higher-rank keys provide stronger access privileges."
 
             val item = ItemEntity(
                 id = UUID.randomUUID().toString(),
@@ -74,7 +73,7 @@ class ItemRepository(
                     isMaster = false,
                     durationMinutes = durationMinutesOfKey[index]
                 ),
-                description = description,
+                description = "",
             )
             itemDao.insert(item)
         }

@@ -1,28 +1,39 @@
 package com.sae.wavetime.data.repository
 
 import com.sae.wavetime.data.dao.InventoryDao
+import com.sae.wavetime.data.mapper.toDetailUi
 import com.sae.wavetime.data.mapper.toEntity
-import com.sae.wavetime.data.mapper.toUi
+import com.sae.wavetime.data.mapper.toListUi
 import com.sae.wavetime.data.model.entity.InventoryEntity
 import com.sae.wavetime.domain.model.Inventory
 import com.sae.wavetime.domain.model.RewardItem
+import com.sae.wavetime.ui.model.InventoryDetailUiModel
 import com.sae.wavetime.ui.model.InventoryUiModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import java.util.UUID
 
 class InventoryRepository(
     private val inventoryDao: InventoryDao
 ) {
-    fun getInventoryItems() : Flow<List<InventoryUiModel>> {
-        val data = inventoryDao.getInventoryWithItem()
+    fun observeInventoryItems() : Flow<List<InventoryUiModel>> {
+        val data = inventoryDao.observeInventoryWithItems()
 
         return data
             .map { list ->
                 list
                     .filter { it.inventory.quantity > 0 }
-                    .map { it.toUi() }
+                    .map { it.toListUi() }
+            }
+    }
+
+    fun observeInventoryItemByItemId(
+        itemId: String
+    ): Flow<InventoryDetailUiModel?> {
+        return inventoryDao
+            .observeInventoryWithItemByItemId(itemId)
+            .map { inventoryWithItem ->
+                inventoryWithItem?.toDetailUi()
             }
     }
 

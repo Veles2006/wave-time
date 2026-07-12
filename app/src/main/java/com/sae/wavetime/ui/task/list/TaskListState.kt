@@ -1,6 +1,7 @@
 package com.sae.wavetime.ui.task.list
 
 import com.sae.wavetime.domain.model.Task
+import com.sae.wavetime.ui.common.UiText
 
 // List<Task> ở đây Task model sẽ được refactor sau
 data class TaskListState(
@@ -14,7 +15,7 @@ data class TaskListState(
     val timerStartEvent: TimerStartEvent? = null,
 
     // Message dùng cho Snackbar / Toast
-    val notificationMessage: String? = null
+    val notificationMessage: UiText? = null
 )
 
 data class RunningTimerUiState(

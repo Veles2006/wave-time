@@ -8,6 +8,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.sae.wavetime.MainActivity
 import com.sae.wavetime.R
 import com.sae.wavetime.analytics.AnalyticsTracker
 import com.sae.wavetime.data.repository.BlockRepository
@@ -18,6 +19,7 @@ import com.sae.wavetime.data.resolver.InstalledAppResolver
 import com.sae.wavetime.databinding.FragmentItemListBinding
 import com.sae.wavetime.domain.usecase.UseItemUseCase
 import com.sae.wavetime.local.DatabaseProvider
+import com.sae.wavetime.ui.common.asString
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -68,17 +70,32 @@ class ItemListFragment : Fragment(R.layout.fragment_item_list) {
                 .translationY(0f)
                 .setDuration(250)
                 .start()
+
+            setOnClickListener {
+                hideNotificationMessage()
+            }
         }
 
         notificationJob = viewLifecycleOwner.lifecycleScope.launch {
             delay(5000)
 
-            binding.notificationCard.animate()
+            hideNotificationMessage()
+        }
+    }
+
+    private fun hideNotificationMessage() {
+        notificationJob?.cancel()
+        notificationJob = null
+
+        binding.notificationCard.apply {
+            animate().cancel()
+
+            animate()
                 .alpha(0f)
                 .translationY(80f)
                 .setDuration(250)
                 .withEndAction {
-                    binding.notificationCard.visibility = View.GONE
+                    visibility = View.GONE
                     viewModel.clearNotificationMessage()
                 }
                 .start()
@@ -113,10 +130,15 @@ class ItemListFragment : Fragment(R.layout.fragment_item_list) {
 
         _binding = FragmentItemListBinding.bind(view)
 
-        adapter = ItemAdapter{
-            itemId, amount ->
-            viewModel.useItem(itemId, amount)
-        }
+        adapter = ItemAdapter(
+            useItem = {
+                itemId, amount ->
+                viewModel.useItem(itemId, amount)
+            },
+            openItemDetail = { itemId ->
+                (activity as? MainActivity)?.openItemDetail(itemId)
+            }
+        )
 
         binding.rvItems.layoutManager = LinearLayoutManager(requireContext())
         binding.rvItems.adapter = adapter
@@ -126,7 +148,7 @@ class ItemListFragment : Fragment(R.layout.fragment_item_list) {
                 viewModel.state.collect { state ->
                     render(state)
 
-                    val message = state.notificationMessage
+                    val message = state.notificationMessage?.asString(requireContext())
 
                     if (message != null) {
                         showNotificationMessage(message)

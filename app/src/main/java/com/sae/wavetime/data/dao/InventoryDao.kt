@@ -14,7 +14,19 @@ import kotlinx.coroutines.flow.Flow
 interface InventoryDao {
     @Transaction
     @Query("SELECT * FROM inventory")
-    fun getInventoryWithItem(): Flow<List<InventoryWithItem>>
+    fun observeInventoryWithItems(): Flow<List<InventoryWithItem>>
+
+    @Transaction
+    @Query("SELECT * FROM inventory WHERE id = :inventoryId LIMIT 1")
+    fun observeInventoryWithItem(
+        inventoryId: String
+    ): Flow<InventoryWithItem?>
+
+    @Transaction
+    @Query("SELECT * FROM inventory WHERE itemId = :itemId LIMIT 1")
+    fun observeInventoryWithItemByItemId(
+        itemId: String
+    ): Flow<InventoryWithItem?>
 
     @Query("SELECT * FROM inventory WHERE itemId = :itemId LIMIT 1")
     suspend fun getByItemId(itemId: String): InventoryEntity?

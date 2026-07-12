@@ -155,6 +155,8 @@
                     android:background="@drawable/bg_info_icon_circle"
                     android:padding="7dp"
                     android:src="@drawable/ic_circle_solid_full"
+                    android:contentDescription="@null"
+                    android:importantForAccessibility="no"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/taskInfoDivider"
                     app:tint="@color/primary" />
@@ -181,6 +183,8 @@
                     android:background="@drawable/bg_info_icon_circle"
                     android:padding="7dp"
                     android:src="@drawable/ic_circle_solid_full"
+                    android:contentDescription="@null"
+                    android:importantForAccessibility="no"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvDescription"
                     app:tint="@color/primary" />
@@ -207,6 +211,8 @@
                     android:background="@drawable/bg_info_icon_circle"
                     android:padding="7dp"
                     android:src="@drawable/ic_circle_solid_full"
+                    android:contentDescription="@null"
+                    android:importantForAccessibility="no"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvStatus"
                     app:tint="@color/primary" />
@@ -233,6 +239,8 @@
                     android:background="@drawable/bg_info_icon_circle"
                     android:padding="7dp"
                     android:src="@drawable/ic_circle_solid_full"
+                    android:contentDescription="@null"
+                    android:importantForAccessibility="no"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvTypeTask"
                     app:tint="@color/primary" />
@@ -259,6 +267,8 @@
                     android:background="@drawable/bg_info_icon_circle"
                     android:padding="7dp"
                     android:src="@drawable/ic_circle_solid_full"
+                    android:contentDescription="@null"
+                    android:importantForAccessibility="no"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvCompleteMode"
                     app:tint="@color/primary" />
@@ -285,6 +295,8 @@
                     android:background="@drawable/bg_info_icon_circle"
                     android:padding="6dp"
                     android:src="@drawable/ic_calendar_solid_full"
+                    android:contentDescription="@null"
+                    android:importantForAccessibility="no"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvRequiredDurationMinutes"
                     app:tint="@color/primary" />
@@ -311,6 +323,8 @@
                     android:background="@drawable/bg_info_icon_circle"
                     android:padding="6dp"
                     android:src="@drawable/ic_star_solid_full"
+                    android:contentDescription="@null"
+                    android:importantForAccessibility="no"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvDate"
                     app:tint="@color/primary" />
@@ -337,6 +351,8 @@
                     android:background="@drawable/bg_info_icon_circle"
                     android:padding="6dp"
                     android:src="@drawable/ic_gift_solid_full"
+                    android:contentDescription="@null"
+                    android:importantForAccessibility="no"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvDifficulty"
                     app:tint="@color/primary" />
@@ -362,6 +378,8 @@
                     android:background="@drawable/bg_info_icon_circle"
                     android:padding="7dp"
                     android:src="@drawable/ic_circle_solid_full"
+                    android:contentDescription="@null"
+                    android:importantForAccessibility="no"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvReward"
                     app:tint="@color/primary" />
@@ -375,6 +393,8 @@
                     android:text="Penalty"
                     android:textColor="@color/text_secondary"
                     android:textSize="14sp"
+                    android:contentDescription="@null"
+                    android:importantForAccessibility="no"
                     app:layout_constraintBottom_toBottomOf="@id/ivPenaltyIcon"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/ivPenaltyIcon"

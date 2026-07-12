@@ -12,7 +12,8 @@ import com.sae.wavetime.ui.common.toTierText
 import com.sae.wavetime.ui.model.InventoryUiModel
 
 class ItemAdapter(
-    private val useItem: (itemId: String, amount: Int) -> Unit
+    private val useItem: (itemId: String, amount: Int) -> Unit,
+    private val openItemDetail : (String) -> Unit
 ) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
 
     private var items: List<InventoryUiModel> = emptyList()
@@ -41,10 +42,17 @@ class ItemAdapter(
         val context = holder.itemView.context
 
         holder.tvName.text = item.name.toCleanItemName()
-        holder.tvTier.text = item.tier.toTierText(context)
+        holder.tvTier.text = context.getString(
+            R.string.tier_format,
+            item.tier.toTierText(context)
+        )
         holder.tvQuantity.text = "x${item.quantity}"
         holder.btnUseItem.setOnClickListener {
             useItem(item.id, 1)
+        }
+
+        holder.itemView.setOnClickListener {
+            openItemDetail(item.id)
         }
     }
 

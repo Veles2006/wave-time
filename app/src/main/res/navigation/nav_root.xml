@@ -59,6 +59,12 @@
         android:label="Block Detail">
     </fragment>
 
+    <fragment
+        android:id="@+id/itemDetailFragment"
+        android:name="com.sae.wavetime.ui.item.detail.ItemDetailFragment"
+        android:label="Item Detail">
+    </fragment>
+
     <action
         android:id="@+id/action_to_taskForm"
         app:destination="@id/taskFormFragment"
@@ -94,6 +100,14 @@
     <action
         android:id="@+id/action_to_blockDetail"
         app:destination="@id/blockDetailFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+
+    <action
+        android:id="@+id/action_to_itemDetail"
+        app:destination="@id/itemDetailFragment"
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"

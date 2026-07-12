@@ -4,8 +4,7 @@ import android.content.Context
 import com.sae.wavetime.R
 import com.sae.wavetime.domain.model.Reward
 import com.sae.wavetime.domain.model.Penalty
-import com.sae.wavetime.ui.common.toTierText
-import java.util.Locale
+import com.sae.wavetime.ui.common.toLocalizedKeyName
 
 fun Reward.toDisplayString(context: Context): String {
     val parts = mutableListOf<String>()
@@ -38,24 +37,3 @@ fun Penalty.toDisplayString(context: Context): String {
     return if (parts.isEmpty()) context.getString(R.string.no_penalty) else parts.joinToString(" • ")
 }
 
-fun String.toLocalizedKeyName(context: Context): String {
-    val parts = this.split("·").map { it.trim() }
-
-    val keyPart = parts.getOrNull(0) ?: return this
-    val appName = parts.getOrNull(1)
-
-    val tier = keyPart
-        .removeSuffix("Key")
-        .trim()
-        .lowercase(Locale.ROOT)
-
-    val tierText = tier.toTierText(context)
-
-    val keyName = context.getString(R.string.item_key_format, tierText)
-
-    return if (appName.isNullOrBlank()) {
-        keyName
-    } else {
-        "$keyName · $appName"
-    }
-}

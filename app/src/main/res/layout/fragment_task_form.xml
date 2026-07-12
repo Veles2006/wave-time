@@ -690,6 +690,8 @@
                         android:layout_height="28dp"
                         android:src="@drawable/ic_alarm_clock_regular_full"
                         android:layout_marginStart="10dp"
+                        android:contentDescription="@null"
+                        android:importantForAccessibility="no"
                         app:layout_constraintStart_toStartOf="@id/tilTaskRemind"
                         app:layout_constraintTop_toTopOf="@id/tilTaskRemind"
                         app:layout_constraintBottom_toBottomOf="@id/tilTaskRemind" />
@@ -719,6 +721,8 @@
                         android:layout_height="28dp"
                         android:src="@drawable/ic_alarm_clock_regular_full"
                         android:layout_marginStart="10dp"
+                        android:contentDescription="@null"
+                        android:importantForAccessibility="no"
                         app:layout_constraintStart_toStartOf="@id/tilTaskRepeatFrequency"
                         app:layout_constraintTop_toTopOf="@id/tilTaskRepeatFrequency"
                         app:layout_constraintBottom_toBottomOf="@id/tilTaskRepeatFrequency" />
@@ -748,6 +752,8 @@
                         android:layout_height="28dp"
                         android:src="@drawable/ic_alarm_clock_regular_full"
                         android:layout_marginStart="10dp"
+                        android:contentDescription="@null"
+                        android:importantForAccessibility="no"
                         app:layout_constraintStart_toStartOf="@id/tilTaskDeadline"
                         app:layout_constraintTop_toTopOf="@id/tilTaskDeadline"
                         app:layout_constraintBottom_toBottomOf="@id/tilTaskDeadline" />
@@ -777,6 +783,8 @@
                         android:layout_height="28dp"
                         android:src="@drawable/ic_alarm_clock_regular_full"
                         android:layout_marginStart="10dp"
+                        android:contentDescription="@null"
+                        android:importantForAccessibility="no"
                         app:layout_constraintStart_toStartOf="@id/tilTaskType"
                         app:layout_constraintTop_toTopOf="@id/tilTaskType"
                         app:layout_constraintBottom_toBottomOf="@id/tilTaskType" />
