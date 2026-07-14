@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.isVisible
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -82,6 +83,7 @@ class SelectAppDialog(
     private fun setupRecyclerView() {
         adapter = AppSelectAdapter { app ->
             selectedApp = app
+            binding.btnConfirm.isEnabled = true
         }
 
         binding.rvApps.apply {
@@ -91,6 +93,16 @@ class SelectAppDialog(
     }
 
     private fun setupListeners() {
+        binding.edtAppSearch.doAfterTextChanged { editable ->
+            selectedApp = null
+            adapter.clearSelection()
+            binding.btnConfirm.isEnabled = false
+
+            installedAppViewModel.searchApps(
+                editable?.toString().orEmpty()
+            )
+        }
+
         binding.btnConfirm.setOnClickListener {
             val app = selectedApp
 
@@ -114,18 +126,26 @@ class SelectAppDialog(
     }
 
     private fun renderState(state: InstalledAppUiState) {
+        val hasApps = state.apps.isNotEmpty()
+
         binding.layoutLoading.isVisible = state.isLoading
 
         binding.layoutAppList.isVisible =
-            !state.isLoading && state.apps.isNotEmpty()
+            !state.isLoading && hasApps
+
+        binding.tvEmpty.isVisible =
+            !state.isLoading && !hasApps
 
         adapter.submitList(state.apps)
 
         isCancelable = !state.isLoading
         dialog?.setCanceledOnTouchOutside(!state.isLoading)
 
-        binding.btnConfirm.isEnabled = !state.isLoading
+        binding.edtAppSearch.isEnabled = !state.isLoading
         binding.rvApps.isEnabled = !state.isLoading
+
+        binding.btnConfirm.isEnabled =
+            !state.isLoading && selectedApp != null
     }
 
     override fun onStart() {

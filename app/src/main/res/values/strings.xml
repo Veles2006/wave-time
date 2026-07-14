@@ -33,7 +33,7 @@
     <string name="title_order">Order</string>
     <string name="btn_order_question">Order Question</string>
     <string name="btn_penalty">Penalty</string>
-    <string name="search">Search item</string>
+    <string name="search_item">Search item</string>
     <string name="task_detail">Task Detail</string>
     <string name="edit_task">Edit Task</string>
     <string name="delete_task">Delete Task</string>
@@ -222,4 +222,7 @@
         Each key can only unlock its assigned app, %1$s. Keys can be obtained by completing tasks
         or purchased from the shop.
     </string>
+    <string name="search_app">Search app</string>
+    <string name="no_apps_found">No apps found</string>
+    <string name="loading">Loading...</string>
 </resources>

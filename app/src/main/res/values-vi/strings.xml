@@ -34,7 +34,7 @@
     <string name="title_order">Khác</string>
     <string name="btn_order_question">Câu hỏi phần khác</string>
     <string name="btn_penalty">Phạt</string>
-    <string name="search">Tìm vật phẩm</string>
+    <string name="search_item">Tìm kiếm vật phẩm</string>
     <string name="task_detail">Chi tiết nhiệm vụ</string>
     <string name="edit_task">Sửa nhiệm vụ</string>
     <string name="delete_task">Xoá nhiệm vụ</string>
@@ -223,4 +223,7 @@
         chặn. Mỗi chìa khóa chỉ có thể mở khóa ứng dụng được chỉ định là %1$s. Bạn có thể nhận chìa
         khóa bằng cách hoàn thành nhiệm vụ hoặc mua tại cửa hàng.
     </string>
+    <string name="search_app">Tìm kiếm ứng dụng</string>
+    <string name="no_apps_found">Không tìm thấy ứng dụng</string>
+    <string name="loading">Đang tải...</string>
 </resources>

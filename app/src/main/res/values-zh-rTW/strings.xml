@@ -30,7 +30,7 @@
     <string name="title_order">順序</string>
     <string name="btn_order_question">順序問題</string>
     <string name="btn_penalty">懲罰</string>
-    <string name="search">搜尋道具</string>
+    <string name="search_item">搜尋道具</string>
     <string name="task_detail">任務詳情</string>
     <string name="edit_task">編輯任務</string>
     <string name="delete_task">刪除任務</string>
@@ -205,4 +205,7 @@
         描述：\n此物品由系統自動產生，用於暫時解除被封鎖的應用程式。每把鑰匙只能解除指定的應用程式：%1$s。你可以透過完成任務
         或在商店購買來獲得鑰匙。
     </string>
+    <string name="search_app">搜尋應用程式</string>
+    <string name="no_apps_found">找不到應用程式</string>
+    <string name="loading">載入中...</string>
 </resources>
