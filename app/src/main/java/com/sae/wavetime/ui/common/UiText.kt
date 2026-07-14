@@ -13,15 +13,32 @@ sealed interface UiText {
     data class DynamicString(
         val value: String
     ) : UiText
+
+    data class LocalizedKeyName(
+        val value: String
+    ) : UiText
 }
 
 fun UiText.asString(context: Context): String {
     return when (this) {
         is UiText.StringResource -> {
-            context.getString(resId, *args.toTypedArray())
+            val localizedArgs = args.map { arg ->
+                when (arg) {
+                    is UiText -> arg.asString(context)
+                    else -> arg
+                }
+            }
+
+            context.getString(
+                resId,
+                *localizedArgs.toTypedArray()
+            )
         }
 
         is UiText.DynamicString -> value
+
+        is UiText.LocalizedKeyName -> {
+            value.toLocalizedKeyName(context)
+        }
     }
 }
-

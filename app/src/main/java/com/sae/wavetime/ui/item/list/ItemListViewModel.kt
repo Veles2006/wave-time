@@ -77,12 +77,17 @@ class ItemListViewModel(
                         notificationMessage = if (durationMinutes > 0) {
                             UiText.StringResource(
                                 resId = R.string.item_used_with_duration,
-                                args = listOf(item.name, durationMinutes)
+                                args = listOf(
+                                    UiText.LocalizedKeyName(item.name),
+                                    durationMinutes
+                                )
                             )
                         } else {
                             UiText.StringResource(
                                 resId = R.string.item_used,
-                                args = listOf(item.name)
+                                args = listOf(
+                                    UiText.LocalizedKeyName(item.name)
+                                )
                             )
                         }
                     )

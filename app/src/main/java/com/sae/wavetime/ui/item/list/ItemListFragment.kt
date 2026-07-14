@@ -160,6 +160,7 @@ class ItemListFragment : Fragment(R.layout.fragment_item_list) {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        hideNotificationMessage()
         _binding = null
     }
 }

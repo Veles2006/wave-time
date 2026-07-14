@@ -272,6 +272,7 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        hideNotificationMessage()
         _binding = null
     }
 }
