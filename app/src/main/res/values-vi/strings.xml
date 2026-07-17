@@ -20,7 +20,8 @@
     <string name="btn_basic_question">Câu hỏi phần cơ bản</string>
     <string name="title_config">Thiết lập</string>
     <string name="btn_config_question">Câu hỏi về thiết lập</string>
-    <string name="difficulty">Cấp độ</string>
+    <string name="difficulty">Độ khó</string>
+    <string name="task_difficulty_default">Độ khó: Phàm nhân</string>
     <string name="title_task_type">Loại nhiệm vụ</string>
     <string name="title_complete_mode">Cách hoàn thành</string>
     <string name="til_task_name">Tên nhiệm vụ</string>
@@ -115,8 +116,8 @@
     <string name="tier_red">Đỏ</string>
     <string name="tier_black">Đen</string>
     <string name="use">Dùng</string>
-    <string name="set_coin">Đặt Coin</string>
-    <string name="set_exp">Đặt EXP</string>
+    <string name="set_coin">Nhập Coin</string>
+    <string name="set_exp">Nhập EXP</string>
     <string name="enter_coin_amount">Nhập số Coin cho phần thưởng này.</string>
     <string name="enter_exp_amount">Nhập số EXP cho phần thưởng này.</string>
     <string name="set_value">Đặt giá trị</string>
@@ -215,7 +216,7 @@
     <string name="item_rank_format">Hạng: %1$d</string>
     <string name="item_category_format">Loại: %1$s</string>
     <string name="item_block_name_format">Tên app bị chặn: %1$s</string>
-    <string name="item_duration_minutes_format">Thời lượng: %1$d phút</string>
+    <string name="item_duration_minutes_format">Thời gian duy trì: %1$d phút</string>
     <string name="item_remaining_quantity_format">Số lượng còn lại: x%1$d</string>
     <string name="item_category_key">Chìa khóa</string>
     <string name="item_key_description_format">
@@ -226,4 +227,15 @@
     <string name="search_app">Tìm kiếm ứng dụng</string>
     <string name="no_apps_found">Không tìm thấy ứng dụng</string>
     <string name="loading">Đang tải...</string>
+    <string name="error_reward_limit_or_level_insufficient">
+        Không thể thêm hoặc tăng số lượng vật phẩm này vì đã đạt giới hạn tối đa hoặc cấp độ nhiệm
+        vụ chưa đủ.
+    </string>
+    <string name="error_task_level_insufficient">Cấp độ nhiệm vụ không đủ để thêm hoặc tăng số lượng vật phẩm này.</string>
+
+    <string name="error_reward_quantity_limit_reached">Bạn đã đạt giới hạn số lượng vật phẩm có thể chọn.</string>
+    <string name="reward_input_range">Giá trị cho phép: 0 – %1$d</string>
+    <string name="error_value_required">Vui lòng nhập một giá trị.</string>
+    <string name="error_invalid_number">Giá trị không hợp lệ.</string>
+    <string name="error_reward_value_range">Vui lòng nhập giá trị từ 0 đến %1$d.</string>
 </resources>

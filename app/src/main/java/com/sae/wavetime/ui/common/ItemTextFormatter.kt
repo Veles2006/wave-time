@@ -27,6 +27,20 @@ fun String.toTierText(context: Context): String {
     }
 }
 
+fun String.toTierInt(): Int {
+    return when (this.lowercase()) {
+        "white" -> 1
+        "gray" -> 2
+        "green" -> 3
+        "blue" -> 4
+        "purple" -> 5
+        "yellow" -> 6
+        "red" -> 7
+        "black" -> 8
+        else -> 1
+    }
+}
+
 fun String.toKeyName(context: Context): String {
     val tierText = this.toTierText(context)
     return context.getString(R.string.item_key_format, tierText)

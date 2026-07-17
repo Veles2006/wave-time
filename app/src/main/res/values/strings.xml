@@ -20,6 +20,7 @@
     <string name="title_config">Config</string>
     <string name="btn_config_question">Config Question</string>
     <string name="difficulty">Difficulty</string>
+    <string name="task_difficulty_default">Difficulty: Mortal</string>
     <string name="title_task_type">Task Type</string>
     <string name="title_complete_mode">Complete Mode</string>
     <string name="til_task_name">Task name</string>
@@ -225,4 +226,15 @@
     <string name="search_app">Search app</string>
     <string name="no_apps_found">No apps found</string>
     <string name="loading">Loading...</string>
+    <string name="error_reward_limit_or_level_insufficient">
+        This item cannot be added or increased because the maximum limit has been reached or the
+        task level is too low.
+    </string>
+    <string name="error_task_level_insufficient">The task level is too low to add this item or increase its quantity.</string>
+
+    <string name="error_reward_quantity_limit_reached">You have reached the maximum number of items that can be selected.</string>
+    <string name="reward_input_range">Allowed range: 0–%1$d</string>
+    <string name="error_value_required">Please enter a value.</string>
+    <string name="error_invalid_number">Invalid value.</string>
+    <string name="error_reward_value_range">Please enter a value between 0 and %1$d.</string>
 </resources>

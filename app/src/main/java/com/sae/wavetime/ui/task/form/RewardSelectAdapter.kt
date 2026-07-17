@@ -41,8 +41,11 @@ class RewardSelectAdapter(
         val context = holder.itemView.context
 
         holder.tvName.text = reward.name
-        holder.tvTier.text = reward.tier.toTierText(context)
-        holder.tvItemCount.text = "${reward.quantity}"
+        holder.tvTier.text = context.getString(
+            R.string.tier_format,
+            reward.tier.toTierText(context)
+        )
+        holder.tvItemCount.text = "${reward.selectedQuantity}"
         holder.btnPlus.setOnClickListener {
             onIncrease(reward)
         }

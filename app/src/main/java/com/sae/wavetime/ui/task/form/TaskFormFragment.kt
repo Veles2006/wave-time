@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.NotificationManagerCompat
@@ -29,11 +30,18 @@ import com.sae.wavetime.data.repository.TaskRepository
 import com.sae.wavetime.databinding.FragmentTaskFormBinding
 import com.sae.wavetime.local.DatabaseProvider
 import com.sae.wavetime.ui.common.toDifficultyText
+import com.sae.wavetime.ui.common.toDifficultyValue
 import com.sae.wavetime.ui.dialog.FeatureGuideDialog
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.util.UUID
 import kotlin.getValue
+import androidx.core.net.toUri
+import androidx.fragment.app.activityViewModels
+import com.google.android.material.snackbar.Snackbar
+import com.sae.wavetime.domain.task.TaskRewardLimits
+import com.sae.wavetime.ui.common.UiText
+import com.sae.wavetime.ui.common.asString
 
 class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
     private lateinit var adapter: TaskFormRewardAdapter
@@ -48,7 +56,7 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
     private var taskType: String = "default"
     private var completeMode: String = "tap"
 
-    private val viewModel: TaskFormViewModel by viewModels {
+    private val viewModel: TaskFormViewModel by activityViewModels {
         val db = DatabaseProvider.getDatabase(requireContext())
         TaskFormViewModelFactory(
             TaskRepository(
@@ -83,6 +91,31 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
         adapter.submitList(filteredList)
 
 
+        binding.btnCoin.text = if (state.coin != null) {
+            getString(
+                R.string.coin_format,
+                state.coin
+            )
+        } else {
+            getString(
+                R.string.not_set
+            )
+        }
+
+        binding.btnExp.text = if (state.experience != null) {
+            getString(
+                R.string.exp_format,
+                state.experience
+            )
+        } else {
+            getString(
+                R.string.not_set
+            )
+        }
+
+        coinValue = state.coin ?: 0
+        expValue = state.experience ?: 0
+
         if (taskId == null) {
             binding.tvTitle.text = getString(R.string.create_task)
         } else {
@@ -91,12 +124,18 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
                 state.task?.let { task ->
                     binding.edtTaskName.setText(task.name)
                     binding.edtTaskDesc.setText(task.description)
-                    binding.btnCoin.text = task.reward.gold.toString()
-                    binding.btnExp.text = task.reward.exp.toString()
                     binding.btnItem.text = getString(R.string.change_item)
 
-                    coinValue = task.reward.gold
-                    expValue = task.reward.exp
+                    viewModel.updateCoin(task.reward.gold)
+                    viewModel.updateExperience(task.reward.exp)
+
+                    binding.tvDifficultyLabel.text =
+                        getString(
+                            R.string.task_difficulty_format,
+                            task.difficulty.toDifficultyText(requireContext())
+                        )
+
+                    binding.sliderDifficulty.value = task.difficulty.toDifficultyValue()
 
                     taskType = task.type
 
@@ -176,7 +215,7 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
             }
         } else {
             Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-                data = Uri.parse("package:${requireContext().packageName}")
+                data = "package:${requireContext().packageName}".toUri()
             }
         }
 
@@ -198,6 +237,20 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
 
         binding.sliderDifficulty.setLabelFormatter { value ->
             value.toInt().toDifficultyText(requireContext())
+        }
+
+        binding.sliderDifficulty.addOnChangeListener { _, value, fromUser ->
+            val difficulty = value.toInt()
+
+            binding.tvDifficultyLabel.text =
+                getString(
+                    R.string.task_difficulty_format,
+                    difficulty.toDifficultyText(requireContext())
+                )
+
+            if (fromUser) {
+                viewModel.onDifficultyChanged(difficulty)
+            }
         }
 
         binding.btnBasicQuestion.setOnClickListener {
@@ -233,8 +286,6 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
             }
         }
 
-        viewModel.loadRewards()
-
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.state.collect { state ->
@@ -243,52 +294,68 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
             }
         }
 
-        if (taskId == null) {
-            binding.tvTitle.text = getString(R.string.create_task)
-        } else {
-            viewModel.observeTask(taskId!!)
-        }
+        viewModel.initForm(taskId)
 
         binding.btnBack.setOnClickListener {
+            viewModel.clearRewardValues()
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
         binding.btnCoin.setOnClickListener {
+            val state = viewModel.state.value
+
             val dialog = CoinExperienceDialog(
                 title = getString(R.string.set_coin),
                 message = getString(R.string.enter_coin_amount),
                 unit = getString(R.string.coin),
-                errorMessage = getString(R.string.please_enter_value)
-            ) { text ->
-                coinValue = text.toIntOrNull() ?: 0
-                binding.btnCoin.text = getString(R.string.coin_format, coinValue)
-            }
+                maxValue = state.maxCoin,
+                initialValue = state.coin,
+                onConfirm = viewModel::updateCoin
+            )
 
-            if (parentFragmentManager.findFragmentByTag("CoinDialog") == null) {
-                dialog.show(parentFragmentManager, "CoinDialog")
+            if (
+                parentFragmentManager
+                    .findFragmentByTag("CoinDialog") == null
+            ) {
+                dialog.show(
+                    parentFragmentManager,
+                    "CoinDialog"
+                )
             }
         }
 
         binding.btnExp.setOnClickListener {
+            val state = viewModel.state.value
+
             val dialog = CoinExperienceDialog(
                 title = getString(R.string.set_exp),
                 message = getString(R.string.enter_exp_amount),
                 unit = getString(R.string.exp),
-                errorMessage = getString(R.string.please_enter_value)
-            ) { text ->
-                expValue = text.toIntOrNull() ?: 0
-                binding.btnExp.text = getString(R.string.exp_format, expValue)
-            }
+                maxValue = state.maxExperience,
+                initialValue = state.experience,
+                onConfirm = viewModel::updateExperience
+            )
 
-            if (parentFragmentManager.findFragmentByTag("ExpDialog") == null) {
-                dialog.show(parentFragmentManager, "ExpDialog")
+            if (
+                parentFragmentManager
+                    .findFragmentByTag("ExpDialog") == null
+            ) {
+                dialog.show(
+                    parentFragmentManager,
+                    "ExpDialog"
+                )
             }
         }
 
         binding.btnItem.setOnClickListener {
-            val dialog = SelectItemDialog { selectedList ->
-                viewModel.updateTaskReward(selectedList)
-            }
+            val currentState = viewModel.state.value
+
+            val dialog = SelectItemDialog(
+                initialRewards = currentState.availableRewards,
+                difficulty = currentState.difficulty,
+                onConfirm = viewModel::updateTaskReward
+            )
+
             dialog.show(parentFragmentManager, "SelectItem")
         }
 
@@ -391,6 +458,7 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
                 viewModel.updateFullTask(taskData!!)
             }
 
+            viewModel.clearRewardValues()
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
     }

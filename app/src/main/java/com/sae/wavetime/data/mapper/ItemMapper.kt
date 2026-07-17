@@ -51,7 +51,7 @@ fun RewardSelectUiModel.toRewardItem() : RewardItem {
             category,
             description,
         ),
-        quantity = quantity
+        quantity = selectedQuantity
     )
 }
 
@@ -63,7 +63,7 @@ fun RewardItem.toRewardSelectUiModel() : RewardSelectUiModel {
         rank = itemId.rank,
         category = itemId.category,
         description = itemId.description,
-        quantity = quantity
+        selectedQuantity = quantity
     )
 }
 

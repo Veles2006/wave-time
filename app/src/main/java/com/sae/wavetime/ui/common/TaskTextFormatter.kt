@@ -57,6 +57,34 @@ fun Int.toDifficultyText(context: Context): String {
     }
 }
 
+fun String.toDifficultyValue(): Float {
+    return when (lowercase(Locale.ROOT)) {
+        "mortal" -> 1f
+        "yao" -> 2f
+        "gui" -> 3f
+        "mara" -> 4f
+        "sage" -> 5f
+        "xian" -> 6f
+        "deity" -> 7f
+        "creation" -> 8f
+        else -> 1f
+    }
+}
+
+fun String.toDifficultyInt(): Int {
+    return when (lowercase(Locale.ROOT)) {
+        "mortal" -> 1
+        "yao" -> 2
+        "gui" -> 3
+        "mara" -> 4
+        "sage" -> 5
+        "xian" -> 6
+        "deity" -> 7
+        "creation" -> 8
+        else -> 1
+    }
+}
+
 fun Long?.toHourMinuteSecond(context: Context): String {
     if (this == null) return context.getString(R.string.status_pending)
 

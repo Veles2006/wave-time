@@ -17,6 +17,7 @@
     <string name="title_config">設定</string>
     <string name="btn_config_question">設定說明</string>
     <string name="difficulty">難度</string>
+    <string name="task_difficulty_default">難度：凡人</string>
     <string name="title_task_type">任務類型</string>
     <string name="title_complete_mode">完成方式</string>
     <string name="til_task_name">任務名稱</string>
@@ -208,4 +209,14 @@
     <string name="search_app">搜尋應用程式</string>
     <string name="no_apps_found">找不到應用程式</string>
     <string name="loading">載入中...</string>
+    <string name="error_reward_limit_or_level_insufficient">
+        無法新增此物品或增加其數量，因為已達上限，或任務等級不足。
+    </string>
+    <string name="error_task_level_insufficient">任務等級不足，無法新增此物品或增加其數量。</string>
+
+    <string name="error_reward_quantity_limit_reached">已達可選物品數量上限。</string>
+    <string name="reward_input_range">允許範圍：0～%1$d</string>
+    <string name="error_value_required">請輸入數值。</string>
+    <string name="error_invalid_number">數值無效。</string>
+    <string name="error_reward_value_range">請輸入 0 到 %1$d 之間的數值。</string>
 </resources>

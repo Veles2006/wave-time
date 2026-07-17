@@ -7,7 +7,7 @@ data class InventoryDetailUiModel(
     val tier: String,
     val rank: Int,
     val category: String,
-    val blockId: String?,
+    val blockId: String? = null,
     val blockName: String? = null,
     val durationMinutes: Int,
     val isMaster: Boolean,

@@ -39,7 +39,7 @@ class TaskFormRewardAdapter : RecyclerView.Adapter<TaskFormRewardAdapter.TaskFor
             R.string.tier_format,
             reward.tier.toTierText(context)
         )
-        holder.tvQuantity.text = "x${reward.quantity}"
+        holder.tvQuantity.text = "x${reward.selectedQuantity}"
     }
 
     override fun getItemCount(): Int {

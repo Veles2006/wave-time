@@ -247,7 +247,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:includeFontPadding="false"
-                        android:text="@string/difficulty"
+                        android:text="@string/task_difficulty_default"
                         android:textColor="@color/text_secondary"
                         android:textSize="13sp"
                         app:layout_constraintEnd_toEndOf="parent"

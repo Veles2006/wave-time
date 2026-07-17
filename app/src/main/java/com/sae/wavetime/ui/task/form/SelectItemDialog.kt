@@ -6,24 +6,31 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.Toast
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.sae.wavetime.R
 import com.sae.wavetime.analytics.AnalyticsTracker
 import com.sae.wavetime.data.repository.ItemRepository
 import com.sae.wavetime.data.repository.TaskRepository
 import com.sae.wavetime.databinding.DialogSelectItemBinding
 import com.sae.wavetime.local.DatabaseProvider
+import com.sae.wavetime.ui.common.UiText
+import com.sae.wavetime.ui.common.asString
 import com.sae.wavetime.ui.model.RewardSelectUiModel
 import kotlinx.coroutines.launch
 
 class SelectItemDialog(
+    private val initialRewards: List<RewardSelectUiModel>,
+    private val difficulty: Int,
     private val onConfirm: (List<RewardSelectUiModel>) -> Unit,
 ) : DialogFragment(R.layout.dialog_select_item) {
 
@@ -32,7 +39,17 @@ class SelectItemDialog(
 
     private lateinit var adapter: RewardSelectAdapter
 
-    private val viewModel: TaskFormViewModel by viewModels {
+    private fun showRewardSelectionMessage(message: UiText) {
+        Toast.makeText(
+            requireContext(),
+            message.asString(requireContext()),
+            Toast.LENGTH_LONG
+        ).show()
+
+        viewModel.clearRewardSelectionMessage()
+    }
+
+    private val viewModel: TaskFormViewModel by activityViewModels {
         val database = DatabaseProvider.getDatabase(requireContext())
 
         TaskFormViewModelFactory(
@@ -65,7 +82,10 @@ class SelectItemDialog(
         observeState()
         setupListeners()
 
-        viewModel.loadRewards()
+        viewModel.initRewardSelection(
+            rewards = initialRewards,
+            difficulty = difficulty
+        )
     }
 
     override fun onStart() {
@@ -110,10 +130,8 @@ class SelectItemDialog(
 
     private fun setupListeners() {
         binding.btnConfirm.setOnClickListener {
-            val selectedRewards = viewModel.state.value.availableRewards
-                .filter { reward ->
-                    reward.quantity > 0
-                }
+            val selectedRewards =
+                viewModel.state.value.selectedRewards
 
             onConfirm(selectedRewards)
             dismiss()
@@ -128,8 +146,8 @@ class SelectItemDialog(
 
         adapter.submitList(state.availableRewards)
 
-        if (state.isLoading) {
-            // Hiển thị loading nếu layout có ProgressBar
+        state.rewardSelection.message?.let { message ->
+            showRewardSelectionMessage(message)
         }
 
         state.error?.let { error ->
