@@ -213,10 +213,15 @@
         無法新增此物品或增加其數量，因為已達上限，或任務等級不足。
     </string>
     <string name="error_task_level_insufficient">任務等級不足，無法新增此物品或增加其數量。</string>
-
     <string name="error_reward_quantity_limit_reached">已達可選物品數量上限。</string>
     <string name="reward_input_range">允許範圍：0～%1$d</string>
     <string name="error_value_required">請輸入數值。</string>
     <string name="error_invalid_number">數值無效。</string>
     <string name="error_reward_value_range">請輸入 0 到 %1$d 之間的數值。</string>
+    <string name="error_invalid_timer">請輸入有效的計時時間。</string>
+    <string name="error_field_required">此欄位不可留空。</string>
+    <string name="notification_permission_title">開啟通知</string>
+    <string name="notification_permission_message">Wave Time 需要通知權限，以便在任務計時器完成時提醒你。</string>
+    <string name="open_settings">開啟設定</string>
+    <string name="later">稍後</string>
 </resources>

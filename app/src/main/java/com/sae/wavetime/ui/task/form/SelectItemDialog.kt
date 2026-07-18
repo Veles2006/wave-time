@@ -9,14 +9,13 @@ import android.view.Window
 import android.widget.Toast
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.isVisible
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import com.sae.wavetime.R
 import com.sae.wavetime.analytics.AnalyticsTracker
 import com.sae.wavetime.data.repository.ItemRepository
@@ -129,6 +128,12 @@ class SelectItemDialog(
     }
 
     private fun setupListeners() {
+        binding.edtItemSearch.doAfterTextChanged { editable ->
+            viewModel.onRewardSearchQueryChanged(
+                editable?.toString().orEmpty()
+            )
+        }
+
         binding.btnConfirm.setOnClickListener {
             val selectedRewards =
                 viewModel.state.value.selectedRewards
@@ -139,12 +144,12 @@ class SelectItemDialog(
     }
 
     private fun render(state: TaskFormState) {
-        val hasItems = state.availableRewards.isNotEmpty()
+        val hasItems = state.filteredAvailableRewards.isNotEmpty()
 
         binding.rvItems.isVisible = hasItems
         binding.tvNoItem.isVisible = !hasItems
 
-        adapter.submitList(state.availableRewards)
+        adapter.submitList(state.filteredAvailableRewards)
 
         state.rewardSelection.message?.let { message ->
             showRewardSelectionMessage(message)

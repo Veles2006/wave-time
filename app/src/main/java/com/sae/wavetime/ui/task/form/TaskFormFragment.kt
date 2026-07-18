@@ -199,12 +199,12 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
 
     private fun showNotificationSettingsDialog() {
         AlertDialog.Builder(requireContext())
-            .setTitle("Bật thông báo")
-            .setMessage("Wave Time cần thông báo để nhắc bạn khi timer hoàn thành nhiệm vụ.")
-            .setPositiveButton("Mở cài đặt") { _, _ ->
+            .setTitle(getString(R.string.notification_permission_title))
+            .setMessage(getString(R.string.notification_permission_message))
+            .setPositiveButton(getString(R.string.open_settings)) { _, _ ->
                 openAppNotificationSettings()
             }
-            .setNegativeButton("Để sau", null)
+            .setNegativeButton(getString(R.string.later), null)
             .show()
     }
 
@@ -408,7 +408,7 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
             }
 
             if (taskName.isBlank()) {
-                binding.edtTaskName.error = "This field cannot be empty"
+                binding.edtTaskName.error = getString(R.string.error_field_required)
                 return@setOnClickListener
             }
 
@@ -417,7 +417,7 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
                 completeMode == "timer" &&
                 (requiredDurationMinutes == null || requiredDurationMinutes <= 0)
                 ) {
-                binding.edtTimer.error = "Please enter a valid timer"
+                binding.edtTimer.error = getString(R.string.error_invalid_timer)
                 return@setOnClickListener
             }
 

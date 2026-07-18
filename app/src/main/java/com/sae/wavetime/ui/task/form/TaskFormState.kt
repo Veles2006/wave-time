@@ -12,6 +12,8 @@ data class TaskFormState(
     val difficulty: Int = 1,
     val coin: Int? = null,
     val experience: Int? = null,
+
+    val rewardSearchQuery: String = "",
     val rewardSelection: RewardSelectionState = RewardSelectionState(),
 
     val task: Task? = null
@@ -19,6 +21,22 @@ data class TaskFormState(
     val availableRewards: List<RewardSelectUiModel>
         get() = rewardSelection.allRewards.filter { reward ->
             reward.tier.toTierInt() <= difficulty
+        }
+
+    val filteredAvailableRewards: List<RewardSelectUiModel>
+        get() {
+            val query = rewardSearchQuery.trim()
+
+            if (query.isEmpty()) {
+                return availableRewards
+            }
+
+            return availableRewards.filter { reward ->
+                reward.name.contains(
+                    other = query,
+                    ignoreCase = true
+                )
+            }
         }
 
     val selectedRewards: List<RewardSelectUiModel>

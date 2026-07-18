@@ -41,17 +41,19 @@
             app:boxCornerRadiusTopEnd="14dp"
             app:boxCornerRadiusTopStart="14dp"
             app:boxStrokeColor="@color/text_field_border"
-            app:endIconDrawable="@drawable/ic_magnifying_glass_solid_full"
-            app:endIconTint="@color/text_secondary"
             app:hintTextColor="@color/text_secondary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvItemPickerTitle">
+            app:layout_constraintTop_toBottomOf="@id/tvItemPickerTitle"
+            app:endIconMode="custom"
+            app:endIconDrawable="@drawable/ic_magnifying_glass_solid_full"
+            app:endIconTint="@color/text_secondary">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edtItemSearch"
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
+                android:imeOptions="actionSearch"
                 android:inputType="text"
                 android:maxLines="1"
                 android:paddingStart="14dp"
@@ -71,7 +73,8 @@
             android:scrollbars="none"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tilItemSearch">
+            app:layout_constraintTop_toBottomOf="@id/tilItemSearch"
+            android:visibility="gone">
 
             <LinearLayout
                 android:id="@+id/layoutFilter"
@@ -144,7 +147,7 @@
             android:layout_marginTop="14dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/hsvItemFilter">
+            app:layout_constraintTop_toBottomOf="@id/tilItemSearch">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvItems"

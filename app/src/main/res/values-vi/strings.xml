@@ -232,10 +232,15 @@
         vụ chưa đủ.
     </string>
     <string name="error_task_level_insufficient">Cấp độ nhiệm vụ không đủ để thêm hoặc tăng số lượng vật phẩm này.</string>
-
     <string name="error_reward_quantity_limit_reached">Bạn đã đạt giới hạn số lượng vật phẩm có thể chọn.</string>
     <string name="reward_input_range">Giá trị cho phép: 0 – %1$d</string>
     <string name="error_value_required">Vui lòng nhập một giá trị.</string>
     <string name="error_invalid_number">Giá trị không hợp lệ.</string>
     <string name="error_reward_value_range">Vui lòng nhập giá trị từ 0 đến %1$d.</string>
+    <string name="error_invalid_timer">Vui lòng nhập thời gian hẹn giờ hợp lệ.</string>
+    <string name="error_field_required">Trường này không được để trống.</string>
+    <string name="notification_permission_title">Bật thông báo</string>
+    <string name="notification_permission_message">Wave Time cần quyền thông báo để nhắc bạn khi bộ đếm thời gian của nhiệm vụ hoàn thành.</string>
+    <string name="open_settings">Mở cài đặt</string>
+    <string name="later">Để sau</string>
 </resources>

@@ -355,6 +355,22 @@ class TaskFormViewModel(
         }
     }
 
+    fun onRewardSearchQueryChanged(query: String) {
+        _state.update { currentState ->
+            currentState.copy(
+                rewardSearchQuery = query
+            )
+        }
+    }
+
+    fun clearRewardSearchQuery() {
+        _state.update { currentState ->
+            currentState.copy(
+                rewardSearchQuery = ""
+            )
+        }
+    }
+
     private suspend fun observeTaskWithRewards(
         taskId: String,
         allRewards: List<RewardSelectUiModel>

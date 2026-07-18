@@ -231,10 +231,15 @@
         task level is too low.
     </string>
     <string name="error_task_level_insufficient">The task level is too low to add this item or increase its quantity.</string>
-
     <string name="error_reward_quantity_limit_reached">You have reached the maximum number of items that can be selected.</string>
     <string name="reward_input_range">Allowed range: 0–%1$d</string>
     <string name="error_value_required">Please enter a value.</string>
     <string name="error_invalid_number">Invalid value.</string>
     <string name="error_reward_value_range">Please enter a value between 0 and %1$d.</string>
+    <string name="error_invalid_timer">Please enter a valid timer.</string>
+    <string name="error_field_required">This field cannot be empty.</string>
+    <string name="notification_permission_title">Enable notifications</string>
+    <string name="notification_permission_message">Wave Time needs notification permission to remind you when the task timer finishes.</string>
+    <string name="open_settings">Open settings</string>
+    <string name="later">Later</string>
 </resources>
