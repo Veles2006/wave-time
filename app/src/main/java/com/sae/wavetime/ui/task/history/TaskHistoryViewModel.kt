@@ -44,4 +44,10 @@ class TaskHistoryViewModel(
                 }
         }
     }
+
+    fun undoTaskCompletion(taskId: String) {
+        viewModelScope.launch {
+            repository.undoTaskCompletion(taskId)
+        }
+    }
 }

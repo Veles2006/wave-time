@@ -162,6 +162,10 @@ class TaskRepository(
         )
     }
 
+    suspend fun undoTaskCompletion(taskId: String): Int {
+        return taskDao.undoTaskCompletion(taskId)
+    }
+
     suspend fun softDeleteTask(id: String) {
         taskDao.softDelete(id)
     }

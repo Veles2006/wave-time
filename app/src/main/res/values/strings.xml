@@ -242,4 +242,5 @@
     <string name="notification_permission_message">Wave Time needs notification permission to remind you when the task timer finishes.</string>
     <string name="open_settings">Open settings</string>
     <string name="later">Later</string>
+    <string name="undo">Undo</string>
 </resources>

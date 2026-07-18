@@ -31,8 +31,6 @@ class BlockListFragment : Fragment(R.layout.fragment_block_list) {
 
     private val binding get() = _binding!!
 
-    private var enabled: Boolean = false
-
     private val viewModel: BlockListViewModel by viewModels {
         BlockListViewModelFactory(
             BlockRepository(

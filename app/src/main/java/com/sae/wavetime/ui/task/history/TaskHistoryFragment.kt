@@ -9,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.sae.wavetime.MainActivity
 import com.sae.wavetime.R
 import com.sae.wavetime.data.repository.TaskRepository
 import com.sae.wavetime.databinding.FragmentTaskHistoryBinding
@@ -47,7 +48,14 @@ class TaskHistoryFragment : Fragment(R.layout.fragment_task_history) {
 
         _binding = FragmentTaskHistoryBinding.bind(view)
 
-        adapter = HistoryAdapter()
+        adapter = HistoryAdapter(
+            onUndoCompletionClick = { task ->
+                viewModel.undoTaskCompletion(task.id)
+            },
+            openTaskDetail = { taskId ->
+                (activity as? MainActivity)?.openTaskDetail(taskId)
+            }
+        )
 
         viewModel.loadHistory()
 

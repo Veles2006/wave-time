@@ -3,13 +3,20 @@ package com.sae.wavetime.ui.task.history
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.sae.wavetime.MainActivity
 import com.sae.wavetime.R
+import com.sae.wavetime.domain.model.Task
 import com.sae.wavetime.ui.common.toHourMinuteSecond
 import com.sae.wavetime.ui.model.HistoryListItemUiModel
 
-class HistoryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class HistoryAdapter(
+    private val onUndoCompletionClick: (Task) -> Unit,
+    private val openTaskDetail : (String) -> Unit
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var items: List<HistoryListItemUiModel> = emptyList()
 
     fun submitList(newList: List<HistoryListItemUiModel>) {
@@ -25,15 +32,48 @@ class HistoryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-    class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tvName : TextView = itemView.findViewById(R.id.tvTaskName)
-        val tvTime : TextView = itemView.findViewById(R.id.tvTime)
+    class TaskViewHolder(
+        itemView: View,
+        private val onUndoCompletionClick: (Task) -> Unit,
+        private val openTaskDetail : (String) -> Unit
+    ) : RecyclerView.ViewHolder(itemView) {
+
+        private val tvName: TextView = itemView.findViewById(R.id.tvTaskName)
+        private val tvTime: TextView = itemView.findViewById(R.id.tvTime)
+        private val btnOptions: ImageButton = itemView.findViewById(R.id.btnOptions)
 
         fun bind(item: HistoryListItemUiModel.TaskItem) {
             val context = itemView.context
+            val task = item.task
 
-            tvName.text = item.task.name
-            tvTime.text = item.task.lastCompletedAt.toHourMinuteSecond(context)
+            tvName.text = task.name
+            tvTime.text = task.lastCompletedAt.toHourMinuteSecond(context)
+
+            btnOptions.setOnClickListener { anchorView ->
+                val popupMenu = PopupMenu(context, anchorView)
+
+                popupMenu.menuInflater.inflate(
+                    R.menu.menu_task_history_item,
+                    popupMenu.menu
+                )
+
+                popupMenu.setOnMenuItemClickListener { menuItem ->
+                    when (menuItem.itemId) {
+                        R.id.action_undo_completion -> {
+                            onUndoCompletionClick(task)
+                            true
+                        }
+
+                        else -> false
+                    }
+                }
+
+                popupMenu.show()
+            }
+
+            itemView.setOnClickListener {
+                openTaskDetail(task.id)
+            }
         }
     }
 
@@ -54,8 +94,17 @@ class HistoryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
 
             VIEW_TYPE_TASK -> {
-                val view = inflater.inflate(R.layout.item_history_task, parent, false)
-                TaskViewHolder(view)
+                val view = inflater.inflate(
+                    R.layout.item_history_task,
+                    parent,
+                    false
+                )
+
+                TaskViewHolder(
+                    itemView = view,
+                    onUndoCompletionClick = onUndoCompletionClick,
+                    openTaskDetail = openTaskDetail
+                )
             }
 
             else -> error("Unknown viewType")

@@ -152,6 +152,18 @@ interface TaskDao {
         lastCompletedAt: Long?
     )
 
+    @Query("""
+        UPDATE tasks
+        SET status = 'pending',
+            lastCompletedAt = NULL,
+            startedAt = NULL,
+            finishAt = NULL
+        WHERE id = :taskId
+            AND status = 'completed'
+            AND isDeleted = 0
+    """)
+    suspend fun undoTaskCompletion(taskId: String): Int
+
     // Delete method
     @Query("DELETE FROM tasks")
     suspend fun clearAll()
