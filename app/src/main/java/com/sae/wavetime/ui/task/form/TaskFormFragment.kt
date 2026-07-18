@@ -393,7 +393,7 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
             val taskName = binding.edtTaskName.text.toString().trim()
             val taskDesc = binding.edtTaskDesc.text?.toString()?.trim()
             val taskItemReward = viewModel.state.value.selectedRewards
-            val requiredDurationMinutes = binding.edtTimer.text.toString().trim().toIntOrNull()
+            var requiredDurationMinutes = binding.edtTimer.text.toString().trim().toIntOrNull()
 
             val taskDifficulty = when (binding.sliderDifficulty.value.toInt()) {
                 1 -> "Mortal"
@@ -419,6 +419,10 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
                 ) {
                 binding.edtTimer.error = getString(R.string.error_invalid_timer)
                 return@setOnClickListener
+            }
+
+            if (completeMode != "timer") {
+                requiredDurationMinutes = null
             }
 
             if (taskId == null) {

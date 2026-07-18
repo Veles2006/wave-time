@@ -7,7 +7,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sae.wavetime.MainActivity
 import com.sae.wavetime.R
@@ -32,14 +31,6 @@ class TaskHistoryFragment : Fragment(R.layout.fragment_task_history) {
     }
 
     private fun render(state: TaskHistoryState) {
-        if (state.isLoading) {
-            // show loading
-        }
-
-        if (state.error != null) {
-            // show error
-        }
-
         adapter.submitList(state.items)
     }
 
