@@ -1,31 +1,68 @@
 package com.sae.wavetime.domain.model
 
+import androidx.annotation.Keep
+import com.google.gson.annotations.SerializedName
+
+@Keep
 data class RewardItemId(
+    @SerializedName("id")
     val id: String,
+
+    @SerializedName("name")
     val name: String,
+
+    @SerializedName("tier")
     val tier: String,
+
+    @SerializedName("rank")
     val rank: Int,
+
+    @SerializedName("category")
     val category: String,
+
+    @SerializedName("description")
     val description: String,
 )
 
+@Keep
 data class RewardItem(
+    @SerializedName("itemId")
     val itemId: RewardItemId,
+
+    @SerializedName("quantity")
     val quantity: Int,
 )
 
+@Keep
 data class Reward(
+    @SerializedName("exp")
     val exp: Int = 0,
+
+    @SerializedName("gold")
     val gold: Int = 0,
+
+    @SerializedName("diamond")
     val diamond: Int = 0,
+
+    @SerializedName("gem")
     val gem: Int = 0,
+
+    @SerializedName("items")
     val items: List<RewardItem> = emptyList(),
 )
 
+@Keep
 data class Penalty(
+    @SerializedName("exp")
     val exp: Int = 0,
+
+    @SerializedName("gold")
     val gold: Int = 0,
+
+    @SerializedName("diamond")
     val diamond: Int = 0,
+
+    @SerializedName("gem")
     val gem: Int = 0,
 )
 

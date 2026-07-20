@@ -4,17 +4,14 @@ import android.Manifest
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -30,7 +27,6 @@ import com.sae.wavetime.data.repository.TaskRepository
 import com.sae.wavetime.databinding.FragmentTaskFormBinding
 import com.sae.wavetime.local.DatabaseProvider
 import com.sae.wavetime.ui.common.toDifficultyText
-import com.sae.wavetime.ui.common.toDifficultyValue
 import com.sae.wavetime.ui.dialog.FeatureGuideDialog
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -38,10 +34,6 @@ import java.util.UUID
 import kotlin.getValue
 import androidx.core.net.toUri
 import androidx.fragment.app.activityViewModels
-import com.google.android.material.snackbar.Snackbar
-import com.sae.wavetime.domain.task.TaskRewardLimits
-import com.sae.wavetime.ui.common.UiText
-import com.sae.wavetime.ui.common.asString
 
 class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
     private lateinit var adapter: TaskFormRewardAdapter
@@ -70,96 +62,91 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
         )
     }
     private fun render(state: TaskFormState) {
-
-        if (state.isLoading) {
-            // show loading
-        }
-
-        if (state.error != null) {
-            // show error
-        }
-        val filteredList = state.selectedRewards
+        val selectedRewards = state.selectedRewards
 
         binding.rvItems.visibility =
-            if (filteredList.isEmpty()) View.GONE else View.VISIBLE
+            if (selectedRewards.isEmpty()) View.GONE else View.VISIBLE
 
-        binding.btnItem.text = if (filteredList.isEmpty())
-            getString(R.string.not_set)
-        else
-            getString(R.string.change_item)
+        binding.btnItem.text =
+            if (selectedRewards.isEmpty()) {
+                getString(R.string.not_set)
+            } else {
+                getString(R.string.change_item)
+            }
 
-        adapter.submitList(filteredList)
+        adapter.submitList(selectedRewards)
 
+        binding.btnCoin.text =
+            state.coin?.let {
+                getString(R.string.coin_format, it)
+            } ?: getString(R.string.not_set)
 
-        binding.btnCoin.text = if (state.coin != null) {
-            getString(
-                R.string.coin_format,
-                state.coin
-            )
-        } else {
-            getString(
-                R.string.not_set
-            )
-        }
+        binding.btnExp.text =
+            state.experience?.let {
+                getString(R.string.exp_format, it)
+            } ?: getString(R.string.not_set)
 
-        binding.btnExp.text = if (state.experience != null) {
-            getString(
-                R.string.exp_format,
-                state.experience
-            )
-        } else {
-            getString(
-                R.string.not_set
-            )
-        }
+        renderDifficulty(state.difficulty)
 
         coinValue = state.coin ?: 0
         expValue = state.experience ?: 0
 
+        renderTask(state)
+    }
+
+    private fun renderDifficulty(difficulty: Int) {
+        binding.tvDifficultyLabel.text =
+            getString(
+                R.string.task_difficulty_format,
+                difficulty.toDifficultyText(requireContext())
+            )
+
+        val sliderValue = difficulty.toFloat()
+
+        if (binding.sliderDifficulty.value != sliderValue) {
+            binding.sliderDifficulty.value = sliderValue
+        }
+    }
+
+    private fun renderTask(state: TaskFormState) {
         if (taskId == null) {
             binding.tvTitle.text = getString(R.string.create_task)
-        } else {
-            binding.tvTitle.text = getString(R.string.edit_task)
-            if (taskId != null && binding.edtTaskName.text.isNullOrEmpty()) {
-                state.task?.let { task ->
-                    binding.edtTaskName.setText(task.name)
-                    binding.edtTaskDesc.setText(task.description)
-                    binding.btnItem.text = getString(R.string.change_item)
-
-                    viewModel.updateCoin(task.reward.gold)
-                    viewModel.updateExperience(task.reward.exp)
-
-                    binding.tvDifficultyLabel.text =
-                        getString(
-                            R.string.task_difficulty_format,
-                            task.difficulty.toDifficultyText(requireContext())
-                        )
-
-                    binding.sliderDifficulty.value = task.difficulty.toDifficultyValue()
-
-                    taskType = task.type
-
-                    task.requiredDurationMinutes?.let {
-                        binding.edtTimer.setText(it.toString())
-                    }
-
-                    binding.rgTaskType.check(
-                        when (task.type) {
-                            "daily" -> R.id.rbDailyType
-                            else -> R.id.rbDefaultType
-                        }
-                    )
-
-                    binding.rgCompleteMode.check(
-                        when (task.completeMode) {
-                            "timer" -> R.id.rbTimerMode
-                            else -> R.id.rbTapMode
-                        }
-                    )
-                }
-            }
-            task = state.task
+            return
         }
+
+        binding.tvTitle.text = getString(R.string.edit_task)
+
+        val loadedTask = state.task ?: return
+
+        if (task?.id == loadedTask.id) {
+            return
+        }
+
+        task = loadedTask
+
+        binding.edtTaskName.setText(loadedTask.name)
+        binding.edtTaskDesc.setText(loadedTask.description)
+
+        taskType = loadedTask.type
+        completeMode = loadedTask.completeMode
+
+        binding.edtTimer.setText(
+            loadedTask.requiredDurationMinutes?.toString().orEmpty()
+        )
+
+        binding.rgTaskType.check(
+            when (loadedTask.type) {
+                "daily" -> R.id.rbDailyType
+                else -> R.id.rbDefaultType
+            }
+        )
+
+        binding.rgCompleteMode.check(
+            when (loadedTask.completeMode) {
+                "timer" -> R.id.rbTimerMode
+                else -> R.id.rbTapMode
+            }
+        )
     }
 
     private fun isNotificationEnabled(): Boolean {
@@ -240,16 +227,8 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
         }
 
         binding.sliderDifficulty.addOnChangeListener { _, value, fromUser ->
-            val difficulty = value.toInt()
-
-            binding.tvDifficultyLabel.text =
-                getString(
-                    R.string.task_difficulty_format,
-                    difficulty.toDifficultyText(requireContext())
-                )
-
             if (fromUser) {
-                viewModel.onDifficultyChanged(difficulty)
+                viewModel.onDifficultyChanged(value.toInt())
             }
         }
 
@@ -297,7 +276,7 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
         viewModel.initForm(taskId)
 
         binding.btnBack.setOnClickListener {
-            viewModel.clearRewardValues()
+            viewModel.clearTaskValues()
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
@@ -348,14 +327,9 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
         }
 
         binding.btnItem.setOnClickListener {
-            val currentState = viewModel.state.value
-
             val dialog = SelectItemDialog(
-                initialRewards = currentState.availableRewards,
-                difficulty = currentState.difficulty,
                 onConfirm = viewModel::updateTaskReward
             )
-
             dialog.show(parentFragmentManager, "SelectItem")
         }
 
@@ -462,7 +436,7 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
                 viewModel.updateFullTask(taskData!!)
             }
 
-            viewModel.clearRewardValues()
+            viewModel.clearTaskValues()
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
     }

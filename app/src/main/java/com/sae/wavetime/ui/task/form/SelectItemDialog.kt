@@ -28,8 +28,6 @@ import com.sae.wavetime.ui.model.RewardSelectUiModel
 import kotlinx.coroutines.launch
 
 class SelectItemDialog(
-    private val initialRewards: List<RewardSelectUiModel>,
-    private val difficulty: Int,
     private val onConfirm: (List<RewardSelectUiModel>) -> Unit,
 ) : DialogFragment(R.layout.dialog_select_item) {
 
@@ -80,11 +78,6 @@ class SelectItemDialog(
         setupRecyclerView()
         observeState()
         setupListeners()
-
-        viewModel.initRewardSelection(
-            rewards = initialRewards,
-            difficulty = difficulty
-        )
     }
 
     override fun onStart() {
@@ -153,10 +146,6 @@ class SelectItemDialog(
 
         state.rewardSelection.message?.let { message ->
             showRewardSelectionMessage(message)
-        }
-
-        state.error?.let { error ->
-            // Hiển thị lỗi bằng Snackbar hoặc TextView
         }
     }
 

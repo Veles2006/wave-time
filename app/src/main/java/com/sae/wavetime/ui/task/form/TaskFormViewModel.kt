@@ -1,6 +1,5 @@
 package com.sae.wavetime.ui.task.form
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sae.wavetime.R
@@ -122,22 +121,37 @@ class TaskFormViewModel(
 
             val difficulty = newDifficulty.coerceIn(1, 8)
 
+            val maxCoin = TaskRewardLimits.getMaxCoin(difficulty)
+            val maxExperience =
+                TaskRewardLimits.getMaxExperience(difficulty)
+
             val normalizedRewards = normalizeRewardsForDifficulty(
                 rewards = currentState.rewardSelection.allRewards,
                 difficulty = difficulty
             )
 
-            val maxCoin = TaskRewardLimits.getMaxCoin(difficulty)
-            val maxExperience =
-                TaskRewardLimits.getMaxExperience(difficulty)
+            val normalizedCoin =
+                currentState.coin?.coerceAtMost(maxCoin)
+
+            val normalizedExperience =
+                currentState.experience?.coerceAtMost(maxExperience)
+
+            val oldSelectedQuantity =
+                currentState.rewardSelection.allRewards.sumOf {
+                    it.selectedQuantity
+                }
+
+            val newSelectedQuantity =
+                normalizedRewards.sumOf {
+                    it.selectedQuantity
+                }
 
             currentState.copy(
                 difficulty = difficulty,
 
-                coin = currentState.coin?.coerceAtMost(maxCoin),
+                coin = normalizedCoin,
 
-                experience = currentState.experience
-                    ?.coerceAtMost(maxExperience),
+                experience = normalizedExperience,
 
                 rewardSelection = currentState.rewardSelection.copy(
                     allRewards = normalizedRewards
@@ -273,6 +287,17 @@ class TaskFormViewModel(
         }
     }
 
+    fun updateDifficulty(value: Int) {
+        _state.update { currentState ->
+            currentState.copy(
+                difficulty = value.coerceIn(
+                    minimumValue = 1,
+                    maximumValue = 8
+                )
+            )
+        }
+    }
+
     fun updateCoin(value: Int) {
         _state.update { currentState ->
             currentState.copy(
@@ -346,9 +371,10 @@ class TaskFormViewModel(
         }
     }
 
-    fun clearRewardValues() {
+    fun clearTaskValues() {
         _state.update { currentState ->
             currentState.copy(
+                difficulty = 1,
                 coin = null,
                 experience = null
             )
@@ -400,10 +426,19 @@ class TaskFormViewModel(
                     currentState.copy(
                         isLoading = false,
                         task = task,
+
+                        difficulty =
+                            task?.difficulty?.toDifficultyInt()
+                                ?: currentState.difficulty,
+
+                        coin = task?.reward?.gold,
+                        experience = task?.reward?.exp,
+
                         rewardSelection =
                             currentState.rewardSelection.copy(
                                 allRewards = mergedRewards
                             ),
+
                         error = if (task == null) {
                             "Task not found"
                         } else {
