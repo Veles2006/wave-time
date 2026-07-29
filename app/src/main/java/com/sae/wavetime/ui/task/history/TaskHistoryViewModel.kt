@@ -38,7 +38,7 @@ class TaskHistoryViewModel(
                         it.copy(
                             isLoading = false,
                             error = null,
-                            items = mapToHistoryItems(tasks)
+                            tasks = mapToHistoryItems(tasks)
                         )
                     }
                 }

@@ -44,15 +44,16 @@ class BlockRepository(
                         icon = appIconResolver.getIcon(it.packageName),
                         penaltyMinutes = it.penaltyMinutes,
                         unlockUntil = it.unlockUntil,
+                        reactivateAt = it.reactivateAt,
                         isActive = it.isActive
                     )
                 }
             }
     }
 
-    fun observeActiveBlocks(): Flow<List<Block>> {
+    fun observeBlockCandidates(): Flow<List<Block>> {
         return blockDao
-            .observeActiveBlocks()
+            .observeBlockCandidates()
             .map { list ->
                 list.toDomainList()
             }
@@ -99,7 +100,7 @@ class BlockRepository(
                 packageName = block.packageName,
                 blockType = block.blockType,
                 penaltyMinutes = block.penaltyMinutes,
-                isActive = block.isActive,
+                isActive = true,
                 isDeleted = block.isDeleted
             )
 
@@ -110,7 +111,7 @@ class BlockRepository(
             val restoredBlock = existedBlock.toDomain().copy(
                 appName = block.appName,
                 blockType = block.blockType,
-                isActive = block.isActive,
+                isActive = true,
                 isDeleted = false
             )
 
@@ -126,6 +127,16 @@ class BlockRepository(
 
             restoredBlock
         }
+    }
+
+    suspend fun reactivateBlockIfDue(
+        blockId: String,
+        now: Long
+    ): Boolean {
+        return blockDao.reactivateBlockIfDue(
+            blockId = blockId,
+            now = now
+        ) > 0
     }
 
     suspend fun setUnlockUntil(

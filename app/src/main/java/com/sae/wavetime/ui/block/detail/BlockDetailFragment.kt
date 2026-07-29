@@ -2,6 +2,7 @@ package com.sae.wavetime.ui.block.detail
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -13,6 +14,8 @@ import com.sae.wavetime.data.repository.BlockRepository
 import com.sae.wavetime.data.resolver.AppIconResolver
 import com.sae.wavetime.data.resolver.InstalledAppResolver
 import com.sae.wavetime.databinding.FragmentBlockDetailBinding
+import com.sae.wavetime.domain.usecase.DeleteBlockUseCase
+import com.sae.wavetime.engine.block.BlockReactivationScheduler
 import com.sae.wavetime.local.DatabaseProvider
 import com.sae.wavetime.ui.common.toBlockTypeText
 import com.sae.wavetime.ui.dialog.SoftDeleteDialog
@@ -33,18 +36,15 @@ class BlockDetailFragment : Fragment(R.layout.fragment_block_detail){
         )
 
         BlockDetailViewModelFactory(
-            blockRepo
+            blockRepo,
+            DeleteBlockUseCase(
+                db,
+                BlockReactivationScheduler(requireContext())
+            )
         )
     }
 
     private fun render(state: BlockDetailState) {
-        if (state.isLoading) {
-            // show loading
-        }
-
-        if (state.error != null) {
-            // show error
-        }
 
         state.block?.let { block ->
             val icon = AppIconResolver(requireContext()).getIcon(block.packageName)
@@ -52,6 +52,26 @@ class BlockDetailFragment : Fragment(R.layout.fragment_block_detail){
             binding.tvPackageName.text = getString(R.string.package_name_format, block.packageName)
             binding.tvBlockType.text = getString(R.string.block_type_format, block.blockType.toBlockTypeText(requireContext()))
             binding.tvPenaltyMinutes.text = getString(R.string.penalty_minutes_format, block.penaltyMinutes)
+
+            with(binding) {
+                val timerLabelRes = when (state.countdownMode) {
+                    BlockCountdownMode.NONE -> null
+
+                    BlockCountdownMode.TEMPORARY_UNLOCK ->
+                        R.string.temporary_unlock_remaining
+
+                    BlockCountdownMode.REACTIVATION ->
+                        R.string.block_reactivates_in
+                }
+
+                layoutTimerInfo.isVisible = timerLabelRes != null
+
+                timerLabelRes?.let { labelRes ->
+                    tvTimerLabel.setText(labelRes)
+                    tvTimer.text = state.remainingTime
+                }
+            }
+
             binding.tvTimer.text = state.remainingTime
 
             if (icon != null) {

@@ -8,5 +8,6 @@ data class Block(
     val penaltyMinutes: Int = 0,
     val isActive: Boolean = true,
     val unlockUntil: Long = 0L,
+    val reactivateAt: Long = 0L,
     val isDeleted: Boolean = false,
 )

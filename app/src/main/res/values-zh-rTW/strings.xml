@@ -101,6 +101,7 @@
     <string name="no_tasks_yet">目前沒有任務。\n新增一個任務來開始吧。</string>
     <string name="no_blocks_yet">目前沒有封鎖的應用程式。\n新增一個需要管理的應用程式。</string>
     <string name="no_items_yet">目前沒有道具。\n完成任務來獲得獎勵。</string>
+    <string name="no_history_yet">目前還沒有已完成的任務。\n一起完成第一個任務吧！</string>
     <string name="minutes">分鐘</string>
     <string name="completion_time">完成時間：</string>
     <string name="select_item">選擇物品</string>
@@ -225,4 +226,17 @@
     <string name="open_settings">開啟設定</string>
     <string name="later">稍後</string>
     <string name="undo">復原</string>
+    <string name="task_completion_channel_name">任務完成</string>
+    <string name="task_completion_channel_description">計時任務完成時播放鬧鐘聲並震動</string>
+    <string name="task_completed_notification_title">任務已完成</string>
+    <string name="task_completed_notification_message">你已完成「%1$s」。</string>
+    <string name="deactivate_block_title">要停用此封鎖嗎？</string>
+    <string name="deactivate_block_message">你要暫時停用此封鎖嗎？</string>
+    <string name="deactivate_block_warning_title">你確定嗎？</string>
+    <string name="deactivate_block_warning_message">請記住你的目標。為了幫助你保持自制，此封鎖將在 10 分鐘後自動重新啟用。</string>
+    <string name="deactivate">停用</string>
+    <string name="deactivate_countdown">請稍候（%1$d 秒）</string>
+    <string name="confirm_deactivation">確認停用</string>
+    <string name="temporary_unlock_remaining">剩餘解鎖時間</string>
+    <string name="block_reactivates_in">封鎖將於以下時間後重新啟用</string>
 </resources>

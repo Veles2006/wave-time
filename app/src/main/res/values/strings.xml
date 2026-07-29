@@ -104,6 +104,7 @@
     <string name="no_tasks_yet">No tasks yet.\nAdd a new task to get started.</string>
     <string name="no_blocks_yet">No blocked apps yet.\nAdd an app to control.</string>
     <string name="no_items_yet">No items yet.\nComplete tasks to earn rewards.</string>
+    <string name="no_history_yet">No tasks have been completed yet.\nLet’s complete your first task!</string>
     <string name="minutes">Minutes</string>
     <string name="completion_time">Completion time:</string>
     <string name="select_item">Select item</string>
@@ -243,4 +244,17 @@
     <string name="open_settings">Open settings</string>
     <string name="later">Later</string>
     <string name="undo">Undo</string>
+    <string name="task_completion_channel_name">Task completion</string>
+    <string name="task_completion_channel_description">Plays an alarm sound and vibrates when a timed task is completed</string>
+    <string name="task_completed_notification_title">Task completed</string>
+    <string name="task_completed_notification_message">You completed “%1$s”.</string>
+    <string name="deactivate_block_title">Deactivate this block?</string>
+    <string name="deactivate_block_message">Do you want to temporarily deactivate this block?</string>
+    <string name="deactivate_block_warning_title">Are you sure?</string>
+    <string name="deactivate_block_warning_message">Remember your goal. To help you stay in control, this block will automatically reactivate after 10 minutes.</string>
+    <string name="deactivate">Deactivate</string>
+    <string name="deactivate_countdown">Wait (%1$ds)</string>
+    <string name="confirm_deactivation">Confirm</string>
+    <string name="temporary_unlock_remaining">Unlocked time remaining</string>
+    <string name="block_reactivates_in">Block reactivates in</string>
 </resources>

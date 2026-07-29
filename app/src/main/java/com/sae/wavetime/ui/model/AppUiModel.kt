@@ -9,6 +9,7 @@ data class AppUiModel(
     val blockType: String = "permanent",
     val icon: Drawable? = null,
     val unlockUntil: Long = 0L,
+    val reactivateAt: Long = 0L,
     val penaltyMinutes: Int = 0,
     val isActive: Boolean = true
 )

@@ -162,6 +162,9 @@ class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
                 dialog.show(parentFragmentManager, "SoftDeleteDialog")
             }
         }
+
+        binding.btnEdit.isVisible = task.status != "completed"
+
         binding.btnSuccess.isVisible =
             task.status != "in_progress" &&
                     task.status != "completed"

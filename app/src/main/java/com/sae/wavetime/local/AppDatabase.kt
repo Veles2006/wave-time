@@ -26,7 +26,8 @@ import com.sae.wavetime.data.room.Converters
         InstalledAppEntity::class,
         TaskTemplateEntity::class
     ],
-    version = 2
+    version = 3,
+    exportSchema = true
 )
 
 @TypeConverters(Converters::class)

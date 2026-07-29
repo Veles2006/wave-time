@@ -185,14 +185,6 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
 
     private fun render(state: TaskListState) {
 
-        if (state.isLoading) {
-            // show loading
-        }
-
-        if (state.error != null) {
-            // show error
-        }
-
         adapter.submitList(state.tasks)
 
         if (state.tasks.isEmpty()) {

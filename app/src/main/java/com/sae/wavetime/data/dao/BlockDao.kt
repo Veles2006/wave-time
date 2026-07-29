@@ -16,12 +16,20 @@ interface BlockDao {
     @Query("SELECT * FROM blocks WHERE id = :id LIMIT 1")
     fun getByIdFlow(id: String): Flow<BlockEntity?>
 
-    @Query("""
+    @Query(
+        """
     SELECT * FROM blocks
     WHERE isDeleted = 0
-    AND isActive = 1
-""")
-    fun observeActiveBlocks(): Flow<List<BlockEntity>>
+      AND (
+          isActive = 1
+          OR (
+              blockType = 'permanent'
+              AND reactivateAt > 0
+          )
+      )
+    """
+    )
+    fun observeBlockCandidates(): Flow<List<BlockEntity>>
 
     @Query("""
     SELECT * FROM blocks
@@ -41,6 +49,17 @@ interface BlockDao {
     fun observeBlockNameById(
         blockId: String
     ): Flow<String?>
+
+    @Query(
+        """
+        SELECT * FROM blocks
+        WHERE isDeleted = 0
+          AND blockType = 'permanent'
+          AND isActive = 0
+          AND reactivateAt > 0
+        """
+    )
+    suspend fun getPendingReactivations(): List<BlockEntity>
 
     // Create method
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -67,11 +86,70 @@ interface BlockDao {
         isDeleted: Boolean
     )
 
+    @Query(
+        """
+        UPDATE blocks
+        SET isActive = 0,
+            reactivateAt = :reactivateAt
+        WHERE id = :blockId
+          AND isDeleted = 0
+          AND blockType = 'permanent'
+          AND isActive = 1
+        """
+    )
+    suspend fun temporarilyDeactivatePermanentBlock(
+        blockId: String,
+        reactivateAt: Long
+    ): Int
+
+    @Query(
+        """
+        UPDATE blocks
+        SET isActive = 1,
+            reactivateAt = 0
+        WHERE id = :blockId
+          AND isDeleted = 0
+          AND blockType = 'permanent'
+          AND isActive = 0
+          AND reactivateAt > 0
+          AND reactivateAt <= :now
+        """
+    )
+    suspend fun reactivateBlockIfDue(
+        blockId: String,
+        now: Long
+    ): Int
+
+    @Query(
+        """
+        UPDATE blocks
+        SET isActive = 1,
+            reactivateAt = 0
+        WHERE isDeleted = 0
+          AND blockType = 'permanent'
+          AND isActive = 0
+          AND reactivateAt > 0
+          AND reactivateAt <= :now
+        """
+    )
+    suspend fun reactivateAllDueBlocks(now: Long): Int
+
     @Query("UPDATE blocks SET isDeleted = 0 WHERE id = :id")
     suspend fun restoreBlock(id: String)
 
     @Query("UPDATE blocks SET isActive = :isActive WHERE id = :id")
     suspend fun toggleActive(id: String, isActive: Boolean)
+
+    @Query(
+        """
+    UPDATE blocks
+    SET isActive = 1,
+        reactivateAt = 0
+    WHERE id = :blockId
+      AND isDeleted = 0
+    """
+    )
+    suspend fun activateBlock(blockId: String): Int
 
     @Query("""
     UPDATE blocks
@@ -84,6 +162,15 @@ interface BlockDao {
     )
 
     // Delete method
-    @Query("UPDATE blocks SET isDeleted = 1 WHERE id = :id")
+    @Query(
+        """
+        UPDATE blocks
+        SET isDeleted = 1,
+            isActive = 0,
+            reactivateAt = 0
+        WHERE id = :id
+          AND isDeleted = 0
+        """
+    )
     suspend fun softDelete(id: String): Int
 }

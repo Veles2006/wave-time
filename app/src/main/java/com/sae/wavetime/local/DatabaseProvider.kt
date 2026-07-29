@@ -15,7 +15,10 @@ object DatabaseProvider {
                 AppDatabase::class.java,
                 "wave_time_db",
             )
-                .addMigrations(MIGRATION_1_2)
+                .addMigrations(
+                    MIGRATION_1_2,
+                    MIGRATION_2_3
+                )
                 .build()
                 .also { database ->
                     instance = database

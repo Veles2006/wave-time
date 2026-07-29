@@ -3,6 +3,7 @@ package com.sae.wavetime.ui.block.list
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CompoundButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -12,7 +13,10 @@ import com.sae.wavetime.ui.model.AppUiModel
 
 class AppAdapter(
     private val onLongClick: (AppUiModel) -> Unit,
-    private val onToggleActivity: (id: String, isChecked: Boolean) -> Unit,
+    private val onActiveChangeRequested: (
+        app: AppUiModel,
+        requestedActive: Boolean
+    ) -> Unit,
     private val openBlockDetail: (String) -> Unit
 ): RecyclerView.Adapter<AppAdapter.AppViewHolder>() {
 
@@ -46,11 +50,11 @@ class AppAdapter(
         } else {
             holder.imgApp.setImageResource(R.drawable.default_app)
         }
-        holder.switchActive.visibility = View.VISIBLE
-        holder.switchActive.isChecked = app.isActive
-        holder.switchActive.setOnCheckedChangeListener { _, isChecked ->
-            onToggleActivity(app.id, isChecked)
-        }
+
+        bindActiveSwitch(
+            holder = holder,
+            app = app
+        )
 
         holder.itemView.setOnLongClickListener {
             onLongClick(app)
@@ -60,6 +64,51 @@ class AppAdapter(
         holder.itemView.setOnClickListener {
             openBlockDetail(app.id)
         }
+    }
+
+    private fun bindActiveSwitch(
+        holder: AppViewHolder,
+        app: AppUiModel
+    ) {
+        val switch = holder.switchActive
+
+        switch.visibility = View.VISIBLE
+
+        // Bắt buộc gỡ listener trước khi gán isChecked.
+        // Nếu không, RecyclerView bind lại có thể tự gọi callback.
+        switch.setOnCheckedChangeListener(null)
+        switch.isChecked = app.isActive
+
+        val listener =
+            object : CompoundButton.OnCheckedChangeListener {
+
+                override fun onCheckedChanged(
+                    buttonView: CompoundButton,
+                    isChecked: Boolean
+                ) {
+                    if (isChecked == app.isActive) {
+                        return
+                    }
+
+                    /*
+                     * Khôi phục lại trạng thái hiện tại.
+                     *
+                     * Adapter chỉ gửi yêu cầu, chưa tự thay đổi dữ liệu.
+                     * Sau khi ViewModel cập nhật thành công,
+                     * StateFlow sẽ cung cấp app.isActive mới.
+                     */
+                    buttonView.setOnCheckedChangeListener(null)
+                    buttonView.isChecked = app.isActive
+                    buttonView.setOnCheckedChangeListener(this)
+
+                    onActiveChangeRequested(
+                        app,
+                        isChecked
+                    )
+                }
+            }
+
+        switch.setOnCheckedChangeListener(listener)
     }
 
     override fun getItemCount(): Int {

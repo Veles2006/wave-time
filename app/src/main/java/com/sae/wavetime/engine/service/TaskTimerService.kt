@@ -15,6 +15,7 @@ import com.sae.wavetime.domain.usecase.CompleteTaskUseCase
 import com.sae.wavetime.engine.alarm.TaskTimerAlarmScheduler
 import com.sae.wavetime.engine.event.TaskEvent
 import com.sae.wavetime.engine.event.TaskEventBus
+import com.sae.wavetime.engine.notification.TaskCompletionNotifier
 import com.sae.wavetime.engine.notification.TaskTimerNotification
 import com.sae.wavetime.local.DatabaseProvider
 import kotlinx.coroutines.CoroutineScope
@@ -144,7 +145,26 @@ class TaskTimerService : Service() {
                     return@launch
                 }
 
-                completeTaskUseCase.execute(taskId)
+                val wasCompletedNow = completeTaskUseCase.execute(taskId)
+
+                if (!wasCompletedNow) {
+                    Log.d(
+                        TAG,
+                        "Task was already completed taskId=$taskId"
+                    )
+                    return@launch
+                }
+
+                TaskTimerAlarmScheduler.cancel(
+                    context = applicationContext,
+                    taskId = taskId
+                )
+
+                TaskCompletionNotifier.show(
+                    context = applicationContext,
+                    taskId = task.id,
+                    taskName = task.name
+                )
 
                 TaskEventBus.send(
                     TaskEvent.TaskCompletedByTimer(

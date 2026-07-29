@@ -20,8 +20,8 @@ android {
         minSdk = 26
         targetSdk = 36
 
-        versionCode = 3
-        versionName = "0.1.0-beta03"
+        versionCode = 4
+        versionName = "0.1.0-beta04"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -55,6 +55,16 @@ android {
         jvmTarget = "11"
     }
 }
+
+kapt {
+    arguments {
+        arg(
+            "room.schemaLocation",
+            "$projectDir/schemas"
+        )
+    }
+}
+
 
 dependencies {
     implementation(libs.androidx.core.ktx)

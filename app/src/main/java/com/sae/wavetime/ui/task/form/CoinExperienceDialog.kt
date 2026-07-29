@@ -7,7 +7,6 @@ import android.view.Window
 import android.view.inputmethod.InputMethodManager
 import android.content.Context
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import androidx.fragment.app.DialogFragment
 import com.sae.wavetime.databinding.DialogCoinExperienceBinding
 import androidx.core.graphics.drawable.toDrawable

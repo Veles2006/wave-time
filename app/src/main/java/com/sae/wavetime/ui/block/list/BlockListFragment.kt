@@ -16,6 +16,10 @@ import com.sae.wavetime.data.repository.BlockRepository
 import com.sae.wavetime.data.resolver.AppIconResolver
 import com.sae.wavetime.data.resolver.InstalledAppResolver
 import com.sae.wavetime.databinding.FragmentBlockListBinding
+import com.sae.wavetime.domain.usecase.ActivateBlockUseCase
+import com.sae.wavetime.domain.usecase.DeleteBlockUseCase
+import com.sae.wavetime.domain.usecase.TemporarilyDeactivateBlockUseCase
+import com.sae.wavetime.engine.block.BlockReactivationScheduler
 import com.sae.wavetime.engine.service.FocusAccessibilityService
 import com.sae.wavetime.local.DatabaseProvider
 import com.sae.wavetime.ui.dialog.SoftDeleteDialog
@@ -30,37 +34,55 @@ class BlockListFragment : Fragment(R.layout.fragment_block_list) {
     private var _binding: FragmentBlockListBinding? = null
 
     private val binding get() = _binding!!
+    private var accessibilityEnabled = false
 
     private val viewModel: BlockListViewModel by viewModels {
+        val db = DatabaseProvider.getDatabase(requireContext())
+
         BlockListViewModelFactory(
             BlockRepository(
-                DatabaseProvider.getDatabase(requireContext()).blockDao(),
+                db.blockDao(),
                 AppIconResolver(requireContext().applicationContext),
                 InstalledAppResolver(requireContext().applicationContext)
-            ))
+            ),
+            ActivateBlockUseCase(
+                db,
+                BlockReactivationScheduler(requireContext())
+            ),
+            TemporarilyDeactivateBlockUseCase(
+                db,
+                BlockReactivationScheduler(requireContext())
+            ),
+            DeleteBlockUseCase(
+                db,
+                BlockReactivationScheduler(requireContext())
+            )
+        )
     }
 
     private fun render(state: BlockListState) {
-        val accessibilityEnabled = requireContext().isAccessibilityServiceEnabled(
-            FocusAccessibilityService::class.java
-        )
+        val hasBlocks = state.blocks.isNotEmpty()
+        val showContent =
+            accessibilityEnabled && hasBlocks
+
+        val showEmpty =
+            accessibilityEnabled &&
+                    !hasBlocks &&
+                    !state.isLoading
 
         adapter.submitList(state.blocks)
 
-        binding.tvAccessibilityInfo.isVisible = !accessibilityEnabled
-        binding.tvAccessibilityInstruction.isVisible = !accessibilityEnabled
-        binding.btnOpenAccessibility.isVisible = !accessibilityEnabled
-        binding.btnCreateBlock.isVisible = accessibilityEnabled
+        with(binding) {
+            tvAccessibilityInfo.isVisible = !accessibilityEnabled
+            tvAccessibilityInstruction.isVisible = !accessibilityEnabled
+            btnOpenAccessibility.isVisible = !accessibilityEnabled
 
-        binding.rvBlocks.isVisible =
-            accessibilityEnabled && state.blocks.isNotEmpty()
+            btnCreateBlock.isVisible = accessibilityEnabled
 
-
-        binding.tvEmptyBlock.isVisible =
-            accessibilityEnabled && state.blocks.isEmpty() && !state.isLoading
-
-        binding.ivEmptyBlock.isVisible =
-            accessibilityEnabled && state.blocks.isEmpty() && !state.isLoading
+            rvBlocks.isVisible = showContent
+            tvEmptyBlock.isVisible = showEmpty
+            ivEmptyBlock.isVisible = showEmpty
+        }
     }
 
     private fun showBlockOptionsDialog(app: AppUiModel) {
@@ -93,6 +115,63 @@ class BlockListFragment : Fragment(R.layout.fragment_block_list) {
             .show()
     }
 
+    private fun handleActiveChangeRequest(
+        app: AppUiModel,
+        requestedActive: Boolean
+    ) {
+        if (requestedActive) {
+            viewModel.changeBlockActive(
+                blockId = app.id,
+                isActive = true
+            )
+        } else {
+            showDeactivateBlockDialog(app)
+        }
+    }
+
+    private fun showDeactivateBlockDialog(
+        app: AppUiModel
+    ) {
+        DeactivateBlockDialog.newInstance(
+            initialTitle = getString(
+                R.string.deactivate_block_title
+            ),
+            initialMessage = getString(
+                R.string.deactivate_block_message
+            ),
+            warningTitle = getString(
+                R.string.deactivate_block_warning_title
+            ),
+            warningMessage = getString(
+                R.string.deactivate_block_warning_message
+            )
+        ).apply {
+            setOnDeactivateListener {
+                viewModel.changeBlockActive(
+                    blockId = app.id,
+                    isActive = false
+                )
+            }
+        }.show(
+            childFragmentManager,
+            DeactivateBlockDialog.TAG
+        )
+    }
+
+    private fun updateAccessibilityState() {
+        val newValue =
+            requireContext().isAccessibilityServiceEnabled(
+                FocusAccessibilityService::class.java
+            )
+
+        if (newValue == accessibilityEnabled) {
+            return
+        }
+
+        accessibilityEnabled = newValue
+        render(viewModel.state.value)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -102,15 +181,21 @@ class BlockListFragment : Fragment(R.layout.fragment_block_list) {
             onLongClick = { app ->
                 showBlockOptionsDialog(app)
             },
-            onToggleActivity = { id, isChecked ->
-                viewModel.setActive(id, isChecked)
+            onActiveChangeRequested = { app, requestedActive ->
+                handleActiveChangeRequest(
+                    app = app,
+                    requestedActive = requestedActive
+                )
             },
             openBlockDetail = { id ->
                 (activity as? MainActivity)?.openBlockDetail(id)
             }
         )
 
-        viewModel.loadBlocks()
+        accessibilityEnabled =
+            requireContext().isAccessibilityServiceEnabled(
+                FocusAccessibilityService::class.java
+            )
 
         binding.rvBlocks.layoutManager = LinearLayoutManager(requireContext())
         binding.rvBlocks.adapter = adapter
@@ -130,6 +215,12 @@ class BlockListFragment : Fragment(R.layout.fragment_block_list) {
         binding.btnOpenAccessibility.setOnClickListener {
             requireContext().openAccessibilitySettings()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        updateAccessibilityState()
     }
 
     override fun onDestroyView() {

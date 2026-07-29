@@ -31,7 +31,17 @@ class TaskHistoryFragment : Fragment(R.layout.fragment_task_history) {
     }
 
     private fun render(state: TaskHistoryState) {
-        adapter.submitList(state.items)
+        adapter.submitList(state.tasks)
+
+        if (state.tasks.isEmpty()) {
+            binding.rvHistory.visibility = View.GONE
+            binding.tvEmptyHistory.visibility = View.VISIBLE
+            binding.ivEmptyHistory.visibility = View.VISIBLE
+        } else {
+            binding.rvHistory.visibility = View.VISIBLE
+            binding.tvEmptyHistory.visibility = View.GONE
+            binding.ivEmptyHistory.visibility = View.GONE
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

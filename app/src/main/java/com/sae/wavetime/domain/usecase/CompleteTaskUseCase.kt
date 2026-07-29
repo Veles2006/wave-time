@@ -12,15 +12,15 @@ class CompleteTaskUseCase(
     private val database: AppDatabase,
     private val analyticsLogger: AnalyticsLogger
 ) {
-    suspend fun execute(taskId: String) {
-        database.withTransaction {
+    suspend fun execute(taskId: String): Boolean {
+        val completed = database.withTransaction {
             val now = System.currentTimeMillis()
 
             val task = taskRepo.getTaskById(taskId)
                 ?: error("Task not found")
 
             if (task.status == "completed") {
-                return@withTransaction
+                return@withTransaction false
             }
 
             val runningTask = taskRepo.getRunningTimerTask()
@@ -41,13 +41,24 @@ class CompleteTaskUseCase(
 
             inventoryRepo.addQuantity(rewards)
 
-            analyticsLogger.logTaskCompleted(
-                completeMode = task.completeMode,
-                taskType = task.type
-            )
-            analyticsLogger.logRewardGenerated(
-                hasItemReward = task.reward.items.isNotEmpty()
-            )
+            true
         }
+
+        if (completed) {
+            val task = taskRepo.getTaskById(taskId)
+
+            if (task != null) {
+                analyticsLogger.logTaskCompleted(
+                    completeMode = task.completeMode,
+                    taskType = task.type
+                )
+                analyticsLogger.logRewardGenerated(
+                    hasItemReward = task.reward.items.isNotEmpty()
+                )
+            }
+        }
+
+        return completed
+
     }
 }

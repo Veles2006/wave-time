@@ -8,7 +8,6 @@ import com.sae.wavetime.data.repository.BlockRepository
 import com.sae.wavetime.data.resolver.AppIconResolver
 import com.sae.wavetime.data.resolver.InstalledAppResolver
 import com.sae.wavetime.domain.model.Block
-import com.sae.wavetime.local.DatabaseProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -16,10 +15,14 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import com.sae.wavetime.BlockedActivity
+import com.sae.wavetime.WaveTimeApplication
 import com.sae.wavetime.analytics.AnalyticsLogger
 import com.sae.wavetime.analytics.AnalyticsTracker
+import com.sae.wavetime.domain.block.isReactivationDue
+import com.sae.wavetime.domain.block.shouldBeActive
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 
 class FocusAccessibilityService : AccessibilityService() {
 
@@ -34,17 +37,23 @@ class FocusAccessibilityService : AccessibilityService() {
     private var blocks: List<Block> = emptyList()
     @Volatile
     private var currentPackageName: String? = null
-
+    private lateinit var blockRepository: BlockRepository
+    private val reactivationInProgress = mutableSetOf<String>()
     private var blockJob: Job? = null
     private var unlockWatcherJob: Job? = null
+
+    private var watchedBlockId: String? = null
+    private var watchedUnlockUntil: Long = 0L
 
     override fun onServiceConnected() {
         super.onServiceConnected()
 
+        val application =
+            applicationContext as WaveTimeApplication
 
-        val db = DatabaseProvider.getDatabase(applicationContext)
+        val db = application.database
 
-        val blockRepo = BlockRepository(
+        blockRepository = BlockRepository(
             db.blockDao(),
             AppIconResolver(applicationContext),
             InstalledAppResolver(applicationContext)
@@ -56,17 +65,31 @@ class FocusAccessibilityService : AccessibilityService() {
         Log.d(TAG, "Default launcher = $launcherPackageName")
 
         serviceScope.launch {
-            blockRepo.observeActiveBlocks()
+            try {
+                application.blockReactivationReconciler
+                    .reconcile()
+            } catch (e: Exception) {
+                Log.e(
+                    TAG,
+                    "Block reactivation reconciliation failed",
+                    e
+                )
+            }
+
+            blockRepository.observeBlockCandidates()
                 .catch { e ->
                     Log.e(TAG, "observeActiveBlocks error", e)
-                    blocks = emptyList()
+
+                    withContext(Dispatchers.Main.immediate) {
+                        blocks = emptyList()
+                    }
                 }
                 .collect { newBlocks ->
-                    blocks = newBlocks
+                    withContext(Dispatchers.Main.immediate) {
+                        blocks = newBlocks
 
-                    Log.d(TAG, "observeActiveBlocks emitted. blocks=${newBlocks.map { it.packageName }}")
+                        Log.d(TAG, "observeActiveBlocks emitted. blocks=${newBlocks.map { it.packageName }}")
 
-                    launch(Dispatchers.Main) {
                         checkCurrentApp()
                     }
                 }
@@ -108,7 +131,10 @@ class FocusAccessibilityService : AccessibilityService() {
     private fun checkCurrentApp() {
         val packageName = currentPackageName
 
-        Log.d(TAG, "checkCurrentApp() currentPackageName = $packageName")
+        Log.d(
+            TAG,
+            "checkCurrentApp() currentPackageName=$packageName"
+        )
 
         if (packageName == null) {
             Log.d(TAG, "Stop check: currentPackageName is null")
@@ -120,74 +146,148 @@ class FocusAccessibilityService : AccessibilityService() {
             return
         }
 
-        Log.d(TAG, "Active blocks count = ${blocks.size}")
+        val block = blocks.firstOrNull { candidate ->
+            candidate.packageName == packageName
+        } ?: run {
+            Log.d(
+                TAG,
+                "No block found for package=$packageName"
+            )
 
-        val block = blocks.find {
-            it.packageName == packageName
-        }
-
-        if (block == null) {
-            Log.d(TAG, "No block found for package = $packageName")
+            cancelUnlockWatcher()
             return
         }
 
         val now = System.currentTimeMillis()
 
-        Log.d(
-            TAG,
-            "Block found. package=${block.packageName}, now=$now, unlockUntil=${block.unlockUntil}, diff=${block.unlockUntil - now}"
-        )
+        if (!block.shouldBeActive(now)) {
+            Log.d(
+                TAG,
+                "Block is inactive: " +
+                        "package=${block.packageName}, " +
+                        "isActive=${block.isActive}, " +
+                        "reactivateAt=${block.reactivateAt}"
+            )
 
-        if (now < block.unlockUntil) {
-            Log.d(TAG, "App is temporarily unlocked. Schedule blocker.")
+            cancelUnlockWatcher()
+            return
+        }
+
+        if (block.isReactivationDue(now)) {
+            persistReactivation(
+                blockId = block.id,
+                now = now
+            )
+        }
+
+        if (block.unlockUntil > now) {
+            Log.d(
+                TAG,
+                "App temporarily unlocked: " +
+                        "package=${block.packageName}, " +
+                        "remaining=${block.unlockUntil - now}"
+            )
+
             scheduleBlockWhenUnlockExpires(block)
             return
         }
 
-        Log.d(TAG, "Unlock expired or not unlocked. Blocking app now.")
-        blockApp(block)
-    }
-
-    private fun scheduleBlockWhenUnlockExpires(block: Block) {
-        unlockWatcherJob?.cancel()
-
-        val delayMs = (block.unlockUntil - System.currentTimeMillis())
-            .coerceAtLeast(0L)
+        cancelUnlockWatcher()
 
         Log.d(
             TAG,
-            "scheduleBlockWhenUnlockExpires(): package=${block.packageName}, delayMs=$delayMs"
+            "Block app now: " +
+                    "package=${block.packageName}, " +
+                    "isActive=${block.isActive}, " +
+                    "reactivateAt=${block.reactivateAt}, " +
+                    "unlockUntil=${block.unlockUntil}"
         )
 
-        unlockWatcherJob = serviceScope.launch(Dispatchers.Main) {
-            delay(delayMs)
+        blockApp(block)
+    }
 
-            val foregroundPackage = rootInActiveWindow
-                ?.packageName
-                ?.toString()
-
+    private fun scheduleBlockWhenUnlockExpires(
+        block: Block
+    ) {
+        if (
+            unlockWatcherJob?.isActive == true &&
+            watchedBlockId == block.id &&
+            watchedUnlockUntil == block.unlockUntil
+        ) {
             Log.d(
                 TAG,
-                "Unlock watcher fired. currentPackageName=$currentPackageName, foregroundPackage=$foregroundPackage, target=${block.packageName}"
+                "Unlock watcher already scheduled: " +
+                        "blockId=${block.id}, " +
+                        "unlockUntil=${block.unlockUntil}"
             )
-
-            val isTargetStillForeground =
-                if (foregroundPackage != null) {
-                    foregroundPackage == block.packageName
-                } else {
-                    currentPackageName == block.packageName
-                }
-
-            if (isTargetStillForeground) {
-                Log.d(TAG, "Target app still foreground. Re-check now.")
-                analyticsLogger.logBlockRelocked(
-                    reason = "Relocked"
-                )
-                checkCurrentApp()
-            } else {
-                Log.d(TAG, "Target app not foreground. Skip block.")
-            }
+            return
         }
+
+        cancelUnlockWatcher()
+        watchedBlockId = block.id
+        watchedUnlockUntil = block.unlockUntil
+
+        val delayMs =
+            (block.unlockUntil - System.currentTimeMillis())
+                    .coerceAtLeast(0L)
+
+        Log.d(
+            TAG,
+            "Schedule unlock watcher: " +
+                    "package=${block.packageName}, " +
+                    "delayMs=$delayMs"
+        )
+
+        val targetBlockId = block.id
+        val targetUnlockUntil = block.unlockUntil
+
+        unlockWatcherJob =
+            serviceScope.launch(Dispatchers.Main) {
+                try {
+                    delay(delayMs)
+
+                    val foregroundPackage =
+                        rootInActiveWindow
+                            ?.packageName
+                            ?.toString()
+
+                    val isTargetStillForeground =
+                        foregroundPackage == block.packageName ||
+                                (
+                                        foregroundPackage == null &&
+                                                currentPackageName == block.packageName
+                                        )
+
+                    Log.d(
+                        TAG,
+                        "Unlock watcher fired: " +
+                                "target=${block.packageName}, " +
+                                "foreground=$foregroundPackage, " +
+                                "current=$currentPackageName"
+                    )
+
+                    if (isTargetStillForeground) {
+                        analyticsLogger.logBlockRelocked(
+                            reason = "temporary_unlock_expired"
+                        )
+
+                        checkCurrentApp()
+                    }
+                } finally {
+                    /*
+                     * Chỉ xóa state nếu đây vẫn là watcher hiện tại.
+                     * Tránh coroutine cũ xóa thông tin của watcher mới.
+                     */
+                    if (
+                        watchedBlockId == targetBlockId &&
+                        watchedUnlockUntil == targetUnlockUntil
+                    ) {
+                        unlockWatcherJob = null
+                        watchedBlockId = null
+                        watchedUnlockUntil = 0L
+                    }
+                }
+            }
     }
 
     private fun blockApp(block: Block) {
@@ -200,7 +300,7 @@ class FocusAccessibilityService : AccessibilityService() {
 
         analyticsLogger.logBlockTriggered(
             blockType = block.blockType,
-            isTemporarilyUnlocked = true
+            isTemporarilyUnlocked = false
         )
         blockJob = serviceScope.launch(Dispatchers.Main) {
             Log.d(TAG, "Starting BlockedActivity for ${block.packageName}")
@@ -232,12 +332,67 @@ class FocusAccessibilityService : AccessibilityService() {
                 packageName == "com.google.android.googlequicksearchbox"
     }
 
+    private fun persistReactivation(
+        blockId: String,
+        now: Long
+    ) {
+        if (!reactivationInProgress.add(blockId)) {
+            return
+        }
+
+        serviceScope.launch(Dispatchers.IO) {
+            try {
+                val updated =
+                    blockRepository.reactivateBlockIfDue(
+                        blockId = blockId,
+                        now = now
+                    )
+
+                Log.d(
+                    TAG,
+                    "Reactivate block result: " +
+                            "blockId=$blockId, updated=$updated"
+                )
+            } catch (e: Exception) {
+                Log.e(
+                    TAG,
+                    "Failed to persist block reactivation: " +
+                            "blockId=$blockId",
+                    e
+                )
+            } finally {
+                withContext(Dispatchers.Main.immediate) {
+                    reactivationInProgress.remove(blockId)
+                }
+            }
+        }
+    }
+
+    private fun cancelUnlockWatcher() {
+        unlockWatcherJob?.cancel()
+        unlockWatcherJob = null
+
+        watchedBlockId = null
+        watchedUnlockUntil = 0L
+    }
+
     override fun onInterrupt() {
-        // Không cần làm gì tạm thời
+        Log.w(TAG, "Accessibility service interrupted")
     }
 
     override fun onDestroy() {
+        cancelUnlockWatcher()
+
+        blockJob?.cancel()
+        blockJob = null
+
+        blocks = emptyList()
+        currentPackageName = null
+
+        reactivationInProgress.clear()
+
         serviceScope.cancel()
+
         super.onDestroy()
     }
 }

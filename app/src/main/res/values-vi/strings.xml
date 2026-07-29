@@ -87,7 +87,7 @@
     <string name="block_detail">Chi tiết chặn</string>
     <string name="app_name_text">Tên ứng dụng</string>
     <string name="package_name_text">Tên gói ứng dụng</string>
-    <string name="block_type_permanent">Vĩnh viễn</string>
+    <string name="block_type_permanent">Luôn chặn</string>
     <string name="block_type_schedule">Theo lịch</string>
     <string name="block_type_timer">Hẹn giờ</string>
     <string name="package_name_format">Tên gói: %1$s</string>
@@ -101,6 +101,7 @@
     <string name="no_tasks_yet">Chưa có nhiệm vụ nào.\nHãy thêm một nhiệm vụ mới.</string>
     <string name="no_blocks_yet">Chưa có ứng dụng bị chặn nào.\nHãy thêm ứng dụng cần kiểm soát.</string>
     <string name="no_items_yet">Chưa có vật phẩm nào.\nHoàn thành nhiệm vụ để nhận phần thưởng.</string>
+    <string name="no_history_yet">Chưa có nhiệm vụ nào được hoàn thành.\nHãy cùng hoàn thành nhiệm vụ đầu tiên nhé!</string>
     <string name="minutes">Phút</string>
     <string name="completion_time">Thời gian hoàn thành:</string>
     <string name="select_item">Chọn vật phẩm</string>
@@ -195,7 +196,7 @@
     <string name="block_type_guide_title">Giới thiệu phần loại</string>
     <string name="block_type_guide_message">
         Loại chặn quyết định cách hệ thống chặn ứng dụng.
-        \n\nHiện tại, hệ thống chỉ hỗ trợ loại vĩnh viễn.\n\nVĩnh viễn nghĩa là ứng dụng sẽ luôn
+        \n\nHiện tại, hệ thống chỉ hỗ trợ loại luôn chặn.\n\nLuôn chặn nghĩa là ứng dụng sẽ luôn
         bị chặn khi block đang hoạt động. Bạn chỉ có thể mở khóa tạm thời bằng chìa khóa. Sau khi
         hết thời gian mở khóa, ứng dụng sẽ tự động bị chặn lại.
     </string>
@@ -244,4 +245,20 @@
     <string name="open_settings">Mở cài đặt</string>
     <string name="later">Để sau</string>
     <string name="undo">Hoàn tác</string>
+    <string name="task_completion_channel_name">Hoàn thành nhiệm vụ</string>
+    <string name="task_completion_channel_description">Phát âm thanh và rung khi nhiệm vụ hẹn giờ hoàn thành</string>
+    <string name="task_completed_notification_title">Nhiệm vụ đã hoàn thành</string>
+    <string name="task_completed_notification_message">Bạn đã hoàn thành nhiệm vụ “%1$s”.</string>
+    <string name="deactivate_block_title">Tắt chặn ứng dụng?</string>
+    <string name="deactivate_block_message">Bạn có muốn tạm thời tắt chặn ứng dụng này không?</string>
+    <string name="deactivate_block_warning_title">Bạn chắc chứ?</string>
+    <string name="deactivate_block_warning_message">
+        Hãy nhớ mục tiêu của bạn. Để tránh việc mất kiểm soát, chặn ứng dụng sẽ tự động được bật
+        lại sau 10 phút.
+    </string>
+    <string name="deactivate">Tắt</string>
+    <string name="deactivate_countdown">Chờ (%1$ds)</string>
+    <string name="confirm_deactivation">Xác nhận</string>
+    <string name="temporary_unlock_remaining">Thời gian mở khóa còn lại</string>
+    <string name="block_reactivates_in">Khóa sẽ kích hoạt lại sau</string>
 </resources>
